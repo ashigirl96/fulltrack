@@ -1,7 +1,10 @@
 import type { NextPage } from 'next'
+import dynamic from 'next/dynamic'
 
-const AddVideo: NextPage = () => {
-  return <div>hello</div>
+const AddVideo = dynamic(() => import('@/components/AddVideo'), { ssr: false })
+
+const AddVideoIndex: NextPage = () => {
+  return <AddVideo />
 }
 
-export default AddVideo
+export default AddVideoIndex
