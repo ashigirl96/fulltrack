@@ -1,8 +1,13 @@
+import { YouTubeOptions } from '@/types'
+
 type GetPropsOptions = {
   start?: number
   end?: number
 }
-export function getPropsOptions({ start, end }: GetPropsOptions) {
+export function getPropsOptions({
+  start,
+  end,
+}: GetPropsOptions): YouTubeOptions {
   // Look https://developers.google.com/youtube/player_parameters
   return {
     playerVars: {
