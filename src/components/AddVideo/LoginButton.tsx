@@ -1,4 +1,4 @@
-import { useGetAuth, useGoogleSignIn, useSignOut } from '@/hooks/firebase'
+import { useGetAuth, useGoogleSignIn, useSignOut } from '@/hooks/firebaseAuth'
 
 export function LoginButton() {
   const handleSignIn = useGoogleSignIn()
