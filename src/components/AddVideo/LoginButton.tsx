@@ -5,7 +5,7 @@ export function LoginButton() {
   const handleSignOut = useSignOut()
   const auth = useGetAuth()
 
-  if (auth.currentUser?.uid) {
+  if (auth.currentUser) {
     return (
       <button
         className="btn btn-primary"

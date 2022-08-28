@@ -24,6 +24,8 @@ export default function AddVideo() {
     setArtists,
     thumbnailUrl,
     addVideo,
+    uploadedMessage,
+    setUploadedMessage,
   } = useAddVideo()
 
   const opts = getPropsOptions({ start, end, controls: 1 })
@@ -113,6 +115,15 @@ export default function AddVideo() {
           </div>
         </div>
       </div>
+      {uploadedMessage && (
+        <div className="toast" onClick={() => setUploadedMessage(null)}>
+          <div className="alert alert-info">
+            <div>
+              <span>{uploadedMessage}</span>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

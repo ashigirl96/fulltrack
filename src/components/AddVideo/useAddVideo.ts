@@ -41,8 +41,9 @@ export function useAddVideo() {
 
   const videoCollectionRef = useVideoCollection()
 
+  const [uploadedMessage, setUploadedMessage] = useState<string | null>(null)
   const addVideo = useCallback(async () => {
-    return await addDoc(videoCollectionRef, {
+    await addDoc(videoCollectionRef, {
       videoId,
       start,
       end,
@@ -51,6 +52,8 @@ export function useAddVideo() {
       thumbnailUrl,
       artists,
     })
+      .then(() => setUploadedMessage(`${videoId}の登録できました`))
+      .catch((reason) => setUploadedMessage(`ERROR ${JSON.stringify(reason)}`))
   }, [
     artists,
     end,
@@ -71,15 +74,15 @@ export function useAddVideo() {
     handleStateChange,
     setStartTime,
     setEndTime,
-
     title,
     setTitle,
     originalTitle,
     setOriginalTitle,
     artists,
     setArtists,
-
     thumbnailUrl,
     addVideo,
+    uploadedMessage,
+    setUploadedMessage,
   }
 }
