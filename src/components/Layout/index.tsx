@@ -12,7 +12,7 @@ export function Layout({ children }: LayoutProps) {
 
   return (
     <div className="h-screen flex flex-col">
-      <div className="flex flex-1">
+      <div className="flex flex-1 h-[90%]">
         <Menu width={width.x} />
 
         <Border
@@ -23,7 +23,7 @@ export function Layout({ children }: LayoutProps) {
           onPointerMove={onPointerMove}
         />
 
-        <div className="bg-green-50 flex-1">{children}</div>
+        <div className="bg-green-50 flex-1 overflow-y-scroll">{children}</div>
       </div>
       <div className="h-[10%] bg-red-100">Footer</div>
     </div>
