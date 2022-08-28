@@ -7,15 +7,16 @@ type LayoutProps = {
   children: React.ReactNode
 }
 export function Layout({ children }: LayoutProps) {
-  const { menuWidth, dragging, onPointerMove, onPointerUp, onPointerDown } =
+  const { width, dragging, onPointerMove, onPointerUp, onPointerDown } =
     useMenuWidth()
 
   return (
     <div className="h-screen flex flex-col">
       <div className="flex flex-1">
-        <Menu width={menuWidth.x} />
+        <Menu width={width.x} />
 
         <Border
+          width={width}
           dragging={dragging}
           onPointerUp={onPointerUp}
           onPointerDown={onPointerDown}

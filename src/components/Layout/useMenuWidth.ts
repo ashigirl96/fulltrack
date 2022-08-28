@@ -1,15 +1,11 @@
-import { useState } from 'react'
 import { useMoveOnDrag } from './useMoveOnDrag'
 
 export function useMenuWidth() {
-  const [menuWidth, setMenuWidth] = useState({ x: 250 })
-  const { dragging, onPointerMove, onPointerUp, onPointerDown } = useMoveOnDrag(
-    menuWidth,
-    setMenuWidth,
-  )
+  const { width, dragging, onPointerMove, onPointerUp, onPointerDown } =
+    useMoveOnDrag(250)
 
   return {
-    menuWidth,
+    width,
     dragging,
     onPointerMove,
     onPointerUp,

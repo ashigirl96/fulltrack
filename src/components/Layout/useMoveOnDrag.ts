@@ -12,24 +12,22 @@ interface DragState {
   startCursor: Position
 }
 
-export function useMoveOnDrag<T extends Element>(
-  argPosition: Position,
-  onMove: (pos: Position) => void,
-) {
+export function useMoveOnDrag<T extends Element>(defaultWidthPx: number) {
+  const [width, setWidth] = useState({ x: defaultWidthPx })
   const [state, setState] = useState<DragState | null>(null)
   const startDrag = useCallback(
     (event: PointerEvent<T>) => {
       event.currentTarget.setPointerCapture(event.pointerId)
       setState({
         originalPosition: {
-          x: argPosition.x,
+          x: width.x,
         },
         startCursor: {
           x: event.pageX,
         },
       })
     },
-    [argPosition.x],
+    [width.x],
   )
 
   const dragging = useCallback(
@@ -37,7 +35,7 @@ export function useMoveOnDrag<T extends Element>(
       event.preventDefault()
       if (state === null) return
       const currentCursor = { x: event.pageX }
-      onMove({
+      setWidth({
         x: adjustWidth(
           state.originalPosition,
           currentCursor,
@@ -45,7 +43,7 @@ export function useMoveOnDrag<T extends Element>(
         ),
       })
     },
-    [onMove, state],
+    [state],
   )
   const endDrag = useCallback(
     (event: PointerEvent<T>) => {
@@ -53,7 +51,7 @@ export function useMoveOnDrag<T extends Element>(
       setState(null)
       if (state === null) return
       const currentCursor = { x: event.pageX }
-      onMove({
+      setWidth({
         x: adjustWidth(
           state.originalPosition,
           currentCursor,
@@ -61,9 +59,10 @@ export function useMoveOnDrag<T extends Element>(
         ),
       })
     },
-    [onMove, state],
+    [state],
   )
   return {
+    width,
     onPointerDown: startDrag,
     onPointerMove: dragging,
     onPointerUp: endDrag,
