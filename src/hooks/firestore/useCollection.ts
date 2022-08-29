@@ -39,6 +39,8 @@ export const useCollection = <T = DocumentData>(
     }
   }, [options?.snapshotListenOptions, ref, setError, setValue])
 
+  console.log(loading, value)
+
   const resArray: CollectionHook<T> = [
     value as QuerySnapshot<T>,
     loading,

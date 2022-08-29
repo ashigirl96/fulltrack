@@ -1,9 +1,9 @@
 import { atomFamily } from 'recoil'
-import { Playlist, UserId } from '@/types'
+import { PlaylistStore } from '@/types'
 
-export const playlistsState = atomFamily<Playlist[] | null, UserId | undefined>(
-  {
-    key: 'playlistsState',
-    default: null,
-  },
-)
+type PlaylistStoreId = string
+
+export const playlistState = atomFamily<PlaylistStore | null, PlaylistStoreId>({
+  key: 'playlistState',
+  default: null,
+})

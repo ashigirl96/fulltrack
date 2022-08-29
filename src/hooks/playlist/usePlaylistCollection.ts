@@ -1,7 +1,7 @@
 import { useCollectionData } from '@/hooks/firestore'
 import { db } from '@/config/firebase'
-import { collection, doc, query, where } from '@firebase/firestore'
-import { playlistConverter } from './converter'
+import { doc, query, where } from '@firebase/firestore'
+import { playlistCollectionRef } from '@/lib/firestore/playlist'
 
 function useCurrentUserDocument(userId: string) {
   return doc(db, 'users', userId)
@@ -9,9 +9,6 @@ function useCurrentUserDocument(userId: string) {
 
 export function usePlaylistCollection(userId: string) {
   const userDocRef = useCurrentUserDocument(userId)
-  const playlistCollectionRef = collection(db, 'playlists').withConverter(
-    playlistConverter,
-  )
   const playlistQuery = query(
     playlistCollectionRef,
     where('user', '==', userDocRef),

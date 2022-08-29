@@ -1,4 +1,6 @@
 import { usePlaylists } from './usePlaylists'
+import { PlaylistItem } from './PlaylistItem'
+import Link from 'next/link'
 
 type Props = {
   userId: string
@@ -19,7 +21,11 @@ export function Playlists({ userId }: Props) {
       {playlists.map((playlist) => {
         return (
           <div key={`playlist-${playlist.id}`}>
-            {JSON.stringify(playlist, null, 2)}
+            <Link href={`/playlists/${encodeURIComponent(playlist.id)}`}>
+              <a>
+                <PlaylistItem playlist={playlist} />
+              </a>
+            </Link>
           </div>
         )
       })}
