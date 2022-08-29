@@ -43,6 +43,6 @@ const videoConverter: FirestoreDataConverter<VideoFirestore> = {
   },
 }
 
-export const videoCollection = collection(db, 'videos').withConverter(
+export const videoCollectionRef = collection(db, 'videos').withConverter(
   videoConverter,
 )

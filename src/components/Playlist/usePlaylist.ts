@@ -2,7 +2,7 @@ import { videoState } from '@/atoms/firestore/video'
 import { useRecoilCallback, useRecoilValue } from 'recoil'
 import { playlistState } from '@/atoms/firestore/playlist'
 import { getDocsByIds } from '@/lib/firestore/getDocsByIds'
-import { videoCollection } from '@/lib/firestore/video'
+import { videoCollectionRef } from '@/lib/firestore/video'
 import { useEffect, useState } from 'react'
 
 export function usePlaylist(playlistId: string) {
@@ -19,7 +19,7 @@ export function usePlaylist(playlistId: string) {
             }
           }
           const unFetchedVideos = await getDocsByIds(
-            videoCollection,
+            videoCollectionRef,
             unFetchedVideoIds,
           )
           unFetchedVideos.forEach((video) => {

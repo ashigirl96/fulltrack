@@ -2,8 +2,8 @@ import { useCallback, useEffect, useState } from 'react'
 import { useHandleStateChange } from './useHandleStateChange'
 import { YoutubePlayer } from '@/types'
 import { fetchThumbnailUrl } from '@/lib/youtube/fetchThumbnailUrl'
-import { useVideoCollection } from '@/hooks/video/'
-import { addDoc } from '@firebase/firestore'
+import { addDoc, documentId } from '@firebase/firestore'
+import { videoCollectionRef } from '@/lib/firestore/video'
 
 export function useAddVideo() {
   const [start, setStart] = useState<number | undefined>(1)
@@ -39,11 +39,10 @@ export function useAddVideo() {
     f()
   }, [videoId])
 
-  const videoCollectionRef = useVideoCollection()
-
   const [uploadedMessage, setUploadedMessage] = useState<string | null>(null)
   const addVideo = useCallback(async () => {
     await addDoc(videoCollectionRef, {
+      id: documentId(),
       videoId,
       start,
       end,
@@ -54,16 +53,7 @@ export function useAddVideo() {
     })
       .then(() => setUploadedMessage(`${videoId}の登録できました`))
       .catch((reason) => setUploadedMessage(`ERROR ${JSON.stringify(reason)}`))
-  }, [
-    artists,
-    end,
-    originalTitle,
-    start,
-    thumbnailUrl,
-    title,
-    videoCollectionRef,
-    videoId,
-  ])
+  }, [artists, end, originalTitle, start, thumbnailUrl, title, videoId])
 
   return {
     videoId,
