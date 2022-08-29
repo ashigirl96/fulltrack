@@ -16,7 +16,8 @@
     "next": "12.2.5",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "react-youtube": "^9.0.3"
+    "react-youtube": "^9.0.3",
+    "recoil": "^0.7.5"
   },
   "devDependencies": {
     "@types/node": "18.7.11",
@@ -24,8 +25,8 @@
     "@types/react-dom": "18.0.6",
     "@typescript-eslint/eslint-plugin": "^5.34.0",
     "@typescript-eslint/parser": "^5.34.0",
-    "daisyui": "^2.24.0",
     "autoprefixer": "^10.4.8",
+    "daisyui": "^2.24.0",
     "eslint": "^8.22.0",
     "eslint-config-next": "12.2.5",
     "eslint-config-prettier": "^8.5.0",

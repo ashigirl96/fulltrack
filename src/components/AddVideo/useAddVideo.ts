@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useHandleStateChange } from './useHandleStateChange'
 import { YoutubePlayer } from '@/types'
 import { fetchThumbnailUrl } from '@/lib/youtube/fetchThumbnailUrl'
-import { useVideoCollection } from '@/components/AddVideo/useVideoCollection'
+import { useVideoCollection } from '@/hooks/video/'
 import { addDoc } from '@firebase/firestore'
 
 export function useAddVideo() {

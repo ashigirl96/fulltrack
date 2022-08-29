@@ -1,4 +1,4 @@
-import { useGetAuth } from './useGetAuth'
+import { useGetAuth, useGetCurrentUser } from './useGetCurrentUser'
 import { useCallback } from 'react'
 
 export function useSignOut() {

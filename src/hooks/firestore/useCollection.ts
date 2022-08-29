@@ -37,13 +37,12 @@ export const useCollection = <T = DocumentData>(
     return () => {
       unsubscribe()
     }
-  }, [ref.current])
+  }, [options?.snapshotListenOptions, ref, setError, setValue])
 
   const resArray: CollectionHook<T> = [
     value as QuerySnapshot<T>,
     loading,
     error,
   ]
-  // @ts-ignore
   return useMemo(() => resArray, resArray)
 }

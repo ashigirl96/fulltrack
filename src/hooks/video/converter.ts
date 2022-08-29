@@ -1,14 +1,12 @@
 import {
-  collection,
   DocumentData,
   FirestoreDataConverter,
   QueryDocumentSnapshot,
   SnapshotOptions,
   WithFieldValue,
 } from '@firebase/firestore'
-import { db } from '@/config/firebase'
 
-type VideoFirestore = {
+export type VideoFirestore = {
   videoId: string
   start?: number
   end?: number
@@ -18,7 +16,7 @@ type VideoFirestore = {
   artists: string[]
 }
 
-const videoConverter: FirestoreDataConverter<VideoFirestore> = {
+export const videoConverter: FirestoreDataConverter<VideoFirestore> = {
   fromFirestore(
     snapshot: QueryDocumentSnapshot,
     options?: SnapshotOptions,
@@ -49,8 +47,4 @@ const videoConverter: FirestoreDataConverter<VideoFirestore> = {
       thumbnailUrl,
     }
   },
-}
-
-export function useVideoCollection() {
-  return collection(db, 'videos').withConverter(videoConverter)
 }

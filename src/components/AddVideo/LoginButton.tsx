@@ -1,11 +1,26 @@
-import { useGetAuth, useGoogleSignIn, useSignOut } from '@/hooks/firebaseAuth'
+import {
+  useGetCurrentUser,
+  useGoogleSignIn,
+  useSignOut,
+} from '@/hooks/firebaseAuth'
 
 export function LoginButton() {
   const handleSignIn = useGoogleSignIn()
   const handleSignOut = useSignOut()
-  const auth = useGetAuth()
+  const user = useGetCurrentUser()
 
-  if (auth.currentUser) {
+  if (!user) {
+    return (
+      <button
+        className="btn btn-primary"
+        onClick={() => handleSignIn().then(() => window.location.reload())}
+      >
+        ログイン
+      </button>
+    )
+  }
+
+  if (user.uid) {
     return (
       <button
         className="btn btn-primary"

@@ -1,4 +1,4 @@
-import { useMemo, useReducer } from 'react'
+import { useCallback, useMemo, useReducer } from 'react'
 
 export type LoadingValue<T, E> = {
   error?: E
@@ -56,18 +56,18 @@ export default <T, E>(getDefaultValue?: () => T): LoadingValue<T, E> => {
   const defaultValue = getDefaultValue ? getDefaultValue() : undefined
   const [state, dispatch] = useReducer(reducer<E>(), defaultState(defaultValue))
 
-  const reset = () => {
+  const reset = useCallback(() => {
     const defaultValue = getDefaultValue ? getDefaultValue() : undefined
     dispatch({ type: 'reset', defaultValue })
-  }
+  }, [getDefaultValue])
 
-  const setError = (error: E) => {
+  const setError = useCallback((error: E) => {
     dispatch({ type: 'error', error })
-  }
+  }, [])
 
-  const setValue = (value?: T) => {
+  const setValue = useCallback((value?: T) => {
     dispatch({ type: 'value', value })
-  }
+  }, [])
 
   return useMemo(
     () => ({
