@@ -1,26 +1,16 @@
-// import { usePlaylists } from './usePlaylists'
-import { usePlaylists2 } from './usePlaylists2'
+import { usePlaylists } from './usePlaylists'
 
-// export function Playlists() {
-//   const playlists = usePlaylists()
-//   if (playlists.state === 'hasValue') {
-//     return (
-//       <div>
-//         {playlists.contents.map((playlist) => {
-//           return (
-//             <div key={`playlist-${playlist.id}`}>
-//               {JSON.stringify(playlist, null, 2)}
-//             </div>
-//           )
-//         })}
-//       </div>
-//     )
-//   }
-//   return <div>Please login...</div>
-// }
-//
-export function Playlists({ currentUserId }: { currentUserId: string }) {
-  const { playlists, isLoading, error } = usePlaylists2(currentUserId)
+type Props = {
+  userId: string
+}
+export function Playlists({ userId }: Props) {
+  const { playlists, isLoading, error } = usePlaylists(userId)
+  if (error) {
+    return <div>error</div>
+  }
+  if (isLoading) {
+    return <div>Loading</div>
+  }
   if (!playlists) {
     return <div>Please login...</div>
   }

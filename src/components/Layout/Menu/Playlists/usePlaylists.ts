@@ -1,16 +1,12 @@
-import { playlistsSelector, playlistsState } from '@/atoms/firestore/playlist'
-import { useRecoilValueLoadable, useSetRecoilState } from 'recoil'
-import { useEffect } from 'react'
-import { useGetCurrentUser } from '@/hooks/firebaseAuth'
+import { playlistsState } from '@/atoms/firestore/playlist'
+import { useSetRecoilState } from 'recoil'
+import { usePlaylistCollection } from '@/hooks/playlist'
 
-export function usePlaylists() {
-  const user = useGetCurrentUser()
-  const playlists = useRecoilValueLoadable(playlistsSelector(user?.uid))
-  const setPlaylistsState = useSetRecoilState(playlistsState(user?.uid))
-  useEffect(() => {
-    if (playlists.state === 'hasValue') {
-      setPlaylistsState(playlists.contents)
-    }
-  }, [playlists.contents, playlists.state, setPlaylistsState])
-  return playlists
+export function usePlaylists(userId: string) {
+  const { playlists, isLoading, error } = usePlaylistCollection(userId)
+  const setPlaylistsState = useSetRecoilState(playlistsState(userId))
+  if (playlists) {
+    setPlaylistsState(playlists)
+  }
+  return { playlists, isLoading, error }
 }
