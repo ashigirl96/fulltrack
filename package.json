@@ -17,12 +17,14 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-youtube": "^9.0.3",
-    "recoil": "^0.7.5"
+    "recoil": "^0.7.5",
+    "recoilize": "^3.1.6"
   },
   "devDependencies": {
     "@types/node": "18.7.11",
     "@types/react": "18.0.17",
     "@types/react-dom": "18.0.6",
+    "@types/recoilize": "^0.8.0",
     "@typescript-eslint/eslint-plugin": "^5.34.0",
     "@typescript-eslint/parser": "^5.34.0",
     "autoprefixer": "^10.4.8",
