@@ -1,19 +1,16 @@
-import { useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { YouTubeEvent } from '@/types'
 import { getPlayerStateKey, getPropsOptions } from '@/lib/youtube'
 import { useCurrentVideoTerm, useSetNextVideo } from '@/hooks/youtube_player'
 import { useSetCurrentPlayerStatus } from '@/atoms/youtubePlayer'
 import { YouTubePlayer as YouTubePlayerType } from 'react-youtube'
+import { PlayerStateKey } from '@/constants/youtube'
 
-export function useHandleStateChange() {
+export function useHandleStateChange(playerStatus: PlayerStateKey | undefined) {
   const setNextVideo = useSetNextVideo()
-  const setCurrentPlayerStatus = useSetCurrentPlayerStatus()
-  return useCallback(
-    async (event: YouTubeEvent) => {
-      const state = await event.target.getPlayerState()
-      const status = getPlayerStateKey(state)
-      setCurrentPlayerStatus(status)
-      switch (status) {
+  return useCallback(async () => {
+    if (playerStatus) {
+      switch (playerStatus) {
         case 'BUFFERING':
           break
         case 'PAUSED':
@@ -28,21 +25,21 @@ export function useHandleStateChange() {
         case 'PLAYING':
           break
       }
-    },
-    [setNextVideo],
-  )
+    }
+  }, [playerStatus, setNextVideo])
 }
 
 export type YouTubePlayerArgs = {
-  readyEvent: YouTubePlayerType | undefined
   setReadyEvent: (x: YouTubeEvent) => void
+  playerStatus: PlayerStateKey | undefined
 }
 export function useYouTubePlayer({
-  readyEvent,
   setReadyEvent,
+  playerStatus,
 }: YouTubePlayerArgs) {
-  const handleStateChange = useHandleStateChange()
+  const handleStateChange = useHandleStateChange(playerStatus)
   const videoTerm = useCurrentVideoTerm()
+
   // TODO: リファクタリング
   let videoId = ''
   let opts = undefined
@@ -73,4 +70,20 @@ export function useHandleTogglePlayButton(
       }
     }
   }, [readyEvent])
+}
+
+export function usePlayerStatus(readyEvent: YouTubePlayerType | undefined) {
+  const [state, setState] = useState<PlayerStateKey>('ENDED')
+  const setCurrentPlayerStatus = useSetCurrentPlayerStatus()
+  useEffect(() => {
+    ;(async () => {
+      if (readyEvent) {
+        const status = getPlayerStateKey(await readyEvent.getPlayerState())
+        setState(status)
+        // グローバルで扱えるようにするためのPlayerStatus
+        setCurrentPlayerStatus(status)
+      }
+    })()
+  }, [readyEvent, setCurrentPlayerStatus, setState])
+  return state
 }

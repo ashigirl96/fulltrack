@@ -2,11 +2,11 @@ import React from 'react'
 import { useYouTubePlayerComponent } from '@/components/shared/YouTubePlayer'
 
 export function Footer() {
-  const { YouTubePlayer, handleTogglePlayButton, handleReady, readyEvent } =
+  const { YouTubePlayer, handleTogglePlayButton, handleReady, playerStatus } =
     useYouTubePlayerComponent()
   return (
     <>
-      <YouTubePlayer readyEvent={readyEvent} setReadyEvent={handleReady} />
+      <YouTubePlayer setReadyEvent={handleReady} playerStatus={playerStatus} />
       <div className="h-[10%] flex justify-between items-center">
         <div>Left</div>
         <div>
