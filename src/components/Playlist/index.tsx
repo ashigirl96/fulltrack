@@ -1,6 +1,6 @@
 import React from 'react'
 import { usePlaylist } from './usePlaylist'
-import { VideoItem } from './VideoItem'
+import { VideoRow } from './VideoRow'
 import { PlaylistStoreId } from '@/atoms/firestore/playlist'
 
 type Props = {
@@ -15,15 +15,26 @@ export function Playlist({ playlistId }: Props) {
 
   if (videoIds) {
     return (
-      <div className="bg-blue-100">
-        {videoIds.map((videoId, index) => (
-          <VideoItem
-            key={`${videoId}-${index}`}
-            videoId={videoId}
-            playlistId={playlistId}
-          />
-        ))}
-      </div>
+      <table className="w-full">
+        <thead>
+          <tr>
+            <th className="text-left">#</th>
+            <th className="text-left">タイトル</th>
+            <th className="text-left">オリジナルタイトル</th>
+            <th className="text-left">再生時間</th>
+          </tr>
+        </thead>
+        <tbody>
+          {videoIds.map((videoId, index) => (
+            <VideoRow
+              key={`${videoId}-${index}`}
+              videoId={videoId}
+              playlistId={playlistId}
+              index={index}
+            />
+          ))}
+        </tbody>
+      </table>
     )
   }
 
