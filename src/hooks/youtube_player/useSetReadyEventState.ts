@@ -1,13 +1,13 @@
-import { useRecoilCallback } from 'recoil'
-import { videoReadyEventState } from '@/atoms/youtube_player'
 import { YouTubeEvent } from '@/types'
+import { useCallback, useState } from 'react'
 
 export function useSetReadyEventState() {
-  return useRecoilCallback(
-    ({ set }) =>
-      (event: YouTubeEvent) => {
-        set(videoReadyEventState, event.target)
-      },
-    [],
-  )
+  const [readyEvent, setReadyEvent] = useState<YouTubeEvent['target']>()
+
+  return [
+    readyEvent,
+    useCallback((event: YouTubeEvent) => {
+      setReadyEvent(event.target)
+    }, []),
+  ] as const
 }

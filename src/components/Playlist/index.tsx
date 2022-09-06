@@ -2,17 +2,15 @@ import { usePlaylist } from './usePlaylist'
 import { useRecoilValue } from 'recoil'
 import { videoState } from '@/atoms/firestore/video'
 import React from 'react'
-import dynamic from 'next/dynamic'
-const YouTubePlayer = dynamic(
-  () => import('@/components/shared/YouTubePlayer'),
-  { ssr: false },
-)
+import YouTubePlayer from '@/components/shared/YouTubePlayer'
+import { useCurrentVideoTerm } from '@/hooks/youtube_player'
 
 type Props = {
   playlistId: string
 }
 export function Playlist({ playlistId }: Props) {
   const { completed, videoIds } = usePlaylist(playlistId)
+  const videoTerm = useCurrentVideoTerm()
 
   if (!completed) {
     return <div>loading</div>
@@ -20,8 +18,8 @@ export function Playlist({ playlistId }: Props) {
 
   if (videoIds) {
     return (
-      <div className="bg-blue-500">
-        <YouTubePlayer />
+      <div className="bg-blue-100">
+        {videoTerm && <YouTubePlayer />}
         {videoIds.map((videoId) => (
           <VideoItem videoId={videoId} />
         ))}

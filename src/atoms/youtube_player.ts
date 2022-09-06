@@ -1,12 +1,13 @@
 import { atom, selector } from 'recoil'
-import { YouTubePlayer } from 'youtube-player/dist/types'
 import { playlistVideosLengthState } from '@/atoms/firestore/playlist'
 import { PlaylistFirestoreId } from '@/types'
+import { VideoFirestoreId } from '@/atoms/firestore/video'
 
-export const videoReadyEventState = atom<YouTubePlayer>({
-  key: 'videoReadyEventState',
-  default: undefined,
-})
+// TODO: YoutubeEvent['target']が入らない
+// export const videoReadyEventState = atom<YouTubePlayer>({
+//   key: 'videoReadyEventState',
+//   default: undefined,
+// })
 
 export const currentPlaylistIdState = atom<PlaylistFirestoreId | null>({
   key: 'currentPlaylistIdState',
@@ -15,7 +16,7 @@ export const currentPlaylistIdState = atom<PlaylistFirestoreId | null>({
 
 export const isLoopState = atom<boolean>({
   key: 'isLoopState',
-  default: false,
+  default: true,
 })
 
 export const isRandomOrderState = atom<boolean>({
@@ -33,7 +34,7 @@ export const currentVideoIndexState = atom<number>({
   default: 0,
 })
 
-export const currentVideoIdsState = atom<string[]>({
+export const currentVideoIdsState = atom<VideoFirestoreId[]>({
   key: 'currentVideoIdsState',
   default: [],
 })
@@ -45,7 +46,7 @@ export const isLastVideoState = selector<boolean | null>({
     if (playingPlaylistId === null) return null
     const length = get(playlistVideosLengthState(playingPlaylistId))
     if (length === null) return null
-    const playingVideoIndex = get(currentVideoIndexState)
-    return playingVideoIndex === length
+    const currentVideoIndex = get(currentVideoIndexState)
+    return currentVideoIndex === length - 1
   },
 })

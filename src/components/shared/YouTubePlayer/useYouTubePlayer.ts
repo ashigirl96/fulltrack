@@ -33,7 +33,8 @@ export function useHandleStateChange() {
 }
 
 export function useYouTubePlayer() {
-  const handleReady = useSetReadyEventState()
+  const [readyEvent, handleReady] = useSetReadyEventState()
+
   const handleStateChange = useHandleStateChange()
   const videoTerm = useCurrentVideoTerm()
   // TODO: リファクタリング
@@ -44,11 +45,11 @@ export function useYouTubePlayer() {
     opts = getPropsOptions({ start, end, controls: 0 })
     videoId = _videoId
   }
-
   return {
     videoId,
     opts,
     handleStateChange,
     handleReady,
+    readyEvent,
   }
 }

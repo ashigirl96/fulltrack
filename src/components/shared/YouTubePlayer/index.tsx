@@ -1,5 +1,5 @@
-import YouTube from 'react-youtube'
 import { useYouTubePlayer } from './useYouTubePlayer'
+import YouTube from 'react-youtube'
 
 function YouTubePlayer() {
   const { videoId, opts, handleStateChange, handleReady } = useYouTubePlayer()
