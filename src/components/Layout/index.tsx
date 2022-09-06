@@ -2,6 +2,7 @@ import React from 'react'
 import { Border } from './Border'
 import { useMenuWidth } from './useMenuWidth'
 import { Menu } from './Menu'
+import { Footer } from './Footer'
 
 type LayoutProps = {
   children: React.ReactNode
@@ -25,7 +26,7 @@ export function Layout({ children }: LayoutProps) {
 
         <div className="bg-green-50 flex-1 overflow-y-scroll">{children}</div>
       </div>
-      <div className="h-[10%] bg-red-100">Footer</div>
+      <Footer />
     </div>
   )
 }

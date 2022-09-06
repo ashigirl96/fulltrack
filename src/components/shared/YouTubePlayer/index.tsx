@@ -6,6 +6,7 @@ function YouTubePlayer() {
 
   return (
     <YouTube
+      className=""
       videoId={videoId}
       opts={opts}
       onStateChange={handleStateChange}

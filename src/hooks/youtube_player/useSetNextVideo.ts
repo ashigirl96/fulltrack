@@ -4,7 +4,7 @@ import {
   isLastVideoState,
   isLoopState,
   playerStatusState,
-} from '@/atoms/youtube_player'
+} from '@/atoms/youtubePlayer'
 
 export function useSetNextVideo() {
   return useRecoilCallback(
