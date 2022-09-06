@@ -17,18 +17,20 @@ export function VideoRow({ videoId, playlistId, index }: Props) {
   }
 
   return (
-    <tr className="h-16" onClick={setCurrentVideo}>
+    <tr className="group h-16 hover:bg-gray-500" onClick={setCurrentVideo}>
       <td>{index}</td>
       <td>
         <div className="flex gap-2">
           <img src={video.thumbnailUrl} className="object-cover h-12 w-12" />
           <div className="flex flex-col gap-1">
-            <div>{video.title}</div>
-            <div className="text-xs">{video.artists.join(',')}</div>
+            <div className="group-hover:text-white">{video.title}</div>
+            <div className="group-hover:text-white text-xs">
+              {video.artists.join(',')}
+            </div>
           </div>
         </div>
       </td>
-      <td>{video.originalTitle}</td>
+      <td className="group-hover:text-white">{video.originalTitle}</td>
       <td>4:00</td>
     </tr>
   )
