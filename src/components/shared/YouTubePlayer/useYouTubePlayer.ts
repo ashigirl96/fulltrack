@@ -1,18 +1,19 @@
 import { useCallback } from 'react'
 import { YouTubeEvent } from '@/types'
 import { getPlayerStateKey, getPropsOptions } from '@/lib/youtube'
-import {
-  useCurrentVideoTerm,
-  useSetNextVideo,
-  useSetReadyEventState,
-} from '@/hooks/youtube_player'
+import { useCurrentVideoTerm, useSetNextVideo } from '@/hooks/youtube_player'
+import { useSetCurrentPlayerStatus } from '@/atoms/youtubePlayer'
+import { YouTubePlayer as YouTubePlayerType } from 'react-youtube'
 
 export function useHandleStateChange() {
   const setNextVideo = useSetNextVideo()
+  const setCurrentPlayerStatus = useSetCurrentPlayerStatus()
   return useCallback(
     async (event: YouTubeEvent) => {
       const state = await event.target.getPlayerState()
-      switch (getPlayerStateKey(state)) {
+      const status = getPlayerStateKey(state)
+      setCurrentPlayerStatus(status)
+      switch (status) {
         case 'BUFFERING':
           break
         case 'PAUSED':
@@ -32,9 +33,14 @@ export function useHandleStateChange() {
   )
 }
 
-export function useYouTubePlayer() {
-  const [readyEvent, handleReady] = useSetReadyEventState()
-
+export type YouTubePlayerArgs = {
+  readyEvent: YouTubePlayerType | undefined
+  setReadyEvent: (x: YouTubeEvent) => void
+}
+export function useYouTubePlayer({
+  readyEvent,
+  setReadyEvent,
+}: YouTubePlayerArgs) {
   const handleStateChange = useHandleStateChange()
   const videoTerm = useCurrentVideoTerm()
   // TODO: リファクタリング
@@ -45,11 +51,26 @@ export function useYouTubePlayer() {
     opts = getPropsOptions({ start, end, controls: 0 })
     videoId = _videoId
   }
+
   return {
     videoId,
     opts,
     handleStateChange,
-    handleReady,
-    readyEvent,
+    setReadyEvent,
   }
+}
+
+export function useHandleTogglePlayButton(
+  readyEvent: YouTubePlayerType | undefined,
+) {
+  return useCallback(async () => {
+    if (readyEvent) {
+      const status = getPlayerStateKey(await readyEvent.getPlayerState())
+      if (status === 'PAUSED') {
+        await readyEvent.playVideo()
+      } else if (status === 'PLAYING') {
+        await readyEvent.pauseVideo()
+      }
+    }
+  }, [readyEvent])
 }

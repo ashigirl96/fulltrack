@@ -12,9 +12,8 @@ import {
 } from '@/atoms/firestore/playlist'
 import { PlaylistFirestoreId } from '@/types'
 import { VideoFirestoreId } from '@/atoms/firestore/video'
-import { useCurrentPlaylistId } from '@/hooks/youtube_player'
-import playlistId from '@/pages/playlists/[playlistId]'
 import { useCallback } from 'react'
+import { PlayerStateKey } from '@/constants/youtube'
 
 // TODO: YoutubeEvent['target']が入らない
 // export const videoReadyEventState = atom<YouTubePlayer>({
@@ -52,6 +51,11 @@ export const currentVideoIdsState = atom<VideoFirestoreId[]>({
   default: [],
 })
 
+export const currentPlayerStatusState = atom<PlayerStateKey>({
+  key: 'currentPlayerStatusState',
+  default: 'ENDED',
+})
+
 export const isLastVideoState = selector<boolean | null>({
   key: 'isLastVideoState',
   get: ({ get }) => {
@@ -80,27 +84,8 @@ export function useSetCurrentVideoIds() {
   return useSetRecoilState(currentVideoIdsState)
 }
 
-export function useSetCurrentVideo2() {
-  return useRecoilCallback(
-    ({ snapshot, set }) =>
-      async (playlistId: PlaylistStoreId, videoId: VideoFirestoreId) => {
-        const isRandomOrder = await snapshot.getPromise(isRandomOrderState)
-        const playlist = await snapshot.getPromise(playlistState(playlistId))
-        const videoIds = playlist?.videoIds || []
-        const currentVideoIndex = videoIds.indexOf(videoId)
-        console.log(`isRandomOrder ${isRandomOrder}`)
-        console.log(`videoIds ${videoIds}`)
-        console.log(`currentVideoIndex ${currentVideoIndex}`)
-        set(currentPlaylistIdState, playlistId)
-        set(currentVideoIndexState, currentVideoIndex)
-        if (isRandomOrder) {
-          set(currentVideoIdsState, videoIds)
-        } else {
-          set(currentVideoIdsState, videoIds)
-        }
-      },
-    [],
-  )
+export function useSetCurrentPlayerStatus() {
+  return useSetRecoilState(currentPlayerStatusState)
 }
 
 export function useSetCurrentVideo(

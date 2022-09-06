@@ -23,14 +23,20 @@ export function VideoRow({ videoId, playlistId, index }: Props) {
         <div className="flex gap-2">
           <img src={video.thumbnailUrl} className="object-cover h-12 w-12" />
           <div className="flex flex-col gap-1">
-            <div className="group-hover:text-white">{video.title}</div>
+            <div className="group-hover:text-white cursor-default">
+              {video.title}
+            </div>
             <div className="group-hover:text-white text-xs">
               {video.artists.join(',')}
             </div>
           </div>
         </div>
       </td>
-      <td className="group-hover:text-white">{video.originalTitle}</td>
+      <td className="group-hover:text-white">
+        <a href={`https://youtube.com/watch?v=${video.videoId}`}>
+          {video.originalTitle}
+        </a>
+      </td>
       <td>4:00</td>
     </tr>
   )
