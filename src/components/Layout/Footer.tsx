@@ -1,19 +1,17 @@
 import React from 'react'
-import { useYouTubePlayerComponent } from '@/components/shared/YouTubePlayer'
+import { ReturnTypeOfUseYouTubePlayerComponent } from '@/components/shared/YouTubePlayer'
 
-export function Footer() {
-  const { YouTubePlayer, handleTogglePlayButton, handleReady, playerStatus } =
-    useYouTubePlayerComponent()
+type Props = {
+  handleTogglePlay: ReturnTypeOfUseYouTubePlayerComponent['handleTogglePlayButton']
+}
+export function Footer({ handleTogglePlay }: Props) {
   return (
-    <>
-      <YouTubePlayer setReadyEvent={handleReady} playerStatus={playerStatus} />
-      <div className="h-[10%] flex justify-between items-center">
-        <div>Left</div>
-        <div>
-          <button onClick={() => handleTogglePlayButton()}>Play</button>
-        </div>
-        <div>Right</div>
+    <div className="h-[10%] flex justify-between items-center">
+      <div>Left</div>
+      <div>
+        <button onClick={handleTogglePlay}>Play</button>
       </div>
-    </>
+      <div>Right</div>
+    </div>
   )
 }

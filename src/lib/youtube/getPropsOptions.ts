@@ -12,6 +12,7 @@ export function getPropsOptions({
 }: GetPropsOptions): YouTubeOptions {
   // Look https://developers.google.com/youtube/player_parameters
   return {
+    width: '100%',
     playerVars: {
       fs: 0,
       disablekb: 1, // 画面操作を許可しない

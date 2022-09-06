@@ -3,4 +3,4 @@ import { YouTubePlayer as _YouTubePlayer } from 'youtube-player/dist/types'
 
 export type YouTubeOptions = YouTubeProps['opts']
 export type YouTubeEvent = _YouTubeEvent<unknown>
-export type YoutubePlayer = _YouTubePlayer
+export type YouTubePlayerType = _YouTubePlayer

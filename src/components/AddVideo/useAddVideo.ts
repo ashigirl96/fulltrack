@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useHandleStateChange } from './useHandleStateChange'
-import { YoutubePlayer } from '@/types'
+import { YouTubePlayerType } from '@/types'
 import { fetchThumbnailUrl } from '@/lib/youtube/fetchThumbnailUrl'
 import { addDoc, documentId } from '@firebase/firestore'
 import { videoCollectionRef } from '@/lib/firestore/video'
@@ -8,7 +8,7 @@ import { videoCollectionRef } from '@/lib/firestore/video'
 export function useAddVideo() {
   const [start, setStart] = useState<number | undefined>(1)
   const [end, setEnd] = useState<number | undefined>(undefined)
-  const [readyEvent, setReadyEvent] = useState<YoutubePlayer | undefined>(
+  const [readyEvent, setReadyEvent] = useState<YouTubePlayerType | undefined>(
     undefined,
   )
   const handleStateChange = useHandleStateChange()

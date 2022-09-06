@@ -3,6 +3,9 @@ import { Border } from './Border'
 import { useMenuWidth } from './useMenuWidth'
 import { Menu } from './Menu'
 import { Footer } from './Footer'
+import { PlayerPreview } from './PlayerPreview'
+
+import { useYouTubePlayerComponent } from '@/components/shared/YouTubePlayer'
 
 type LayoutProps = {
   children: React.ReactNode
@@ -10,6 +13,8 @@ type LayoutProps = {
 export function Layout({ children }: LayoutProps) {
   const { width, dragging, onPointerMove, onPointerUp, onPointerDown } =
     useMenuWidth()
+  const { YouTubePlayer, handleTogglePlayButton, handleReady, readyEvent } =
+    useYouTubePlayerComponent()
 
   return (
     <div className="h-screen flex flex-col">
@@ -24,9 +29,18 @@ export function Layout({ children }: LayoutProps) {
           onPointerMove={onPointerMove}
         />
 
-        <div className="bg-green-50 flex-1 overflow-y-scroll">{children}</div>
+        <main className="flex flex-col flex-1">
+          <PlayerPreview
+            YouTubePlayer={YouTubePlayer}
+            handleTogglePlayButton={handleTogglePlayButton}
+            handleReady={handleReady}
+            readyEvent={readyEvent}
+          />
+
+          <div className="bg-green-50 flex-1 overflow-y-scroll">{children}</div>
+        </main>
       </div>
-      <Footer />
+      <Footer handleTogglePlay={handleTogglePlayButton} />
     </div>
   )
 }

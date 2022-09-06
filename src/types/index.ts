@@ -1,5 +1,5 @@
 export type { valueof } from './valueof'
-export type { YouTubeOptions, YouTubeEvent, YoutubePlayer } from './youtube'
+export type { YouTubeOptions, YouTubeEvent, YouTubePlayerType } from './youtube'
 export type {
   PlaylistStore,
   PlaylistFirestoreId,

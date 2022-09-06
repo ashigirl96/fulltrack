@@ -1,43 +1,46 @@
-import { useCallback, useEffect, useState } from 'react'
-import { YouTubeEvent } from '@/types'
+import { useCallback } from 'react'
+import { YouTubeEvent, YouTubePlayerType } from '@/types'
 import { getPlayerStateKey, getPropsOptions } from '@/lib/youtube'
 import { useCurrentVideoTerm, useSetNextVideo } from '@/hooks/youtube_player'
-import { useSetCurrentPlayerStatus } from '@/atoms/youtubePlayer'
-import { YouTubePlayer as YouTubePlayerType } from 'react-youtube'
-import { PlayerStateKey } from '@/constants/youtube'
+import {
+  useCurrentPlayerStatus,
+  useSetCurrentPlayerStatus,
+} from '@/atoms/youtubePlayer'
 
-export function useHandleStateChange(playerStatus: PlayerStateKey | undefined) {
+export function useHandleStateChange() {
   const setNextVideo = useSetNextVideo()
-  return useCallback(async () => {
-    if (playerStatus) {
-      switch (playerStatus) {
-        case 'BUFFERING':
-          break
-        case 'PAUSED':
-          break
-        case 'VIDEO_CUED':
-          break
-        case 'UN_STARTED':
-          break
-        case 'ENDED':
-          await setNextVideo()
-          break
-        case 'PLAYING':
-          break
+  const setCurrentPlayerStatus = useSetCurrentPlayerStatus()
+  return useCallback(
+    async (readyEvent: YouTubePlayerType | undefined) => {
+      if (readyEvent) {
+        const status = getPlayerStateKey(await readyEvent.getPlayerState())
+        setCurrentPlayerStatus(status)
+        switch (status) {
+          case 'BUFFERING':
+            break
+          case 'PAUSED':
+            break
+          case 'VIDEO_CUED':
+            break
+          case 'UN_STARTED':
+            break
+          case 'ENDED':
+            await setNextVideo()
+            break
+          case 'PLAYING':
+            break
+        }
       }
-    }
-  }, [playerStatus, setNextVideo])
+    },
+    [setCurrentPlayerStatus, setNextVideo],
+  )
 }
 
 export type YouTubePlayerArgs = {
-  setReadyEvent: (x: YouTubeEvent) => void
-  playerStatus: PlayerStateKey | undefined
+  handleReady: (x: YouTubeEvent) => void
 }
-export function useYouTubePlayer({
-  setReadyEvent,
-  playerStatus,
-}: YouTubePlayerArgs) {
-  const handleStateChange = useHandleStateChange(playerStatus)
+export function useYouTubePlayer({ handleReady }: YouTubePlayerArgs) {
+  const handleStateChange = useHandleStateChange()
   const videoTerm = useCurrentVideoTerm()
 
   // TODO: リファクタリング
@@ -53,37 +56,26 @@ export function useYouTubePlayer({
     videoId,
     opts,
     handleStateChange,
-    setReadyEvent,
+    handleReady: handleReady,
   }
 }
 
 export function useHandleTogglePlayButton(
   readyEvent: YouTubePlayerType | undefined,
 ) {
+  const currentPlayerStatus = useCurrentPlayerStatus()
   return useCallback(async () => {
     if (readyEvent) {
-      const status = getPlayerStateKey(await readyEvent.getPlayerState())
-      if (status === 'PAUSED') {
-        await readyEvent.playVideo()
-      } else if (status === 'PLAYING') {
-        await readyEvent.pauseVideo()
+      switch (currentPlayerStatus) {
+        case 'PAUSED':
+          await readyEvent.playVideo()
+          break
+        case 'PLAYING':
+          await readyEvent.pauseVideo()
+          break
+        default:
+          break
       }
     }
-  }, [readyEvent])
-}
-
-export function usePlayerStatus(readyEvent: YouTubePlayerType | undefined) {
-  const [state, setState] = useState<PlayerStateKey>('ENDED')
-  const setCurrentPlayerStatus = useSetCurrentPlayerStatus()
-  useEffect(() => {
-    ;(async () => {
-      if (readyEvent) {
-        const status = getPlayerStateKey(await readyEvent.getPlayerState())
-        setState(status)
-        // グローバルで扱えるようにするためのPlayerStatus
-        setCurrentPlayerStatus(status)
-      }
-    })()
-  }, [readyEvent, setCurrentPlayerStatus, setState])
-  return state
+  }, [currentPlayerStatus, readyEvent])
 }

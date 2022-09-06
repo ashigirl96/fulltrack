@@ -1,17 +1,15 @@
-import {
-  useHandleTogglePlayButton,
-  usePlayerStatus,
-  useYouTubePlayer,
-  YouTubePlayerArgs,
-} from './useYouTubePlayer'
-import YouTube from 'react-youtube'
+import { useHandleTogglePlayButton, useYouTubePlayer } from './useYouTubePlayer'
+import YouTube, { YouTubePlayer as YouTubePlayerType } from 'react-youtube'
 import { useSetReadyEventState } from '@/hooks/youtube_player'
+import { YouTubeEvent } from '@/types'
 
-type Props = YouTubePlayerArgs
-export function YouTubePlayer({ setReadyEvent, playerStatus }: Props) {
+type Props = {
+  handleReady: (x: YouTubeEvent) => void
+  readyEvent: YouTubePlayerType | undefined
+}
+export function YouTubePlayer({ handleReady, readyEvent }: Props) {
   const { videoId, opts, handleStateChange } = useYouTubePlayer({
-    setReadyEvent,
-    playerStatus,
+    handleReady,
   })
 
   return (
@@ -19,8 +17,8 @@ export function YouTubePlayer({ setReadyEvent, playerStatus }: Props) {
       className=""
       videoId={videoId}
       opts={opts}
-      onStateChange={handleStateChange}
-      onReady={setReadyEvent}
+      onStateChange={() => handleStateChange(readyEvent)}
+      onReady={handleReady}
     />
   )
 }
@@ -28,13 +26,15 @@ export function YouTubePlayer({ setReadyEvent, playerStatus }: Props) {
 export function useYouTubePlayerComponent() {
   const [readyEvent, handleReady] = useSetReadyEventState()
   const handleTogglePlayButton = useHandleTogglePlayButton(readyEvent)
-  const playerStatus = usePlayerStatus(readyEvent)
 
   return {
     YouTubePlayer,
     readyEvent,
     handleReady,
     handleTogglePlayButton,
-    playerStatus,
   }
 }
+
+export type ReturnTypeOfUseYouTubePlayerComponent = ReturnType<
+  typeof useYouTubePlayerComponent
+>

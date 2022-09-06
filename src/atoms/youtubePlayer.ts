@@ -1,10 +1,4 @@
-import {
-  atom,
-  selector,
-  useRecoilCallback,
-  useRecoilValue,
-  useSetRecoilState,
-} from 'recoil'
+import { atom, selector, useRecoilValue, useSetRecoilState } from 'recoil'
 import {
   playlistState,
   PlaylistStoreId,
@@ -88,6 +82,10 @@ export function useSetCurrentPlayerStatus() {
   return useSetRecoilState(currentPlayerStatusState)
 }
 
+export function useCurrentPlayerStatus() {
+  return useRecoilValue(currentPlayerStatusState)
+}
+
 export function useSetCurrentVideo(
   playlistId: PlaylistStoreId,
   videoId: VideoFirestoreId,
@@ -99,9 +97,6 @@ export function useSetCurrentVideo(
   const playlist = useRecoilValue(playlistState(playlistId))
   const videoIds = playlist?.videoIds || []
   const currentVideoIndex = videoIds.indexOf(videoId)
-  console.log(`isRandomOrder ${isRandomOrder}`)
-  console.log(`videoIds ${videoIds}`)
-  console.log(`currentVideoIndex ${currentVideoIndex}`)
 
   return useCallback(() => {
     setCurrentPlaylistId(playlistId)
