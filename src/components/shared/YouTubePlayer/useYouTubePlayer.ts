@@ -56,7 +56,7 @@ export function useYouTubePlayer({ handleReady }: YouTubePlayerArgs) {
     videoId,
     opts,
     handleStateChange,
-    handleReady: handleReady,
+    handleReady,
   }
 }
 

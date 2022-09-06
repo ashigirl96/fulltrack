@@ -1,13 +1,12 @@
 import { useHandleTogglePlayButton, useYouTubePlayer } from './useYouTubePlayer'
-import YouTube, { YouTubePlayer as YouTubePlayerType } from 'react-youtube'
+import YouTube from 'react-youtube'
 import { useSetReadyEventState } from '@/hooks/youtube_player'
 import { YouTubeEvent } from '@/types'
 
 type Props = {
   handleReady: (x: YouTubeEvent) => void
-  readyEvent: YouTubePlayerType | undefined
 }
-export function YouTubePlayer({ handleReady, readyEvent }: Props) {
+export function YouTubePlayer({ handleReady }: Props) {
   const { videoId, opts, handleStateChange } = useYouTubePlayer({
     handleReady,
   })
@@ -17,7 +16,7 @@ export function YouTubePlayer({ handleReady, readyEvent }: Props) {
       className=""
       videoId={videoId}
       opts={opts}
-      onStateChange={() => handleStateChange(readyEvent)}
+      onStateChange={(event) => handleStateChange(event.target)}
       onReady={handleReady}
     />
   )
@@ -29,7 +28,6 @@ export function useYouTubePlayerComponent() {
 
   return {
     YouTubePlayer,
-    readyEvent,
     handleReady,
     handleTogglePlayButton,
   }

@@ -1,14 +1,13 @@
 import { ReturnTypeOfUseYouTubePlayerComponent } from '@/components/shared/YouTubePlayer'
 
-type Props = ReturnTypeOfUseYouTubePlayerComponent
-export function PlayerPreview({
-  YouTubePlayer,
-  handleReady,
-  readyEvent,
-}: Props) {
+type Props = {
+  YouTubePlayer: ReturnTypeOfUseYouTubePlayerComponent['YouTubePlayer']
+  handleReady: ReturnTypeOfUseYouTubePlayerComponent['handleReady']
+}
+export function PlayerPreview({ YouTubePlayer, handleReady }: Props) {
   return (
     <div className="backdrop-blur-xl bg-green-400 ">
-      <YouTubePlayer handleReady={handleReady} readyEvent={readyEvent} />
+      <YouTubePlayer handleReady={handleReady} />
     </div>
   )
 }
