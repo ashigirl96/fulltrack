@@ -66,6 +66,14 @@ function useIsRandomOrder() {
   return useRecoilValue(isRandomOrderState)
 }
 
+export function useCurrentVideoIndexValue() {
+  return useRecoilValue(currentVideoIndexState)
+}
+
+export function useCurrentVideoIdsValue() {
+  return useRecoilValue(currentVideoIdsState)
+}
+
 export function useSetCurrentPlaylistId() {
   return useSetRecoilState(currentPlaylistIdState)
 }

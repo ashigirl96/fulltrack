@@ -1,5 +1,5 @@
 import { VideoFirestoreId } from '@/atoms/firestore/video'
-import { useVideoState } from '@/hooks/video/useVideoState'
+import { useVideoValue } from '@/atoms/firestore/video'
 import { PlaylistStoreId } from '@/atoms/firestore/playlist'
 import { useSetCurrentVideo } from '@/atoms/youtubePlayer'
 
@@ -9,7 +9,7 @@ type Props = {
   playlistId: PlaylistStoreId
 }
 export function VideoRow({ videoId, playlistId, index }: Props) {
-  const video = useVideoState(videoId)
+  const video = useVideoValue(videoId)
   const setCurrentVideo = useSetCurrentVideo(playlistId, videoId)
 
   if (!video) {

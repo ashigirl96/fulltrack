@@ -1,13 +1,12 @@
-import { useRecoilValue } from 'recoil'
 import {
-  currentVideoIdsState,
-  currentVideoIndexState,
+  useCurrentVideoIdsValue,
+  useCurrentVideoIndexValue,
 } from '@/atoms/youtubePlayer'
-import { useVideoState } from '@/hooks/video/useVideoState'
+import { useVideoValue } from '@/atoms/firestore/video'
 
 export function useCurrentVideoTerm() {
-  const currentVideoIndex = useRecoilValue(currentVideoIndexState)
-  const currentVideoIds = useRecoilValue(currentVideoIdsState)
+  const currentVideoIndex = useCurrentVideoIndexValue()
+  const currentVideoIds = useCurrentVideoIdsValue()
   const videoId = currentVideoIds[currentVideoIndex]
-  return useVideoState(videoId)
+  return useVideoValue(videoId)
 }
