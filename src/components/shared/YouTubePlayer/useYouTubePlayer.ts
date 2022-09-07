@@ -1,10 +1,11 @@
 import { ChangeEvent, useCallback, useState } from 'react'
 import { YouTubeEvent, YouTubePlayerType } from '@/types'
 import { getPlayerStateKey, getPropsOptions } from '@/lib/youtube'
-import { useCurrentVideoTerm, useSetNextVideo } from '@/hooks/youtube_player'
 import {
   useCurrentPlayerStatus,
   useSetCurrentPlayerStatus,
+  useSetNextVideo,
+  useCandidateVideoValue,
 } from '@/atoms/youtubePlayer'
 
 export function useHandleStateChange() {
@@ -41,13 +42,13 @@ export type YouTubePlayerArgs = {
 }
 export function useYouTubePlayer({ handleReady }: YouTubePlayerArgs) {
   const handleStateChange = useHandleStateChange()
-  const videoTerm = useCurrentVideoTerm()
+  const video = useCandidateVideoValue()
 
   // TODO: リファクタリング
   let videoId = ''
   let opts = undefined
-  if (videoTerm) {
-    const { videoId: _videoId, start, end } = videoTerm
+  if (video) {
+    const { videoId: _videoId, start, end } = video
     opts = getPropsOptions({ start, end, controls: 0 })
     videoId = _videoId
   }

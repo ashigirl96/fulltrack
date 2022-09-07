@@ -1,4 +1,4 @@
-import { atomFamily, selectorFamily } from 'recoil'
+import { atomFamily, selectorFamily, useRecoilValue } from 'recoil'
 import { PlaylistStore } from '@/types'
 
 export type PlaylistStoreId = string
@@ -21,3 +21,7 @@ export const playlistVideosLengthState = selectorFamily<
       return playlist.videoIds.length
     },
 })
+
+export function usePlaylistValue(playlistId: PlaylistStoreId) {
+  return useRecoilValue(playlistState(playlistId))
+}

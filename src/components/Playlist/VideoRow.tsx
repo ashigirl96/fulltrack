@@ -1,5 +1,4 @@
-import { VideoFirestoreId } from '@/atoms/firestore/video'
-import { useVideoValue } from '@/atoms/firestore/video'
+import { useVideoValue, VideoFirestoreId } from '@/atoms/firestore/video'
 import { PlaylistStoreId } from '@/atoms/firestore/playlist'
 import { useSetCurrentVideo } from '@/atoms/youtubePlayer'
 

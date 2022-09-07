@@ -1,5 +1,5 @@
-import { PlaylistStoreId } from '@/atoms/firestore/playlist'
-import { useInitializeVideos, usePlaylistValue } from '@/hooks/playlist'
+import { PlaylistStoreId, usePlaylistValue } from '@/atoms/firestore/playlist'
+import { useInitializeVideos } from '@/hooks/playlist'
 
 export function usePlaylist(playlistId: PlaylistStoreId) {
   const playlist = usePlaylistValue(playlistId)
