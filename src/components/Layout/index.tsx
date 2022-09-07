@@ -13,8 +13,12 @@ type LayoutProps = {
 export function Layout({ children }: LayoutProps) {
   const { width, dragging, onPointerMove, onPointerUp, onPointerDown } =
     useMenuWidth()
-  const { YouTubePlayer, handleTogglePlayButton, handleReady } =
-    useYouTubePlayerComponent()
+  const {
+    YouTubePlayer,
+    handleTogglePlayButton,
+    handleReady,
+    handleVolumeWithValue,
+  } = useYouTubePlayerComponent()
 
   return (
     <div className="h-screen flex flex-col">
@@ -38,7 +42,10 @@ export function Layout({ children }: LayoutProps) {
           <div className="bg-green-50 flex-1 overflow-y-scroll">{children}</div>
         </main>
       </div>
-      <Footer handleTogglePlay={handleTogglePlayButton} />
+      <Footer
+        handleTogglePlay={handleTogglePlayButton}
+        handleVolumeWithValue={handleVolumeWithValue}
+      />
     </div>
   )
 }

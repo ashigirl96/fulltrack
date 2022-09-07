@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { ChangeEvent, useCallback, useState } from 'react'
 import { YouTubeEvent, YouTubePlayerType } from '@/types'
 import { getPlayerStateKey, getPropsOptions } from '@/lib/youtube'
 import { useCurrentVideoTerm, useSetNextVideo } from '@/hooks/youtube_player'
@@ -78,4 +78,39 @@ export function useHandleTogglePlayButton(
       }
     }
   }, [currentPlayerStatus, readyEvent])
+}
+
+export function useHandleVolume(readyEvent: YouTubePlayerType | undefined) {
+  const [volume, setVolume] = useState(50)
+
+  // TODO: リファクタリング
+  return [
+    // volume
+    volume,
+    // set volume function
+    useCallback(
+      async (event: ChangeEvent<HTMLInputElement>) => {
+        if (readyEvent) {
+          const _volume = Number(event.currentTarget.value)
+          setVolume(_volume)
+          await readyEvent.setVolume(_volume)
+        }
+      },
+      [readyEvent],
+    ),
+    // mute function
+    useCallback(async () => {
+      if (readyEvent) {
+        setVolume(0)
+        await readyEvent.mute()
+      }
+    }, [readyEvent]),
+    // unMute function
+    useCallback(async () => {
+      if (readyEvent) {
+        await readyEvent.unMute()
+        setVolume(await readyEvent.getVolume())
+      }
+    }, [readyEvent]),
+  ] as const
 }
