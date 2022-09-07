@@ -13,7 +13,9 @@ export function YouTubePlayer({ handleReady }: Props) {
 
   return (
     <YouTube
-      className=""
+      className={`h-48 flex items-center justify-center overflow-y-clip pointer-events-none ${
+        !videoId && 'hidden'
+      }`}
       videoId={videoId}
       opts={opts}
       onStateChange={(event) => handleStateChange(event.target)}

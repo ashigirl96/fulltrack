@@ -6,7 +6,7 @@ type Props = {
 }
 export function PlayerPreview({ YouTubePlayer, handleReady }: Props) {
   return (
-    <div className="backdrop-blur-xl bg-green-400 ">
+    <div className="blur-sm border border-transparent bg-inherit bg-clip-border">
       <YouTubePlayer handleReady={handleReady} />
     </div>
   )
