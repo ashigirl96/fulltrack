@@ -1,5 +1,5 @@
 import {
-  useHandleTogglePlayButton,
+  useHandleTogglePlay,
   useHandleVolume,
   useYouTubePlayer,
 } from './useYouTubePlayer'
@@ -29,13 +29,13 @@ export function YouTubePlayer({ handleReady }: Props) {
 
 export function useYouTubePlayerComponent() {
   const [readyEvent, handleReady] = useSetReadyEventState()
-  const handleTogglePlayButton = useHandleTogglePlayButton(readyEvent)
+  const handleTogglePlay = useHandleTogglePlay(readyEvent)
   const handleVolumeWithValue = useHandleVolume(readyEvent)
 
   return {
     YouTubePlayer,
     handleReady,
-    handleTogglePlayButton,
+    handleTogglePlay,
     handleVolumeWithValue,
   }
 }

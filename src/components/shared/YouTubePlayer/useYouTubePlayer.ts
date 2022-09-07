@@ -60,24 +60,27 @@ export function useYouTubePlayer({ handleReady }: YouTubePlayerArgs) {
   }
 }
 
-export function useHandleTogglePlayButton(
-  readyEvent: YouTubePlayerType | undefined,
-) {
+export function useHandleTogglePlay(readyEvent: YouTubePlayerType | undefined) {
   const currentPlayerStatus = useCurrentPlayerStatus()
-  return useCallback(async () => {
-    if (readyEvent) {
-      switch (currentPlayerStatus) {
-        case 'PAUSED':
-          await readyEvent.playVideo()
-          break
-        case 'PLAYING':
-          await readyEvent.pauseVideo()
-          break
-        default:
-          break
+  const setNextVideo = useSetNextVideo()
+  return [
+    currentPlayerStatus,
+    useCallback(async () => {
+      if (readyEvent) {
+        switch (currentPlayerStatus) {
+          case 'PAUSED':
+            await readyEvent.playVideo()
+            break
+          case 'PLAYING':
+            await readyEvent.pauseVideo()
+            break
+          default:
+            break
+        }
       }
-    }
-  }, [currentPlayerStatus, readyEvent])
+    }, [currentPlayerStatus, readyEvent]),
+    setNextVideo,
+  ] as const
 }
 
 export function useHandleVolume(readyEvent: YouTubePlayerType | undefined) {

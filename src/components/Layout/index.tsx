@@ -15,7 +15,7 @@ export function Layout({ children }: LayoutProps) {
     useMenuWidth()
   const {
     YouTubePlayer,
-    handleTogglePlayButton,
+    handleTogglePlay,
     handleReady,
     handleVolumeWithValue,
   } = useYouTubePlayerComponent()
@@ -43,7 +43,7 @@ export function Layout({ children }: LayoutProps) {
         </main>
       </div>
       <Footer
-        handleTogglePlay={handleTogglePlayButton}
+        handleTogglePlay={handleTogglePlay}
         handleVolumeWithValue={handleVolumeWithValue}
       />
     </div>
