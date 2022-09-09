@@ -6,6 +6,7 @@ import {
   useSetRecoilState,
 } from 'recoil'
 import {
+  playlistState,
   PlaylistStoreId,
   playlistVideosLengthState,
   usePlaylistValue,
@@ -14,6 +15,8 @@ import { PlaylistFirestoreId } from '@/types'
 import { VideoFirestoreId, useVideoValue } from '@/atoms/firestore/video'
 import { useCallback } from 'react'
 import { PlayerStateKey } from '@/constants/youtube'
+import { Simulate } from 'react-dom/test-utils'
+import play = Simulate.play
 
 // TODO: YoutubeEvent['target']が入らない
 // export const videoReadyEventState = atom<YouTubePlayer>({
@@ -56,12 +59,6 @@ export const historyVideoIdsState = atom<VideoFirestoreId[]>({
   default: [],
 })
 
-// 次再生する候補
-export const candidateVideoIdsState = atom<VideoFirestoreId[]>({
-  key: 'candidateVideoIdsState',
-  default: [],
-})
-
 export const currentPlayerStatusState = atom<PlayerStateKey>({
   key: 'currentPlayerStatusState',
   default: 'ENDED',
@@ -78,6 +75,10 @@ export const isLastVideoState = selector<boolean | null>({
     return currentVideoIndex === length - 1
   },
 })
+
+export function useHistoryVideoIdsValue() {
+  return useRecoilValue(historyVideoIdsState)
+}
 
 function useIsRandomOrder() {
   return useRecoilValue(isRandomOrderState)
@@ -111,82 +112,71 @@ export function useCurrentPlayerStatus() {
   return useRecoilValue(currentPlayerStatusState)
 }
 
-function useSetCandidateVideoIds() {
-  return useSetRecoilState(candidateVideoIdsState)
-}
-
-export function useCandidateVideoIdsValue() {
-  return useRecoilValue(candidateVideoIdsState)
-}
-
 // プレイリストの中から１つの曲を選択したときに呼ばれる
 export function useSetCurrentVideo(
   playlistId: PlaylistStoreId,
   videoId: VideoFirestoreId,
 ) {
-  const setCurrentPlaylistId = useSetCurrentPlaylistId()
-  const setCurrentVideoIndex = useSetCurrentVideoIndex()
-  const setCurrentVideoIds = useSetCurrentVideoIds()
-  const isRandomOrder = useIsRandomOrder()
+  const setHistoryVideoIds = useSetRecoilState(historyVideoIdsState)
   const playlist = usePlaylistValue(playlistId)
   const videoIds = playlist?.videoIds || []
   const currentVideoIndex = videoIds.indexOf(videoId)
-  const setCandidateVideoIds = useSetCandidateVideoIds()
+  const setCurrentVideoIds = useSetCurrentVideoIds()
+  const setCurrentVideoIndex = useSetCurrentVideoIndex()
 
   return useCallback(() => {
-    setCurrentPlaylistId(playlistId)
+    setHistoryVideoIds([])
+    // TODO: isRandomOrderのとき、videoIdsをランダムにする
+    setCurrentVideoIds(videoIds)
     setCurrentVideoIndex(currentVideoIndex)
-    setCandidateVideoIds([videoIds[currentVideoIndex]])
-    // ランダムの場合
-    if (isRandomOrder) {
-      setCurrentVideoIds(videoIds)
-    } else {
-      setCurrentVideoIds(videoIds)
-    }
   }, [
     currentVideoIndex,
-    isRandomOrder,
-    playlistId,
-    setCandidateVideoIds,
-    setCurrentPlaylistId,
     setCurrentVideoIds,
     setCurrentVideoIndex,
+    setHistoryVideoIds,
     videoIds,
   ])
 }
 
-// 曲が終わる、次の曲ボタンが押されたときに呼ばれる
-export function useSetNextVideo() {
-  return useRecoilCallback(
-    ({ set, reset, snapshot }) =>
-      async () => {
-        const isLastVideo = await snapshot.getPromise(isLastVideoState)
-        const isLoop = await snapshot.getPromise(isLoopState)
-        // 最後の曲
-        if (isLastVideo) {
-          // 初期化する
-          reset(currentVideoIndexState)
-          // ループしてないならば、完了状態にする
-          if (!isLoop) {
-            set(playerStatusState, 'ended')
-          }
-        } else {
-          // 最後の曲じゃないなら、インクリメントする
-          set(currentVideoIndexState, (x) => x + 1)
-        }
-      },
-    [],
-  )
+export function useSetPreviousVideo() {
+  const isRandomOrder = useIsRandomOrder()
+  const setCurrentVideoIndex = useSetCurrentVideoIndex()
+  return useCallback(() => {
+    if (isRandomOrder) {
+      return
+    } else {
+      setCurrentVideoIndex((index) => (index < 1 ? 0 : index - 1))
+    }
+  }, [isRandomOrder, setCurrentVideoIndex])
 }
 
-export function useCurrentVideoTerm() {
-  const currentVideoIndex = useCurrentVideoIndexValue()
-  const currentVideoIds = useCurrentVideoIdsValue()
-  const videoId = currentVideoIds[currentVideoIndex]
-  return useVideoValue(videoId)
+// 曲が終わる、次の曲ボタンが押されたときに呼ばれる
+export function useSetNextVideo() {
+  const currentVideoId = useCurrentVideoId()
+  const setHistoryVideoIds = useSetRecoilState(historyVideoIdsState)
+  const setCurrentVideoIndex = useSetCurrentVideoIndex()
+  const currentPlaylistVideoLength = useCurrentVideoIdsValue().length
+
+  return useCallback(() => {
+    setHistoryVideoIds((rest) => [...rest, currentVideoId])
+    setCurrentVideoIndex((index) =>
+      index === currentPlaylistVideoLength - 1 ? 0 : index + 1,
+    )
+  }, [
+    currentPlaylistVideoLength,
+    currentVideoId,
+    setCurrentVideoIndex,
+    setHistoryVideoIds,
+  ])
 }
 
 export function useCandidateVideoValue() {
-  const candidateVideoId = useCandidateVideoIdsValue()[0]
-  return useVideoValue(candidateVideoId)
+  const currentVideoId = useCurrentVideoId()
+  return useVideoValue(currentVideoId)
+}
+
+function useCurrentVideoId() {
+  const currentVideoIndex = useCurrentVideoIndexValue()
+  const currentVideoIds = useCurrentVideoIdsValue()
+  return currentVideoIds[currentVideoIndex]
 }

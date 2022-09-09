@@ -6,16 +6,15 @@ type Props = {
   handleTogglePlay: ReturnTypeOfUseYouTubePlayerComponent['handleTogglePlay']
 }
 export function PlayPause({ handleTogglePlay }: Props) {
-  const [playerStatus, play, setNextVideo] = handleTogglePlay
+  const [playerStatus, play, setNextVideo, setPreviousVideo] = handleTogglePlay
 
   const isPause = useMemo(() => playerStatus === 'PAUSED', [playerStatus])
 
   return (
     <div className="flex justify-center items-center gap-x-2">
-      <ForwardIcon
-        className="rotate-180 h-6 w-6 text-black-300 cursor-pointer"
-        onClick={play}
-      />
+      <button onClick={setPreviousVideo}>
+        <ForwardIcon className="rotate-180 h-6 w-6 text-black-300 cursor-pointer" />
+      </button>
       {!isPause && (
         <PauseIcon
           className="h-10 w-10 text-black-300 cursor-pointer"

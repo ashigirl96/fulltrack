@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useState } from 'react'
+import { ChangeEvent, useCallback, useMemo, useState } from 'react'
 import { YouTubeEvent, YouTubePlayerType } from '@/types'
 import { getPlayerStateKey, getPropsOptions } from '@/lib/youtube'
 import {
@@ -6,6 +6,7 @@ import {
   useSetCurrentPlayerStatus,
   useSetNextVideo,
   useCandidateVideoValue,
+  useSetPreviousVideo,
 } from '@/atoms/youtubePlayer'
 
 export function useHandleStateChange() {
@@ -40,6 +41,7 @@ export function useHandleStateChange() {
 export type YouTubePlayerArgs = {
   handleReady: (x: YouTubeEvent) => void
 }
+// TODO: レンダリング多すぎるような気もするから問題の箇所を見つける
 export function useYouTubePlayer({ handleReady }: YouTubePlayerArgs) {
   const handleStateChange = useHandleStateChange()
   const video = useCandidateVideoValue()
@@ -52,6 +54,7 @@ export function useYouTubePlayer({ handleReady }: YouTubePlayerArgs) {
     opts = getPropsOptions({ start, end, controls: 0 })
     videoId = _videoId
   }
+  console.log(`video ${video?.title}, videoId ${videoId}`)
 
   return {
     videoId,
@@ -64,6 +67,7 @@ export function useYouTubePlayer({ handleReady }: YouTubePlayerArgs) {
 export function useHandleTogglePlay(readyEvent: YouTubePlayerType | undefined) {
   const currentPlayerStatus = useCurrentPlayerStatus()
   const setNextVideo = useSetNextVideo()
+  const setPreviousVideo = useSetPreviousVideo()
   return [
     currentPlayerStatus,
     useCallback(async () => {
@@ -81,6 +85,7 @@ export function useHandleTogglePlay(readyEvent: YouTubePlayerType | undefined) {
       }
     }, [currentPlayerStatus, readyEvent]),
     setNextVideo,
+    setPreviousVideo,
   ] as const
 }
 
