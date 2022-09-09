@@ -1,12 +1,5 @@
+import { atom, selector, useRecoilValue, useSetRecoilState } from 'recoil'
 import {
-  atom,
-  selector,
-  useRecoilCallback,
-  useRecoilValue,
-  useSetRecoilState,
-} from 'recoil'
-import {
-  playlistState,
   PlaylistStoreId,
   playlistVideosLengthState,
   usePlaylistValue,
@@ -15,8 +8,6 @@ import { PlaylistFirestoreId } from '@/types'
 import { VideoFirestoreId, useVideoValue } from '@/atoms/firestore/video'
 import { useCallback } from 'react'
 import { PlayerStateKey } from '@/constants/youtube'
-import { Simulate } from 'react-dom/test-utils'
-import play = Simulate.play
 
 // TODO: YoutubeEvent['target']が入らない
 // export const videoReadyEventState = atom<YouTubePlayer>({
@@ -54,11 +45,6 @@ export const currentVideoIdsState = atom<VideoFirestoreId[]>({
   default: [],
 })
 
-export const historyVideoIdsState = atom<VideoFirestoreId[]>({
-  key: 'historyVideoIdsState',
-  default: [],
-})
-
 export const currentPlayerStatusState = atom<PlayerStateKey>({
   key: 'currentPlayerStatusState',
   default: 'ENDED',
@@ -75,10 +61,6 @@ export const isLastVideoState = selector<boolean | null>({
     return currentVideoIndex === length - 1
   },
 })
-
-export function useHistoryVideoIdsValue() {
-  return useRecoilValue(historyVideoIdsState)
-}
 
 function useIsRandomOrder() {
   return useRecoilValue(isRandomOrderState)
@@ -117,7 +99,6 @@ export function useSetCurrentVideo(
   playlistId: PlaylistStoreId,
   videoId: VideoFirestoreId,
 ) {
-  const setHistoryVideoIds = useSetRecoilState(historyVideoIdsState)
   const playlist = usePlaylistValue(playlistId)
   const videoIds = playlist?.videoIds || []
   const currentVideoIndex = videoIds.indexOf(videoId)
@@ -125,17 +106,10 @@ export function useSetCurrentVideo(
   const setCurrentVideoIndex = useSetCurrentVideoIndex()
 
   return useCallback(() => {
-    setHistoryVideoIds([])
     // TODO: isRandomOrderのとき、videoIdsをランダムにする
     setCurrentVideoIds(videoIds)
     setCurrentVideoIndex(currentVideoIndex)
-  }, [
-    currentVideoIndex,
-    setCurrentVideoIds,
-    setCurrentVideoIndex,
-    setHistoryVideoIds,
-    videoIds,
-  ])
+  }, [currentVideoIndex, setCurrentVideoIds, setCurrentVideoIndex, videoIds])
 }
 
 export function useSetPreviousVideo() {
@@ -153,21 +127,14 @@ export function useSetPreviousVideo() {
 // 曲が終わる、次の曲ボタンが押されたときに呼ばれる
 export function useSetNextVideo() {
   const currentVideoId = useCurrentVideoId()
-  const setHistoryVideoIds = useSetRecoilState(historyVideoIdsState)
   const setCurrentVideoIndex = useSetCurrentVideoIndex()
   const currentPlaylistVideoLength = useCurrentVideoIdsValue().length
 
   return useCallback(() => {
-    setHistoryVideoIds((rest) => [...rest, currentVideoId])
     setCurrentVideoIndex((index) =>
       index === currentPlaylistVideoLength - 1 ? 0 : index + 1,
     )
-  }, [
-    currentPlaylistVideoLength,
-    currentVideoId,
-    setCurrentVideoIndex,
-    setHistoryVideoIds,
-  ])
+  }, [currentPlaylistVideoLength, currentVideoId, setCurrentVideoIndex])
 }
 
 export function useCandidateVideoValue() {

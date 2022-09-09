@@ -1,11 +1,11 @@
-import { ChangeEvent, useCallback, useMemo, useState } from 'react'
+import { ChangeEvent, useCallback, useState } from 'react'
 import { YouTubeEvent, YouTubePlayerType } from '@/types'
 import { getPlayerStateKey, getPropsOptions } from '@/lib/youtube'
 import {
+  useCandidateVideoValue,
   useCurrentPlayerStatus,
   useSetCurrentPlayerStatus,
   useSetNextVideo,
-  useCandidateVideoValue,
   useSetPreviousVideo,
 } from '@/atoms/youtubePlayer'
 
