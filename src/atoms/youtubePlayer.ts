@@ -11,6 +11,7 @@ import { PlayerStateKey } from '@/constants/youtube'
 import { shuffleWithFirst } from '@/lib/array'
 import { useInterval } from '@/hooks/react-use/useInterval'
 import { getPlayerStateKey } from '@/lib/youtube'
+import { allowedStatusCodes } from 'next/dist/lib/redirect-status'
 
 export const currentPlaylistIdState = atom<PlaylistFirestoreId | null>({
   key: 'currentPlaylistIdState',
@@ -112,6 +113,7 @@ export function useCurrentVolumeValue() {
 export function useSetCurrentVideo(
   playlistId: PlaylistStoreId,
   videoId: VideoFirestoreId,
+  readyEvent: YouTubePlayerType | undefined,
 ) {
   const playlist = usePlaylistValue(playlistId)
   const videoIds = useMemo(() => playlist?.videoIds || [], [playlist?.videoIds])
@@ -119,18 +121,30 @@ export function useSetCurrentVideo(
   const setCurrentVideoIds = useSetCurrentVideoIds()
   const setCurrentVideoIndex = useSetCurrentVideoIndex()
   const isRandomOrder = useIsRandomOrderValue()
+  const currentVideo = useCurrentVideo()
+  const isSameVideo = useMemo(
+    () => currentVideo && currentVideo.id === videoId,
+    [currentVideo, videoId],
+  )
 
-  return useCallback(() => {
+  return useCallback(async () => {
     if (isRandomOrder) {
       setCurrentVideoIds(shuffleWithFirst([...videoIds], videoId))
       setCurrentVideoIndex(0)
       return
     }
+    if (isSameVideo && currentVideo && readyEvent) {
+      await readyEvent.seekTo(currentVideo.start, true)
+      return
+    }
     setCurrentVideoIds(videoIds)
     setCurrentVideoIndex(currentVideoIndex)
   }, [
+    currentVideo,
     currentVideoIndex,
     isRandomOrder,
+    isSameVideo,
+    readyEvent,
     setCurrentVideoIds,
     setCurrentVideoIndex,
     videoId,

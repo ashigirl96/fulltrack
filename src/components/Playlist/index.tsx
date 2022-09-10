@@ -2,11 +2,13 @@ import React from 'react'
 import { usePlaylist } from './usePlaylist'
 import { VideoRow } from './VideoRow'
 import { PlaylistStoreId } from '@/atoms/firestore/playlist'
+import { SetReadyEventStateType } from '@/hooks/youtube_player'
 
 type Props = {
   playlistId: PlaylistStoreId
+  readyEvent: SetReadyEventStateType[0]
 }
-export function Playlist({ playlistId }: Props) {
+export function Playlist({ playlistId, readyEvent }: Props) {
   const { completed, videoIds } = usePlaylist(playlistId)
 
   if (!completed) {
@@ -30,6 +32,7 @@ export function Playlist({ playlistId }: Props) {
               key={`${videoId}-${index}`}
               videoId={videoId}
               playlistId={playlistId}
+              readyEvent={readyEvent}
               index={index}
             />
           ))}

@@ -18,3 +18,5 @@ export function useSetReadyEventState() {
     ),
   ] as const
 }
+
+export type SetReadyEventStateType = ReturnType<typeof useSetReadyEventState>

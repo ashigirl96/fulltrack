@@ -3,6 +3,7 @@ import { Layout } from '@/components/Layout'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { Playlist } from '@/components/Playlist'
+import { useSetReadyEventState } from '@/hooks/youtube_player'
 
 const PlaylistShow: NextPage = () => {
   const router = useRouter()
@@ -12,8 +13,15 @@ const PlaylistShow: NextPage = () => {
       setPlaylistId(router.query.playlistId as string)
     }
   }, [router])
+  const [readyEvent, handleReady] = useSetReadyEventState()
 
-  return <Layout>{playlistId && <Playlist playlistId={playlistId} />}</Layout>
+  return (
+    <Layout setReadyEventState={[readyEvent, handleReady]}>
+      {playlistId && (
+        <Playlist playlistId={playlistId} readyEvent={readyEvent} />
+      )}
+    </Layout>
+  )
 }
 
 export default PlaylistShow

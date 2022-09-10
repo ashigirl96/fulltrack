@@ -3,6 +3,7 @@ import { PlaylistStoreId } from '@/atoms/firestore/playlist'
 import { useSetCurrentVideo } from '@/atoms/youtubePlayer'
 import { secsToMS } from '@/lib/time'
 import { VideoFirestore } from '@/types'
+import { SetReadyEventStateType } from '@/hooks/youtube_player'
 
 function useVideoDuration(video: VideoFirestore | null) {
   if (!video) {
@@ -15,10 +16,11 @@ type Props = {
   index: number
   videoId: VideoFirestoreId
   playlistId: PlaylistStoreId
+  readyEvent: SetReadyEventStateType[0]
 }
-export function VideoRow({ videoId, playlistId, index }: Props) {
+export function VideoRow({ videoId, playlistId, index, readyEvent }: Props) {
   const video = useVideoValue(videoId)
-  const setCurrentVideo = useSetCurrentVideo(playlistId, videoId)
+  const setCurrentVideo = useSetCurrentVideo(playlistId, videoId, readyEvent)
   const duration = useVideoDuration(video)
 
   if (!video) {
