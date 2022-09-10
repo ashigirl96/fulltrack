@@ -1,57 +1,54 @@
 import { ReturnTypeOfUseYouTubePlayerComponent } from '@/components/shared/YouTubePlayer'
 import { ArrowPathRoundedSquareIcon } from '@heroicons/react/24/solid'
 import {
-  PlayIcon,
-  PauseIcon,
-  ForwardStepIcon,
   BackwardStepIcon,
+  ForwardStepIcon,
+  PauseIcon,
+  PlayIcon,
   ShuffleIcon,
 } from '@/components/icons'
-import { useIsLoopValue, useIsRandomOrderValue } from '@/atoms/youtubePlayer'
 import { DurationController } from './DurationController'
-import { useMemo } from 'react'
 
-type Props = {
-  handleTogglePlay: ReturnTypeOfUseYouTubePlayerComponent['handleTogglePlay']
-}
-export function PlayerController({ handleTogglePlay }: Props) {
-  const [
-    playerStatus,
-    play,
-    setNextVideo,
-    setPreviousVideo,
-    setLoop,
-    setRandomOrder,
+type Props = Pick<
+  ReturnTypeOfUseYouTubePlayerComponent,
+  'handlePlayerController'
+>
+export function PlayerController({ handlePlayerController }: Props) {
+  const {
     readyEvent,
-  ] = handleTogglePlay
-
-  const isPause = useMemo(() => playerStatus === 'PAUSED', [playerStatus])
-  const isLoop = useIsLoopValue()
-  const isRandomOrder = useIsRandomOrderValue()
+    isLoop,
+    isShuffle,
+    isPause,
+    handleLoop,
+    handlePlayController,
+    handleShuffle,
+    handlePreviousVideo,
+    handleNextVideo,
+  } = handlePlayerController
 
   return (
     <div className="flex flex-col items-center gap-y-3">
       <div className="flex gap-x-4">
-        <button onClick={setRandomOrder}>
+        <button onClick={handleShuffle}>
           <ShuffleIcon
             className={`h-4 text-black-300 cursor-pointer ${
-              isRandomOrder && 'text-green-600'
+              isShuffle && 'text-green-600'
             }`}
           />
         </button>
-        <button onClick={setPreviousVideo}>
+        <button onClick={handlePreviousVideo}>
           <BackwardStepIcon className="h-6 text-black-300 cursor-pointer" />
         </button>
-        <button onClick={play} hidden={isPause}>
+        <button onClick={handlePlayController} hidden={isPause}>
           <PauseIcon className="h-8 text-black-300 cursor-pointer" />
         </button>
-        <button hidden={!isPause} onClick={play}>
+        <button hidden={!isPause} onClick={handlePlayController}>
           <PlayIcon className="h-8 text-black-300 cursor-pointer" />
         </button>
-        <button onClick={setNextVideo}>
+        <button onClick={handleNextVideo}>
           <ForwardStepIcon className="h-6 text-black-300 cursor-pointer" />
         </button>
-        <button onClick={setLoop}>
+        <button onClick={handleLoop}>
           <ArrowPathRoundedSquareIcon
             className={`h-6 text-black-300 cursor-pointer ${
               isLoop && 'text-green-600'

@@ -1,6 +1,6 @@
 import { useVideoValue, VideoFirestoreId } from '@/atoms/firestore/video'
 import { PlaylistStoreId } from '@/atoms/firestore/playlist'
-import { useSetCurrentVideo } from '@/atoms/youtubePlayer'
+import { useSetCurrentVideo } from '@/atoms/youtubePlayer/hooks'
 import { secsToMS } from '@/lib/time'
 import { VideoFirestore } from '@/types'
 import { SetReadyEventStateType } from '@/hooks/youtube_player'

@@ -1,10 +1,8 @@
-import {
-  useHandleTogglePlay,
-  useHandleVolume,
-  useYouTubePlayer,
-} from './useYouTubePlayer'
 import YouTube from 'react-youtube'
 import { SetReadyEventStateType } from '@/hooks/youtube_player'
+import { useYouTubePlayer } from './useYouTubePlayer'
+import { useHandlePlayerController } from './useHandlePlayerController'
+import { useHandleVolume } from './useHandleVolume'
 
 type Props = {
   handleReady: ReturnTypeOfUseYouTubePlayerComponent['handleReady']
@@ -31,14 +29,14 @@ export function useYouTubePlayerComponent(
   setReadyEventState: SetReadyEventStateType,
 ) {
   const [readyEvent, handleReady] = setReadyEventState
-  const handleTogglePlay = useHandleTogglePlay(readyEvent)
-  const handleVolumeWithValue = useHandleVolume(readyEvent)
+  const handlePlayerController = useHandlePlayerController(readyEvent)
+  const handleVolume = useHandleVolume(readyEvent)
 
   return {
     YouTubePlayer,
     handleReady,
-    handleTogglePlay,
-    handleVolumeWithValue,
+    handlePlayerController,
+    handleVolume,
   }
 }
 

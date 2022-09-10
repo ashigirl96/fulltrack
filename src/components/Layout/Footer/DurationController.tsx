@@ -1,11 +1,11 @@
-import { useCurrentDuration } from '@/atoms/youtubePlayer'
+import { useCurrentDurationPercent } from '@/atoms/youtubePlayer/hooks'
 import { YouTubePlayerType } from '@/types'
 
 type Props = {
   readyEvent: YouTubePlayerType | undefined
 }
 export function DurationController({ readyEvent }: Props) {
-  const [duration, setDuration] = useCurrentDuration(readyEvent)
+  const [duration, setDuration] = useCurrentDurationPercent(readyEvent)
   return (
     <input
       id="steps-range"
