@@ -11,7 +11,6 @@ import { PlayerStateKey } from '@/constants/youtube'
 import { shuffleWithFirst } from '@/lib/array'
 import { useInterval } from '@/hooks/react-use/useInterval'
 import { getPlayerStateKey } from '@/lib/youtube'
-import { allowedStatusCodes } from 'next/dist/lib/redirect-status'
 
 export const currentPlaylistIdState = atom<PlaylistFirestoreId | null>({
   key: 'currentPlaylistIdState',

@@ -129,6 +129,9 @@ export function useHandleVolume(readyEvent: YouTubePlayerType | undefined) {
         if (readyEvent) {
           const _volume = Number(event.currentTarget.value)
           setCurrentVolume(_volume)
+          if (_volume !== 0 && (await readyEvent.isMuted())) {
+            await readyEvent.unMute()
+          }
           await readyEvent.setVolume(_volume)
         }
       },

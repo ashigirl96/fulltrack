@@ -4,10 +4,7 @@ import {
   useYouTubePlayer,
 } from './useYouTubePlayer'
 import YouTube from 'react-youtube'
-import {
-  SetReadyEventStateType,
-  useSetReadyEventState,
-} from '@/hooks/youtube_player'
+import { SetReadyEventStateType } from '@/hooks/youtube_player'
 
 type Props = {
   handleReady: ReturnTypeOfUseYouTubePlayerComponent['handleReady']

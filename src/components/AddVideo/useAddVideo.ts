@@ -6,8 +6,8 @@ import { addDoc, documentId } from '@firebase/firestore'
 import { videoCollectionRef } from '@/lib/firestore/video'
 
 export function useAddVideo() {
-  const [start, setStart] = useState<number | undefined>(1)
-  const [end, setEnd] = useState<number | undefined>(undefined)
+  const [start, setStart] = useState<number>(1)
+  const [end, setEnd] = useState<number>(1)
   const [readyEvent, setReadyEvent] = useState<YouTubePlayerType | undefined>(
     undefined,
   )
