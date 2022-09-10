@@ -24,7 +24,7 @@ export function Speaker({ handleVolumeWithValue }: Props) {
         type="range"
         min="0"
         max="100"
-        value={volume}
+        defaultValue={volume}
         step="0.1"
         className="w-full h-2 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
         onChange={setVolume}

@@ -1,5 +1,6 @@
 import { atom, selector, useRecoilValue, useSetRecoilState } from 'recoil'
 import {
+  playlistState,
   PlaylistStoreId,
   playlistVideosLengthState,
   usePlaylistValue,
@@ -82,6 +83,20 @@ export function useCurrentVideoIdsValue() {
 
 export function useSetCurrentPlaylistId() {
   return useSetRecoilState(currentPlaylistIdState)
+}
+
+export function useCurrentPlaylistIdValue() {
+  return useRecoilValue(currentPlaylistIdState)
+}
+
+export function useCurrentPlaylistValue() {
+  const currentPlaylistId = useCurrentPlaylistIdValue()
+  return useRecoilValue(playlistState(currentPlaylistId || ''))
+}
+
+export function useCurrentPlaylistVideoIdsValue() {
+  const currentPlaylist = useCurrentPlaylistValue()
+  return currentPlaylist ? currentPlaylist.videoIds : []
 }
 
 export function useSetCurrentVideoIndex() {
