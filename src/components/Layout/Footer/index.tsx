@@ -1,7 +1,7 @@
 import React from 'react'
 import { ReturnTypeOfUseYouTubePlayerComponent } from '@/components/shared/YouTubePlayer'
 import { Speaker } from './Speaker'
-import { PlayPause } from './PlayPause'
+import { PlayerController } from './PlayerController'
 
 type Props = {
   handleTogglePlay: ReturnTypeOfUseYouTubePlayerComponent['handleTogglePlay']
@@ -13,7 +13,7 @@ export function Footer({ handleTogglePlay, handleVolumeWithValue }: Props) {
       <div>Left</div>
 
       <div>
-        <PlayPause handleTogglePlay={handleTogglePlay} />
+        <PlayerController handleTogglePlay={handleTogglePlay} />
       </div>
       <div>
         <Speaker handleVolumeWithValue={handleVolumeWithValue} />

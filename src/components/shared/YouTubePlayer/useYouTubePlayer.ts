@@ -7,6 +7,8 @@ import {
   useSetCurrentPlayerStatus,
   useSetNextVideo,
   useSetPreviousVideo,
+  useSetToggleLoop,
+  useSetToggleRandomOrder,
 } from '@/atoms/youtubePlayer'
 
 export function useHandleStateChange() {
@@ -68,6 +70,8 @@ export function useHandleTogglePlay(readyEvent: YouTubePlayerType | undefined) {
   const currentPlayerStatus = useCurrentPlayerStatus()
   const setNextVideo = useSetNextVideo()
   const setPreviousVideo = useSetPreviousVideo()
+  const setLoop = useSetToggleLoop()
+  const setRandomOrder = useSetToggleRandomOrder()
   return [
     currentPlayerStatus,
     useCallback(async () => {
@@ -86,6 +90,8 @@ export function useHandleTogglePlay(readyEvent: YouTubePlayerType | undefined) {
     }, [currentPlayerStatus, readyEvent]),
     setNextVideo,
     setPreviousVideo,
+    setLoop,
+    setRandomOrder,
   ] as const
 }
 

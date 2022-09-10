@@ -22,7 +22,7 @@ export const currentPlaylistIdState = atom<PlaylistFirestoreId | null>({
 
 export const isLoopState = atom<boolean>({
   key: 'isLoopState',
-  default: true,
+  default: false,
 })
 
 export const isRandomOrderState = atom<boolean>({
@@ -62,7 +62,11 @@ export const isLastVideoState = selector<boolean | null>({
   },
 })
 
-function useIsRandomOrder() {
+export function useIsLoopValue() {
+  return useRecoilValue(isLoopState)
+}
+
+export function useIsRandomOrderValue() {
   return useRecoilValue(isRandomOrderState)
 }
 
@@ -113,7 +117,7 @@ export function useSetCurrentVideo(
 }
 
 export function useSetPreviousVideo() {
-  const isRandomOrder = useIsRandomOrder()
+  const isRandomOrder = useIsRandomOrderValue()
   const setCurrentVideoIndex = useSetCurrentVideoIndex()
   return useCallback(() => {
     if (isRandomOrder) {
@@ -146,4 +150,14 @@ function useCurrentVideoId() {
   const currentVideoIndex = useCurrentVideoIndexValue()
   const currentVideoIds = useCurrentVideoIdsValue()
   return currentVideoIds[currentVideoIndex]
+}
+
+export function useSetToggleLoop() {
+  const setIsLoop = useSetRecoilState(isLoopState)
+  return useCallback(() => setIsLoop((x) => !x), [setIsLoop])
+}
+
+export function useSetToggleRandomOrder() {
+  const setIsRandomOrder = useSetRecoilState(isRandomOrderState)
+  return useCallback(() => setIsRandomOrder((x) => !x), [setIsRandomOrder])
 }
