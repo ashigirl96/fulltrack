@@ -35,7 +35,7 @@ export function PlayerController({ handleTogglePlay }: Props) {
         <button onClick={setRandomOrder}>
           <ShuffleIcon
             className={`h-4 text-black-300 cursor-pointer ${
-              isRandomOrder && 'text-green-800'
+              isRandomOrder && 'text-green-600'
             }`}
           />
         </button>

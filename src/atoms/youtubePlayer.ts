@@ -130,6 +130,7 @@ export function useSetCurrentVideo(
   readyEvent: YouTubePlayerType | undefined,
 ) {
   const playlist = usePlaylistValue(playlistId)
+  const setPlaylistId = useSetCurrentPlaylistId()
   const videoIds = useMemo(() => playlist?.videoIds || [], [playlist?.videoIds])
   const currentVideoIndex = videoIds.indexOf(videoId)
   const setCurrentVideoIds = useSetCurrentVideoIds()
@@ -142,6 +143,7 @@ export function useSetCurrentVideo(
   )
 
   return useCallback(async () => {
+    setPlaylistId(playlistId)
     if (isRandomOrder) {
       setCurrentVideoIds(shuffleWithFirst([...videoIds], videoId))
       setCurrentVideoIndex(0)
@@ -158,9 +160,11 @@ export function useSetCurrentVideo(
     currentVideoIndex,
     isRandomOrder,
     isSameVideo,
+    playlistId,
     readyEvent,
     setCurrentVideoIds,
     setCurrentVideoIndex,
+    setPlaylistId,
     videoId,
     videoIds,
   ])
@@ -211,9 +215,8 @@ export function useSetToggleLoop() {
   return useCallback(() => setIsLoop((x) => !x), [setIsLoop])
 }
 
-export function useSetToggleRandomOrder() {
-  const setIsRandomOrder = useSetRecoilState(isRandomOrderState)
-  return useCallback(() => setIsRandomOrder((x) => !x), [setIsRandomOrder])
+export function useSetRandomOrder() {
+  return useSetRecoilState(isRandomOrderState)
 }
 
 export function useCurrentDuration(event: YouTubePlayerType | undefined) {
@@ -257,4 +260,9 @@ export function useCurrentDuration(event: YouTubePlayerType | undefined) {
   useInterval(setDuration, 100)
 
   return [duration, setPercent] as const
+}
+
+export function useShuffledVideoIds(first: VideoFirestoreId) {
+  const currentVideoIds = useCurrentVideoIdsValue()
+  return shuffleWithFirst([...currentVideoIds], first)
 }

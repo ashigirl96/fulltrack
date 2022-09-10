@@ -47,7 +47,6 @@ export function useAddVideo() {
     if (event) {
       setReadyEvent(event.target)
       const duration = await event.target.getDuration()
-      console.log(`duration ${duration}`)
       setEnd(duration)
     }
   }, [])

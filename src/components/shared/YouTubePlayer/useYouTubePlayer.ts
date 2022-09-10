@@ -4,16 +4,22 @@ import { getPlayerStateKey, getPropsOptions } from '@/lib/youtube'
 import {
   useCandidateVideoValue,
   useCurrentPlayerStatus,
+  useCurrentPlaylistVideoIdsValue,
   useCurrentVideoId,
+  useCurrentVideoIdsValue,
   useCurrentVolumeValue,
   useSetCurrentPlayerStatus,
+  useSetCurrentVideoIds,
+  useSetCurrentVideoIndex,
   useSetCurrentVolume,
   useSetNextVideo,
   useSetPreviousVideo,
+  useSetRandomOrder,
   useSetToggleLoop,
-  useSetToggleRandomOrder,
+  useShuffledVideoIds,
 } from '@/atoms/youtubePlayer'
 import { useVideoValue } from '@/atoms/firestore/video'
+import { isEqualArray } from '@/lib/array'
 
 export function useHandleStateChange() {
   const setNextVideo = useSetNextVideo()
@@ -60,7 +66,6 @@ export function useYouTubePlayer({ handleReady }: YouTubePlayerArgs) {
     opts = getPropsOptions({ start, end, controls: 0 })
     videoId = _videoId
   }
-  console.log(`video ${video?.title}, videoId ${videoId}`)
 
   return {
     videoId,
@@ -75,9 +80,15 @@ export function useHandleTogglePlay(readyEvent: YouTubePlayerType | undefined) {
   const setNextVideo = useSetNextVideo()
   const _setPreviousVideo = useSetPreviousVideo()
   const setLoop = useSetToggleLoop()
-  const setRandomOrder = useSetToggleRandomOrder()
   const currentVideoId = useCurrentVideoId()
   const video = useVideoValue(currentVideoId)
+  const isShuffled = useIsShuffled()
+  const setIsRandomOrder = useSetRandomOrder()
+  const shuffledVideoIds = useShuffledVideoIds(currentVideoId)
+  const setCurrentVideoIds = useSetCurrentVideoIds()
+  const setCurrentVideoIndex = useSetCurrentVideoIndex()
+  const videoIds = useCurrentPlaylistVideoIdsValue()
+
   const setPreviousVideo = useCallback(async () => {
     if (video && readyEvent) {
       const now = await readyEvent.getCurrentTime()
@@ -90,6 +101,27 @@ export function useHandleTogglePlay(readyEvent: YouTubePlayerType | undefined) {
       await readyEvent.seekTo(start, true)
     }
   }, [_setPreviousVideo, readyEvent, video])
+
+  const setRandomOrder = useCallback(() => {
+    if (isShuffled) {
+      // もとに戻す
+      setCurrentVideoIds(videoIds)
+      setCurrentVideoIndex(videoIds.indexOf(currentVideoId))
+    } else {
+      // シャッフルする
+      setCurrentVideoIds(shuffledVideoIds)
+      setCurrentVideoIndex(0)
+    }
+    setIsRandomOrder((prev) => !prev)
+  }, [
+    currentVideoId,
+    isShuffled,
+    setCurrentVideoIds,
+    setCurrentVideoIndex,
+    setIsRandomOrder,
+    shuffledVideoIds,
+    videoIds,
+  ])
 
   return [
     currentPlayerStatus,
@@ -152,4 +184,10 @@ export function useHandleVolume(readyEvent: YouTubePlayerType | undefined) {
       }
     }, [readyEvent, setCurrentVolume]),
   ] as const
+}
+
+function useIsShuffled() {
+  const currentVideoIds = useCurrentVideoIdsValue()
+  const videoIds = useCurrentPlaylistVideoIdsValue()
+  return !isEqualArray(currentVideoIds, videoIds)
 }
