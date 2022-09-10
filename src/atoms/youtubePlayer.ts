@@ -51,6 +51,11 @@ export const currentPlayerStatusState = atom<PlayerStateKey>({
   default: 'ENDED',
 })
 
+export const currentVolumeState = atom<number>({
+  key: 'currentVolumeState',
+  default: 50,
+})
+
 export const isLastVideoState = selector<boolean | null>({
   key: 'isLastVideoState',
   get: ({ get }) => {
@@ -97,6 +102,14 @@ export function useSetCurrentPlayerStatus() {
 
 export function useCurrentPlayerStatus() {
   return useRecoilValue(currentPlayerStatusState)
+}
+
+export function useSetCurrentVolume() {
+  return useSetRecoilState(currentVolumeState)
+}
+
+export function useCurrentVolumeValue() {
+  return useRecoilValue(currentVolumeState)
 }
 
 // プレイリストの中から１つの曲を選択したときに呼ばれる

@@ -4,7 +4,9 @@ import { getPlayerStateKey, getPropsOptions } from '@/lib/youtube'
 import {
   useCandidateVideoValue,
   useCurrentPlayerStatus,
+  useCurrentVolumeValue,
   useSetCurrentPlayerStatus,
+  useSetCurrentVolume,
   useSetNextVideo,
   useSetPreviousVideo,
   useSetToggleLoop,
@@ -96,36 +98,37 @@ export function useHandleTogglePlay(readyEvent: YouTubePlayerType | undefined) {
 }
 
 export function useHandleVolume(readyEvent: YouTubePlayerType | undefined) {
-  const [volume, setVolume] = useState(50)
+  const setCurrentVolume = useSetCurrentVolume()
+  const currentVolume = useCurrentVolumeValue()
 
   // TODO: リファクタリング
   return [
     // volume
-    volume,
+    currentVolume,
     // set volume function
     useCallback(
       async (event: ChangeEvent<HTMLInputElement>) => {
         if (readyEvent) {
           const _volume = Number(event.currentTarget.value)
-          setVolume(_volume)
+          setCurrentVolume(_volume)
           await readyEvent.setVolume(_volume)
         }
       },
-      [readyEvent],
+      [readyEvent, setCurrentVolume],
     ),
     // mute function
     useCallback(async () => {
       if (readyEvent) {
-        setVolume(0)
+        setCurrentVolume(0)
         await readyEvent.mute()
       }
-    }, [readyEvent]),
+    }, [readyEvent, setCurrentVolume]),
     // unMute function
     useCallback(async () => {
       if (readyEvent) {
         await readyEvent.unMute()
-        setVolume(await readyEvent.getVolume())
+        setCurrentVolume(await readyEvent.getVolume())
       }
-    }, [readyEvent]),
+    }, [readyEvent, setCurrentVolume]),
   ] as const
 }
