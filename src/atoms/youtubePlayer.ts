@@ -6,8 +6,9 @@ import {
 } from '@/atoms/firestore/playlist'
 import { PlaylistFirestoreId } from '@/types'
 import { VideoFirestoreId, useVideoValue } from '@/atoms/firestore/video'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { PlayerStateKey } from '@/constants/youtube'
+import { shuffle, shuffleWithFirst } from '@/lib/array'
 
 // TODO: YoutubeEvent['target']が入らない
 // export const videoReadyEventState = atom<YouTubePlayer>({
@@ -104,41 +105,52 @@ export function useSetCurrentVideo(
   videoId: VideoFirestoreId,
 ) {
   const playlist = usePlaylistValue(playlistId)
-  const videoIds = playlist?.videoIds || []
+  const videoIds = useMemo(() => playlist?.videoIds || [], [playlist?.videoIds])
   const currentVideoIndex = videoIds.indexOf(videoId)
   const setCurrentVideoIds = useSetCurrentVideoIds()
   const setCurrentVideoIndex = useSetCurrentVideoIndex()
+  const isRandomOrder = useIsRandomOrderValue()
 
   return useCallback(() => {
-    // TODO: isRandomOrderのとき、videoIdsをランダムにする
+    if (isRandomOrder) {
+      setCurrentVideoIds(shuffleWithFirst([...videoIds], videoId))
+      setCurrentVideoIndex(0)
+      return
+    }
     setCurrentVideoIds(videoIds)
     setCurrentVideoIndex(currentVideoIndex)
-  }, [currentVideoIndex, setCurrentVideoIds, setCurrentVideoIndex, videoIds])
+  }, [
+    currentVideoIndex,
+    isRandomOrder,
+    setCurrentVideoIds,
+    setCurrentVideoIndex,
+    videoId,
+    videoIds,
+  ])
 }
 
 export function useSetPreviousVideo() {
-  const isRandomOrder = useIsRandomOrderValue()
   const setCurrentVideoIndex = useSetCurrentVideoIndex()
   return useCallback(() => {
-    if (isRandomOrder) {
-      return
-    } else {
-      setCurrentVideoIndex((index) => (index < 1 ? 0 : index - 1))
-    }
-  }, [isRandomOrder, setCurrentVideoIndex])
+    setCurrentVideoIndex((index) => (index < 1 ? 0 : index - 1))
+  }, [setCurrentVideoIndex])
 }
 
 // 曲が終わる、次の曲ボタンが押されたときに呼ばれる
 export function useSetNextVideo() {
-  const currentVideoId = useCurrentVideoId()
+  const isLoop = useIsLoopValue()
   const setCurrentVideoIndex = useSetCurrentVideoIndex()
   const currentPlaylistVideoLength = useCurrentVideoIdsValue().length
 
   return useCallback(() => {
-    setCurrentVideoIndex((index) =>
-      index === currentPlaylistVideoLength - 1 ? 0 : index + 1,
-    )
-  }, [currentPlaylistVideoLength, currentVideoId, setCurrentVideoIndex])
+    setCurrentVideoIndex((index) => {
+      const isLast = index === currentPlaylistVideoLength - 1
+      if (isLoop) {
+        return isLast ? 0 : index + 1
+      }
+      return isLast ? index : index + 1
+    })
+  }, [currentPlaylistVideoLength, isLoop, setCurrentVideoIndex])
 }
 
 export function useCandidateVideoValue() {
