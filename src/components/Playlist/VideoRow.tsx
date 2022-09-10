@@ -1,6 +1,15 @@
 import { useVideoValue, VideoFirestoreId } from '@/atoms/firestore/video'
 import { PlaylistStoreId } from '@/atoms/firestore/playlist'
 import { useSetCurrentVideo } from '@/atoms/youtubePlayer'
+import { secsToMS } from '@/lib/time'
+import { VideoFirestore } from '@/types'
+
+function useVideoDuration(video: VideoFirestore | null) {
+  if (!video) {
+    return '00:00'
+  }
+  return secsToMS(video.end - video.start)
+}
 
 type Props = {
   index: number
@@ -10,6 +19,7 @@ type Props = {
 export function VideoRow({ videoId, playlistId, index }: Props) {
   const video = useVideoValue(videoId)
   const setCurrentVideo = useSetCurrentVideo(playlistId, videoId)
+  const duration = useVideoDuration(video)
 
   if (!video) {
     return <div>loading..</div>
@@ -36,7 +46,7 @@ export function VideoRow({ videoId, playlistId, index }: Props) {
           {video.originalTitle}
         </a>
       </td>
-      <td>4:00</td>
+      <td>{duration}</td>
     </tr>
   )
 }

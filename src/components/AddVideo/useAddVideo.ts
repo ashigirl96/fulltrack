@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useHandleStateChange } from './useHandleStateChange'
-import { YouTubePlayerType } from '@/types'
+import { YouTubeEvent, YouTubePlayerType } from '@/types'
 import { fetchThumbnailUrl } from '@/lib/youtube/fetchThumbnailUrl'
 import { addDoc, documentId } from '@firebase/firestore'
 import { videoCollectionRef } from '@/lib/firestore/video'
@@ -19,12 +19,16 @@ export function useAddVideo() {
   const [thumbnailUrl, setThumbnailUrl] = useState('')
 
   const setStartTime = useCallback(async () => {
-    const time = (await readyEvent?.getCurrentTime()) || 1
-    setStart(Math.floor(time))
+    if (readyEvent) {
+      const time = (await readyEvent.getCurrentTime()) || 1
+      setStart(Math.floor(time))
+    }
   }, [readyEvent])
   const setEndTime = useCallback(async () => {
-    const time = (await readyEvent?.getCurrentTime()) || 1
-    setEnd(Math.floor(time))
+    if (readyEvent) {
+      const time = await readyEvent.getCurrentTime()
+      setEnd(Math.floor(time))
+    }
   }, [readyEvent])
 
   useEffect(() => {
@@ -38,6 +42,15 @@ export function useAddVideo() {
     }
     f()
   }, [videoId])
+
+  const handleReady = useCallback(async (event: YouTubeEvent) => {
+    if (event) {
+      setReadyEvent(event.target)
+      const duration = await event.target.getDuration()
+      console.log(`duration ${duration}`)
+      setEnd(duration)
+    }
+  }, [])
 
   const [uploadedMessage, setUploadedMessage] = useState<string | null>(null)
   const addVideo = useCallback(async () => {
@@ -74,5 +87,6 @@ export function useAddVideo() {
     addVideo,
     uploadedMessage,
     setUploadedMessage,
+    handleReady,
   }
 }

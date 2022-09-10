@@ -19,6 +19,13 @@ export function secsToHMS(value: string | number) {
   return `${zero(hours)}:${zero(minutes)}:${zero(seconds)}`
 }
 
+export function secsToMS(value: string | number) {
+  const sec = typeof value === 'number' ? value : parseInt(value, 10)
+  let minutes = Math.floor(sec / 60) // get minutes
+  let seconds = sec - minutes * 60 //  get seconds
+  return `${zero(minutes)}:${zero(seconds)}`
+}
+
 function zero(num: number) {
   return num < 10 ? `0${num}` : num
 }

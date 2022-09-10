@@ -11,6 +11,7 @@ export function useSetReadyEventState() {
     useCallback(
       async (event: YouTubeEvent) => {
         setReadyEvent(event.target)
+        console.log(`duration ${await event.target.getDuration()}`)
         await event.target.setVolume(volume)
       },
       [volume],
