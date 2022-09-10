@@ -1,9 +1,11 @@
-import { ChangeEvent, useCallback, useState } from 'react'
+import { ChangeEvent, useCallback } from 'react'
 import { YouTubeEvent, YouTubePlayerType } from '@/types'
 import { getPlayerStateKey, getPropsOptions } from '@/lib/youtube'
 import {
   useCandidateVideoValue,
   useCurrentPlayerStatus,
+  useCurrentVideoId,
+  useCurrentVideoIdsValue,
   useCurrentVolumeValue,
   useSetCurrentPlayerStatus,
   useSetCurrentVolume,
@@ -12,6 +14,7 @@ import {
   useSetToggleLoop,
   useSetToggleRandomOrder,
 } from '@/atoms/youtubePlayer'
+import { useVideoValue } from '@/atoms/firestore/video'
 
 export function useHandleStateChange() {
   const setNextVideo = useSetNextVideo()
@@ -71,9 +74,23 @@ export function useYouTubePlayer({ handleReady }: YouTubePlayerArgs) {
 export function useHandleTogglePlay(readyEvent: YouTubePlayerType | undefined) {
   const currentPlayerStatus = useCurrentPlayerStatus()
   const setNextVideo = useSetNextVideo()
-  const setPreviousVideo = useSetPreviousVideo()
+  const _setPreviousVideo = useSetPreviousVideo()
   const setLoop = useSetToggleLoop()
   const setRandomOrder = useSetToggleRandomOrder()
+  const currentVideoId = useCurrentVideoId()
+  const video = useVideoValue(currentVideoId)
+  const setPreviousVideo = useCallback(async () => {
+    if (video && readyEvent) {
+      const now = await readyEvent.getCurrentTime()
+      const { start } = video
+      const startedDuration = now - start
+      if (startedDuration <= 2) {
+        _setPreviousVideo()
+        return
+      }
+      await readyEvent.seekTo(start, true)
+    }
+  }, [_setPreviousVideo, readyEvent, video])
   return [
     currentPlayerStatus,
     useCallback(async () => {

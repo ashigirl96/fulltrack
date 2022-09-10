@@ -177,7 +177,7 @@ export function useCandidateVideoValue() {
   return useVideoValue(currentVideoId)
 }
 
-function useCurrentVideoId() {
+export function useCurrentVideoId() {
   const currentVideoIndex = useCurrentVideoIndexValue()
   const currentVideoIds = useCurrentVideoIdsValue()
   return currentVideoIds[currentVideoIndex]
