@@ -12,9 +12,7 @@ export function Footer({ handleTogglePlay, handleVolumeWithValue }: Props) {
     <div className="h-[10%] flex justify-between items-center p-8">
       <div>Left</div>
 
-      <div>
-        <PlayerController handleTogglePlay={handleTogglePlay} />
-      </div>
+      <PlayerController handleTogglePlay={handleTogglePlay} />
       <div>
         <Speaker handleVolumeWithValue={handleVolumeWithValue} />
       </div>

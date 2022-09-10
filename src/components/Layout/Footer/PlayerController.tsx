@@ -7,9 +7,9 @@ import {
   BackwardStepIcon,
   ShuffleIcon,
 } from '@/components/icons'
-
-import { useMemo } from 'react'
 import { useIsLoopValue, useIsRandomOrderValue } from '@/atoms/youtubePlayer'
+import { DurationController } from './DurationController'
+import { useMemo } from 'react'
 
 type Props = {
   handleTogglePlay: ReturnTypeOfUseYouTubePlayerComponent['handleTogglePlay']
@@ -22,6 +22,7 @@ export function PlayerController({ handleTogglePlay }: Props) {
     setPreviousVideo,
     setLoop,
     setRandomOrder,
+    readyEvent,
   ] = handleTogglePlay
 
   const isPause = useMemo(() => playerStatus === 'PAUSED', [playerStatus])
@@ -29,33 +30,37 @@ export function PlayerController({ handleTogglePlay }: Props) {
   const isRandomOrder = useIsRandomOrderValue()
 
   return (
-    <div className={`flex justify-center items-center gap-x-5`}>
-      <button onClick={setRandomOrder}>
-        <ShuffleIcon
-          className={`h-4 text-black-300 cursor-pointer ${
-            isRandomOrder && 'text-green-800'
-          }`}
-        />
-      </button>
-      <button onClick={setPreviousVideo}>
-        <BackwardStepIcon className="h-6 text-black-300 cursor-pointer" />
-      </button>
-      <button onClick={play} hidden={isPause}>
-        <PauseIcon className="h-10 text-black-300 cursor-pointer" />
-      </button>
-      <button hidden={!isPause} onClick={play}>
-        <PlayIcon className="h-10 text-black-300 cursor-pointer" />
-      </button>
-      <button onClick={setNextVideo}>
-        <ForwardStepIcon className="h-6 text-black-300 cursor-pointer" />
-      </button>
-      <button onClick={setLoop}>
-        <ArrowPathRoundedSquareIcon
-          className={`h-6 text-black-300 cursor-pointer ${
-            isLoop && 'text-green-600'
-          }`}
-        />
-      </button>
+    <div className="flex flex-col items-center gap-y-3">
+      <div className="flex gap-x-4">
+        <button onClick={setRandomOrder}>
+          <ShuffleIcon
+            className={`h-4 text-black-300 cursor-pointer ${
+              isRandomOrder && 'text-green-800'
+            }`}
+          />
+        </button>
+        <button onClick={setPreviousVideo}>
+          <BackwardStepIcon className="h-6 text-black-300 cursor-pointer" />
+        </button>
+        <button onClick={play} hidden={isPause}>
+          <PauseIcon className="h-8 text-black-300 cursor-pointer" />
+        </button>
+        <button hidden={!isPause} onClick={play}>
+          <PlayIcon className="h-8 text-black-300 cursor-pointer" />
+        </button>
+        <button onClick={setNextVideo}>
+          <ForwardStepIcon className="h-6 text-black-300 cursor-pointer" />
+        </button>
+        <button onClick={setLoop}>
+          <ArrowPathRoundedSquareIcon
+            className={`h-6 text-black-300 cursor-pointer ${
+              isLoop && 'text-green-600'
+            }`}
+          />
+        </button>
+      </div>
+
+      <DurationController readyEvent={readyEvent} />
     </div>
   )
 }

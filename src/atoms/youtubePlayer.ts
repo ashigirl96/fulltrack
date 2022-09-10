@@ -1,26 +1,16 @@
-import {
-  atom,
-  selector,
-  selectorFamily,
-  useRecoilValue,
-  useSetRecoilState,
-} from 'recoil'
+import { atom, selector, useRecoilValue, useSetRecoilState } from 'recoil'
 import {
   PlaylistStoreId,
   playlistVideosLengthState,
   usePlaylistValue,
 } from '@/atoms/firestore/playlist'
-import { PlaylistFirestoreId } from '@/types'
-import { VideoFirestoreId, useVideoValue } from '@/atoms/firestore/video'
-import { useCallback, useMemo } from 'react'
+import { PlaylistFirestoreId, YouTubePlayerType } from '@/types'
+import { useVideoValue, VideoFirestoreId } from '@/atoms/firestore/video'
+import { ChangeEvent, useCallback, useMemo, useState } from 'react'
 import { PlayerStateKey } from '@/constants/youtube'
-import { shuffle, shuffleWithFirst } from '@/lib/array'
-
-// TODO: YoutubeEvent['target']が入らない
-// export const videoReadyEventState = atom<YouTubePlayer>({
-//   key: 'videoReadyEventState',
-//   default: undefined,
-// })
+import { shuffleWithFirst } from '@/lib/array'
+import { useInterval } from '@/hooks/react-use/useInterval'
+import { getPlayerStateKey } from '@/lib/youtube'
 
 export const currentPlaylistIdState = atom<PlaylistFirestoreId | null>({
   key: 'currentPlaylistIdState',
@@ -183,6 +173,11 @@ export function useCurrentVideoId() {
   return currentVideoIds[currentVideoIndex]
 }
 
+export function useCurrentVideo() {
+  const currentVideoId = useCurrentVideoId()
+  return useVideoValue(currentVideoId)
+}
+
 export function useSetToggleLoop() {
   const setIsLoop = useSetRecoilState(isLoopState)
   return useCallback(() => setIsLoop((x) => !x), [setIsLoop])
@@ -191,4 +186,47 @@ export function useSetToggleLoop() {
 export function useSetToggleRandomOrder() {
   const setIsRandomOrder = useSetRecoilState(isRandomOrderState)
   return useCallback(() => setIsRandomOrder((x) => !x), [setIsRandomOrder])
+}
+
+export function useCurrentDuration(event: YouTubePlayerType | undefined) {
+  const [duration, _setDuration] = useState(0)
+  const video = useCurrentVideo()
+
+  const setDuration = useCallback(async () => {
+    if (event && video) {
+      const status = getPlayerStateKey(await event.getPlayerState())
+      switch (status) {
+        case 'PLAYING': {
+          const { start, end } = video
+          const now = await event.getCurrentTime()
+          const durationPercent = Math.min(
+            Math.max((100 * (now - start)) / (end - start), 0),
+            100,
+          )
+          _setDuration(durationPercent)
+          break
+        }
+        default:
+          clearInterval()
+          break
+      }
+    }
+  }, [event, video])
+
+  const setPercent = useCallback(
+    async (inputEvent: ChangeEvent<HTMLInputElement>) => {
+      if (event && video) {
+        const { start, end } = video
+        const percent = Number(inputEvent.currentTarget.value)
+        const duration = (percent * (end - start)) / 100
+        _setDuration(percent)
+        await event.seekTo(duration + start, true)
+      }
+    },
+    [event, video],
+  )
+
+  useInterval(setDuration, 100)
+
+  return [duration, setPercent] as const
 }

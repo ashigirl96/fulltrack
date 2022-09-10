@@ -5,7 +5,6 @@ import {
   useCandidateVideoValue,
   useCurrentPlayerStatus,
   useCurrentVideoId,
-  useCurrentVideoIdsValue,
   useCurrentVolumeValue,
   useSetCurrentPlayerStatus,
   useSetCurrentVolume,
@@ -91,6 +90,7 @@ export function useHandleTogglePlay(readyEvent: YouTubePlayerType | undefined) {
       await readyEvent.seekTo(start, true)
     }
   }, [_setPreviousVideo, readyEvent, video])
+
   return [
     currentPlayerStatus,
     useCallback(async () => {
@@ -111,6 +111,7 @@ export function useHandleTogglePlay(readyEvent: YouTubePlayerType | undefined) {
     setPreviousVideo,
     setLoop,
     setRandomOrder,
+    readyEvent,
   ] as const
 }
 
