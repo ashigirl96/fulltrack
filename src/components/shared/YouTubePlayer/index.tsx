@@ -13,15 +13,19 @@ export function YouTubePlayer({ handleReady }: Props) {
   })
 
   return (
-    <YouTube
-      className={`h-48 flex items-center justify-center overflow-y-clip pointer-events-none ${
-        !videoId && 'hidden'
-      }`}
-      videoId={videoId}
-      opts={opts}
-      onStateChange={(event) => handleStateChange(event.target)}
-      onReady={handleReady}
-    />
+    <>
+      {/* 動画が終わった && 動画が再生されてない ときに写真を出す */}
+      {!videoId && <div className="bg-red-300 h-48"></div>}
+      <YouTube
+        className={`h-48 flex items-center justify-center overflow-y-clip pointer-events-none ${
+          !videoId && 'hidden'
+        }`}
+        videoId={videoId}
+        opts={opts}
+        onStateChange={(event) => handleStateChange(event.target)}
+        onReady={handleReady}
+      />
+    </>
   )
 }
 

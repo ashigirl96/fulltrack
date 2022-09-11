@@ -50,15 +50,17 @@ export function VideoRow({ videoId, playlistId, index, readyEvent }: Props) {
           </div>
         </div>
       </div>
-      <div className="flex justify-self-start items-center">
-        <a
-          href={`https://youtube.com/watch?v=${video.videoId}`}
-          className="ellipsis-one-line"
-        >
-          {video.originalTitle}
-        </a>
+      <div className="md-hidden">
+        <div className="flex justify-self-start items-center">
+          <a
+            href={`https://youtube.com/watch?v=${video.videoId}`}
+            className="ellipsis-one-line"
+          >
+            {video.originalTitle}
+          </a>
+        </div>
       </div>
-      <div className="flex justify-self-start items-center">{duration}</div>
+      <div className="flex justify-self-end items-center">{duration}</div>
     </div>
   )
 }

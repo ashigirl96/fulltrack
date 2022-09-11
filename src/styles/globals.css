@@ -7,6 +7,9 @@
         @apply line-clamp-1 break-all
     }
     .grid-playlist {
-        @apply grid grid-cols-playlist gap-4
+        @apply grid grid-cols-playlist gap-6
+    }
+    .md-hidden {
+        @apply md:flex hidden
     }
 }

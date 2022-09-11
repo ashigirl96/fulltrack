@@ -17,13 +17,13 @@ export function Playlist({ playlistId, readyEvent }: Props) {
 
   if (videoIds) {
     return (
-      <div className="" tabIndex={0}>
-        <div style={{ top: '64px' }} className="-mx-[32px] mb-[16] px-[32px]">
+      <div className="max-w-full px-4 relative" tabIndex={0}>
+        <div className="mb-[16]">
           <div className="grid-playlist">
             <div className="justify-self-end">#</div>
             <div>タイトル</div>
-            <div>オリジナルタイトル</div>
-            <div>再生時間</div>
+            <div className="md-hidden">オリジナルタイトル</div>
+            <div className="justify-self-end">再生時間</div>
           </div>
         </div>
 
