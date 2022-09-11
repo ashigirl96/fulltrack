@@ -27,7 +27,7 @@ export function PlayerController({ handlePlayerController }: Props) {
   } = handlePlayerController
 
   return (
-    <div className="flex flex-col items-center gap-y-3">
+    <div className="flex flex-col items-center gap-y-3 w-[40%] max-w-[722px]">
       <div className="flex gap-x-4">
         <button onClick={handleShuffle}>
           <ShuffleIcon
