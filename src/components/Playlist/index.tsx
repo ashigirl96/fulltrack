@@ -17,27 +17,30 @@ export function Playlist({ playlistId, readyEvent }: Props) {
 
   if (videoIds) {
     return (
-      <table className="w-full">
-        <thead>
-          <tr>
-            <th className="text-left">#</th>
-            <th className="text-left">タイトル</th>
-            <th className="text-left">オリジナルタイトル</th>
-            <th className="text-left">再生時間</th>
-          </tr>
-        </thead>
-        <tbody>
-          {videoIds.map((videoId, index) => (
-            <VideoRow
-              key={`${videoId}-${index}`}
-              videoId={videoId}
-              playlistId={playlistId}
-              readyEvent={readyEvent}
-              index={index}
-            />
-          ))}
-        </tbody>
-      </table>
+      <div className="" tabIndex={0}>
+        <div style={{ top: '64px' }} className="-mx-[32px] mb-[16] px-[32px]">
+          <div className="grid-playlist">
+            <div className="justify-self-end">#</div>
+            <div>タイトル</div>
+            <div>オリジナルタイトル</div>
+            <div>再生時間</div>
+          </div>
+        </div>
+
+        <div className="h-[2296px]">
+          <div className="translate-y-0">
+            {videoIds.map((videoId, index) => (
+              <VideoRow
+                key={`${videoId}-${index}`}
+                videoId={videoId}
+                playlistId={playlistId}
+                readyEvent={readyEvent}
+                index={index}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
     )
   }
 

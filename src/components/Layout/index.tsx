@@ -18,7 +18,7 @@ export function Layout({ children, setReadyEventState }: LayoutProps) {
     useYouTubePlayerComponent(setReadyEventState)
 
   return (
-    <div className="h-screen flex flex-col">
+    <div className="h-screen flex flex-col overflow-x-hidden">
       <div className="flex flex-1 h-[90%]">
         <Menu width={width.x} />
 
