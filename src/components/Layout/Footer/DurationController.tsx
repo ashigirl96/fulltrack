@@ -5,17 +5,22 @@ type Props = {
   readyEvent: YouTubePlayerType | undefined
 }
 export function DurationController({ readyEvent }: Props) {
-  const [duration, setDuration] = useCurrentDurationPercent(readyEvent)
+  const { durationPercent, setHandleInputPercent, elapsedMS, endHS } =
+    useCurrentDurationPercent(readyEvent)
   return (
-    <input
-      id="steps-range"
-      type="range"
-      min="0"
-      max="100"
-      defaultValue={duration}
-      step="0.1"
-      className="w-[34vw] h-2 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-      onChangeCapture={setDuration}
-    />
+    <div className="flex justify-center items-center gap-x-2.5">
+      <div>{elapsedMS}</div>
+      <input
+        id="steps-range"
+        type="range"
+        min="0"
+        max="100"
+        step={0.01}
+        value={durationPercent}
+        className="w-[34vw] h-2 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+        onChangeCapture={setHandleInputPercent}
+      />
+      <div>{endHS}</div>
+    </div>
   )
 }
