@@ -7,7 +7,7 @@ module.exports = {
   theme: {
     extend: {
       gridTemplateColumns: {
-        playlist: '16px 6fr 4fr minmax(120px, 1fr)',
+        playlist: '16px 4fr 6fr minmax(120px, 1fr)',
       },
     },
   },

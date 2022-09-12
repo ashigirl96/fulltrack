@@ -18,7 +18,10 @@ export function Playlist({ playlistId, readyEvent }: Props) {
   if (videoIds) {
     return (
       <div className="max-w-full px-4 relative" tabIndex={0}>
-        <div className="mb-[16]">
+        <div
+          className="mb-[16] sticky top-0 bg-blue-500 text-white z-10"
+          tabIndex={2}
+        >
           <div className="grid-playlist">
             <div className="justify-self-end">#</div>
             <div>タイトル</div>

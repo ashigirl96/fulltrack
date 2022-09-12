@@ -3,7 +3,7 @@ import { useCurrentVideoValue } from '@/atoms/youtubePlayer'
 export function Thumbnail() {
   const currentVideo = useCurrentVideoValue()
   if (!currentVideo) {
-    return <div />
+    return <div className="w-[30%] min-w-[100px]" />
   }
   const { thumbnailUrl, artists, title, originalTitle } = currentVideo
 
