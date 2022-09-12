@@ -1,9 +1,7 @@
 import { SpeakerWaveIcon, SpeakerXMarkIcon } from '@heroicons/react/24/outline'
 import { ReturnTypeOfUseYouTubePlayerComponent } from '@/components/shared/YouTubePlayer'
 
-type Props = {
-  handleVolume: ReturnTypeOfUseYouTubePlayerComponent['handleVolume']
-}
+type Props = Pick<ReturnTypeOfUseYouTubePlayerComponent, 'handleVolume'>
 export function Speaker({ handleVolume }: Props) {
   const { currentVolume, handleInputVolume, handleMute, handleUnmute } =
     handleVolume

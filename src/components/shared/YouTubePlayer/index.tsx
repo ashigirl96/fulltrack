@@ -4,9 +4,7 @@ import { useYouTubePlayer } from './useYouTubePlayer'
 import { useHandlePlayerController } from './useHandlePlayerController'
 import { useHandleVolume } from './useHandleVolume'
 
-type Props = {
-  handleReady: ReturnTypeOfUseYouTubePlayerComponent['handleReady']
-}
+type Props = Pick<ReturnTypeOfUseYouTubePlayerComponent, 'handleReady'>
 export function YouTubePlayer({ handleReady }: Props) {
   const { videoId, opts, handleStateChange } = useYouTubePlayer({
     handleReady,
