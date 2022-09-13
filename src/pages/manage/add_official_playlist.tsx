@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import { useCallback, useState } from 'react'
 import { addDoc, doc, documentId } from '@firebase/firestore'
-import { officialPlaylistCollectionRef } from '@/lib/firestore/officialPlaylist'
+import { playlistCollectionRef } from '@/lib/firestore/playlist'
 import { db } from '@/config/firebase'
 
 const AddOfficialPlaylist: NextPage = () => {
@@ -9,15 +9,18 @@ const AddOfficialPlaylist: NextPage = () => {
   const [videoIds, setVideoIds] = useState<string[]>([])
   const [uploadedMessage, setUploadedMessage] = useState<string | null>(null)
 
+  const _videoIds = videoIds
+    .filter((x) => x)
+    .map((x) => doc(db, `videos/${x}`)) as unknown as string[]
   const addPlaylist = useCallback(async () => {
-    await addDoc(officialPlaylistCollectionRef, {
+    await addDoc(playlistCollectionRef, {
       id: documentId(),
       title,
-      videoIds: videoIds.filter((x) => x).map((x) => doc(db, `videos/${x}`)),
+      videoIds: _videoIds,
     })
       .then(() => setUploadedMessage(`${title}の登録できました`))
       .catch((reason) => setUploadedMessage(`ERROR ${JSON.stringify(reason)}`))
-  }, [title, videoIds])
+  }, [_videoIds, title])
 
   return (
     <div className="grid grid-cols-1 gap-y-4 py-4 justify-center">

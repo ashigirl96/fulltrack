@@ -1,4 +1,4 @@
-import { Playlists } from './Playlists'
+import { UserPlaylists, Playlists } from './Playlists'
 import { useGetCurrentUserId } from '@/hooks/firebaseAuth'
 
 type Props = {
@@ -12,7 +12,8 @@ export function Menu({ width }: Props) {
       <div className="hero-content bg-amber-200">プレイリストを作成する</div>
       <div className="border border-gray-300 my-5 mx-4" />
       <div className="overflow-y-scroll flex-1">
-        {currentUserId && <Playlists userId={currentUserId} />}
+        {currentUserId && <Playlists />}
+        {currentUserId && <UserPlaylists userId={currentUserId} />}
       </div>
     </div>
   )

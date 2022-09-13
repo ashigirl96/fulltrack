@@ -7,31 +7,33 @@ import {
   SnapshotOptions,
   WithFieldValue,
 } from '@firebase/firestore'
-import { OfficialPlaylistStore } from '@/types/officialPlaylistStore'
+import { UserPlaylistStore } from '@/types/playlistStore'
 import { db } from '@/config/firebase'
 
-const playlistConverter: FirestoreDataConverter<OfficialPlaylistStore> = {
+const playlistConverter: FirestoreDataConverter<UserPlaylistStore> = {
   fromFirestore(
     snapshot: QueryDocumentSnapshot,
     options?: SnapshotOptions,
-  ): OfficialPlaylistStore {
+  ): UserPlaylistStore {
     const data = snapshot.data(options)
     return {
       id: snapshot.id,
       title: data.title,
       videoIds: data.videos.map((video: DocumentReference) => video.id),
+      userId: data.user.id,
     }
   },
-  toFirestore(playlist: WithFieldValue<OfficialPlaylistStore>): DocumentData {
-    const { title, videoIds } = playlist
+  toFirestore(playlist: WithFieldValue<UserPlaylistStore>): DocumentData {
+    const { title, videoIds, userId } = playlist
     return {
       title,
       videoIds,
+      userId,
     }
   },
 }
 
-export const officialPlaylistCollectionRef = collection(
+export const userPlaylistCollectionRef = collection(
   db,
   'playlists',
 ).withConverter(playlistConverter)

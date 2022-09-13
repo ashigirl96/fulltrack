@@ -7,8 +7,8 @@ import {
   SnapshotOptions,
   WithFieldValue,
 } from '@firebase/firestore'
-import { PlaylistStore } from '@/types/playlistStore'
 import { db } from '@/config/firebase'
+import { PlaylistStore } from '@/types'
 
 const playlistConverter: FirestoreDataConverter<PlaylistStore> = {
   fromFirestore(
@@ -19,16 +19,14 @@ const playlistConverter: FirestoreDataConverter<PlaylistStore> = {
     return {
       id: snapshot.id,
       title: data.title,
-      videoIds: data.videos.map((video: DocumentReference) => video.id),
-      userId: data.user.id,
+      videoIds: data.videoIds.map((video: DocumentReference) => video.id),
     }
   },
   toFirestore(playlist: WithFieldValue<PlaylistStore>): DocumentData {
-    const { title, videoIds, userId } = playlist
+    const { title, videoIds } = playlist
     return {
       title,
       videoIds,
-      userId,
     }
   },
 }
