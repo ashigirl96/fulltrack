@@ -1,26 +1,8 @@
-import { useVideoValue, VideoFirestoreId } from '@/atoms/firestore/video'
-import { PlaylistStoreId } from '@/atoms/firestore/playlist'
-import { useSetCurrentVideo } from '@/atoms/youtubePlayer/hooks'
-import { secsToMS } from '@/lib/time'
-import { VideoFirestore } from '@/types'
-import { SetReadyEventStateType } from '@/hooks/youtube_player'
-import React, { useCallback, useMemo } from 'react'
-import { useIsPlayingVideo } from '@/atoms/youtubePlayer'
-import type { ReturnTypeUsePlaylist } from '../Playlist/usePlaylist'
+import React from 'react'
+import { useVideoRow } from './useVideoRow'
+import type { ArgsVideoRow } from './useVideoRow'
 
-function useVideoDuration(video: VideoFirestore | null) {
-  if (!video) {
-    return '00:00'
-  }
-  return secsToMS(video.end - video.start)
-}
-
-type Props = {
-  index: number
-  videoId: VideoFirestoreId
-  playlistId: PlaylistStoreId
-  readyEvent: SetReadyEventStateType[0]
-} & Pick<ReturnTypeUsePlaylist, 'setIndexSelected' | 'indexSelected'>
+type Props = ArgsVideoRow
 export function VideoRow({
   videoId,
   playlistId,
@@ -29,24 +11,21 @@ export function VideoRow({
   indexSelected,
   setIndexSelected,
 }: Props) {
-  const video = useVideoValue(videoId)
-  const setCurrentVideo = useSetCurrentVideo(playlistId, videoId, readyEvent)
-  const duration = useVideoDuration(video)
-  const isPlayingVideo = useIsPlayingVideo(videoId)
-  const setIndex = useCallback(() => {
-    setIndexSelected(index)
-  }, [index, setIndexSelected])
-  const isSelected = useMemo(
-    () => indexSelected === index,
-    [index, indexSelected],
-  )
-  const handleClick = useCallback(async () => {
-    if (isSelected) {
-      await setCurrentVideo()
-      return
-    }
-    setIndexSelected(index)
-  }, [index, isSelected, setCurrentVideo, setIndexSelected])
+  const {
+    video,
+    isPlayingVideo,
+    setIndex,
+    isSelected,
+    handleDoubleClick,
+    duration,
+  } = useVideoRow({
+    videoId,
+    index,
+    setIndexSelected,
+    indexSelected,
+    readyEvent,
+    playlistId,
+  })
 
   if (!video) {
     return <div>loading..</div>
@@ -59,7 +38,7 @@ export function VideoRow({
         isSelected && 'bg-gray-300'
       }`}
       onClick={setIndex}
-      onDoubleClick={handleClick}
+      onDoubleClick={handleDoubleClick}
     >
       <div className="flex justify-self-end items-center">{index + 1}</div>
       <div className="flex justify-self-start items-center">
