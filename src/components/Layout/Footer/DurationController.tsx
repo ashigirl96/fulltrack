@@ -5,7 +5,7 @@ type Props = {
   readyEvent: YouTubePlayerType | undefined
 }
 export function DurationController({ readyEvent }: Props) {
-  const { setHandleInputPercent, elapsedMS, endHS } =
+  const { durationPercent, setHandleInputPercent, elapsedMS, endHS } =
     useCurrentDurationPercent(readyEvent)
   return (
     <div className="flex justify-center items-center gap-x-2.5">
@@ -17,7 +17,8 @@ export function DurationController({ readyEvent }: Props) {
         max="100"
         step={0.01}
         className="w-[34vw] h-2 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
-        onChangeCapture={setHandleInputPercent}
+        value={durationPercent}
+        onInput={setHandleInputPercent}
       />
       <div>{endHS}</div>
     </div>
