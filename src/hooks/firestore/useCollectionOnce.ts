@@ -14,7 +14,7 @@ import {
   Options,
 } from '@/types/firestore'
 import useLoadingValue from './useLoadingValue'
-import { useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useIsFirestoreQueryEqual } from './useIsFirestoreQueryEqual'
 
 export const useCollectionOnce = <T = DocumentData>(
@@ -25,46 +25,43 @@ export const useCollectionOnce = <T = DocumentData>(
     QuerySnapshot<T>,
     FirestoreError
   >()
-  let effectActive = true
+  const [effectActive, setEffectActive] = useState(true)
   const ref = useIsFirestoreQueryEqual<Query<T>>(query, reset)
 
-  const loadData = async (
-    query?: Query<T> | null,
-    options?: Options & OnceOptions,
-  ) => {
-    if (!query) {
-      setValue(undefined)
-      return
-    }
-    const get = getDocsFnFromGetOptions(options?.getOptions)
+  const loadData = useCallback(
+    async (query?: Query<T> | null, options?: Options & OnceOptions) => {
+      if (!query) {
+        setValue(undefined)
+        return
+      }
+      const get = getDocsFnFromGetOptions(options?.getOptions)
 
-    try {
-      const result = await get(query)
-      if (effectActive) {
-        setValue(result)
+      try {
+        const result = await get(query)
+        if (effectActive) {
+          setValue(result)
+        }
+      } catch (error) {
+        if (effectActive) {
+          setError(error as FirestoreError)
+        }
       }
-    } catch (error) {
-      if (effectActive) {
-        setError(error as FirestoreError)
-      }
-    }
-  }
+    },
+    [effectActive, setError, setValue],
+  )
 
   useEffect(() => {
     loadData(ref.current, options)
 
     return () => {
-      effectActive = false
+      setEffectActive(false)
     }
-  }, [ref.current])
+  }, [loadData, options, ref])
 
-  const resArray: CollectionOnceHook<T> = [
-    value as QuerySnapshot<T>,
-    loading,
-    error,
-    () => loadData(ref.current, options),
-  ]
-  return useMemo(() => resArray, resArray)
+  return useMemo(
+    () => [value, loading, error, () => loadData(ref.current, options)],
+    [value, loading, error, loadData, ref, options],
+  )
 }
 
 const getDocsFnFromGetOptions = (

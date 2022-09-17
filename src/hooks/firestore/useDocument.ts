@@ -37,12 +37,7 @@ export const useDocument = <T = DocumentData>(
     return () => {
       unsubscribe()
     }
-  }, [ref.current])
+  }, [options?.snapshotListenOptions, ref, setError, setValue])
 
-  const resArray: DocumentHook<T> = [
-    value as DocumentSnapshot<T>,
-    loading,
-    error,
-  ]
-  return useMemo(() => resArray, resArray)
+  return useMemo(() => [value, loading, error], [value, loading, error])
 }

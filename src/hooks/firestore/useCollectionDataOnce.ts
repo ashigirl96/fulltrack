@@ -18,14 +18,10 @@ export const useCollectionDataOnce = <T = DocumentData>(
     options,
   )
   const values = useValuesFromSnapshots<T>(snapshots, snapshotOptions)
-  const resArray: CollectionDataOnceHook<T> = [
-    values,
-    loading,
-    error,
-    snapshots,
-    loadData,
-  ]
-  return useMemo(() => resArray, resArray)
+  return useMemo(
+    () => [values, loading, error, snapshots, loadData],
+    [values, loading, error, snapshots, loadData],
+  )
 }
 
 const useValuesFromSnapshots = <T>(

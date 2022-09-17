@@ -14,6 +14,8 @@ export const useDocumentData = <T = DocumentData>(
     [snapshot, snapshotOptions],
   )
 
-  const resArray: DocumentDataHook<T> = [value, loading, error, snapshot]
-  return useMemo(() => resArray, resArray)
+  return useMemo(
+    () => [value, loading, error, snapshot],
+    [value, loading, error, snapshot],
+  )
 }

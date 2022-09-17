@@ -7,9 +7,7 @@ import {
 } from '@firebase/firestore'
 import { RefHook, useComparatorRef } from './useIsEqualRef'
 
-const isRefEqual = <
-  T extends DocumentReference<any> | CollectionReference<any>,
->(
+const isRefEqual = <T extends DocumentReference | CollectionReference>(
   v1: T | null | undefined,
   v2: T | null | undefined,
 ): boolean => {
@@ -19,7 +17,7 @@ const isRefEqual = <
 }
 
 export const useIsFirestoreRefEqual = <
-  T extends DocumentReference<any> | CollectionReference<any>,
+  T extends DocumentReference | CollectionReference,
 >(
   value: T | null | undefined,
   onChange?: () => void,
@@ -27,7 +25,7 @@ export const useIsFirestoreRefEqual = <
   return useComparatorRef(value, isRefEqual, onChange)
 }
 
-const isQueryEqual = <T extends Query<any>>(
+const isQueryEqual = <T extends Query>(
   v1: T | null | undefined,
   v2: T | null | undefined,
 ): boolean => {
@@ -36,7 +34,7 @@ const isQueryEqual = <T extends Query<any>>(
   return bothNull || equal
 }
 
-export const useIsFirestoreQueryEqual = <T extends Query<any>>(
+export const useIsFirestoreQueryEqual = <T extends Query>(
   value: T | null | undefined,
   onChange?: () => void,
 ): RefHook<T | null | undefined> => {

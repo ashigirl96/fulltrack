@@ -20,7 +20,7 @@ const AddUserPlaylist: NextPage = () => {
     })
       .then(() => setUploadedMessage(`${title}の登録できました`))
       .catch((reason) => setUploadedMessage(`ERROR ${JSON.stringify(reason)}`))
-  }, [_videoIds, title])
+  }, [_videoIds, title, userId])
 
   return (
     <div className="grid grid-cols-1 gap-y-4 py-4 justify-center">
