@@ -6,7 +6,6 @@ export interface PlaylistStore {
 export interface UserPlaylistStore {
   id: string
   title: string
-  userId: UserId
   videoIds: string[]
 }
 export type PlaylistFirestoreId = string
