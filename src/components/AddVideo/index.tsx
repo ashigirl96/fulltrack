@@ -34,7 +34,7 @@ export default function AddVideo() {
       <div className="mt-4 ml-4">
         <LoginButton />
       </div>
-      <div className="flex h-screen justify-center items-center">
+      <div className="flex justify-center items-center">
         <div className="flex justify-start gap-x-10">
           <div className="flex flex-col gap-y-2">
             <label className="input-group w-full">
