@@ -13,7 +13,7 @@ export function Menu({ width }: Props) {
       <CreateUserPlaylist currentUserId={currentUserId} />
       <div className="border border-gray-300 my-5 mx-4" />
       <div className="overflow-y-scroll flex-1">
-        {currentUserId && <Playlists />}
+        <Playlists />
         {currentUserId && <UserPlaylists userId={currentUserId} />}
       </div>
     </div>

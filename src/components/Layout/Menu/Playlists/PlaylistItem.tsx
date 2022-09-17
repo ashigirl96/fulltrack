@@ -5,11 +5,15 @@ import { useEffect } from 'react'
 
 type Props = {
   playlist: PlaylistStore
+  isOfficial: boolean
 }
-export function PlaylistItem({ playlist }: Props) {
+export function PlaylistItem({ playlist, isOfficial }: Props) {
   const setPlaylistState = useSetRecoilState(playlistState(playlist.id))
   useEffect(() => {
-    setPlaylistState(playlist)
-  }, [playlist, setPlaylistState])
+    setPlaylistState({
+      ...playlist,
+      isOfficial,
+    })
+  }, [isOfficial, playlist, setPlaylistState])
   return <div>{playlist.title}</div>
 }

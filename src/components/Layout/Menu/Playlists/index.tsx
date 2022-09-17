@@ -9,7 +9,7 @@ type Props = {
 export function UserPlaylists({ userId }: Props) {
   const { playlists, isLoading, error } = useUserPlaylists(userId)
   if (error) {
-    return <div>error</div>
+    return <div>{JSON.stringify(error)}</div>
   }
   if (isLoading) {
     return <div>Loading</div>
@@ -24,7 +24,7 @@ export function UserPlaylists({ userId }: Props) {
           <div key={`playlist-${playlist.id}`}>
             <Link href={`/playlists/${encodeURIComponent(playlist.id)}`}>
               <a>
-                <PlaylistItem playlist={playlist} />
+                <PlaylistItem playlist={playlist} isOfficial={false} />
               </a>
             </Link>
           </div>
@@ -37,7 +37,7 @@ export function UserPlaylists({ userId }: Props) {
 export function Playlists() {
   const { playlists, isLoading, error } = usePlaylists()
   if (error) {
-    return <div>error</div>
+    return <div>{JSON.stringify(error)}</div>
   }
   if (isLoading) {
     return <div>Loading</div>
@@ -52,7 +52,7 @@ export function Playlists() {
           <div key={`playlist-${playlist.id}`}>
             <Link href={`/playlists/${encodeURIComponent(playlist.id)}`}>
               <a>
-                <PlaylistItem playlist={playlist} />
+                <PlaylistItem playlist={playlist} isOfficial={true} />
               </a>
             </Link>
           </div>

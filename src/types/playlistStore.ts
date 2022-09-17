@@ -3,11 +3,10 @@ export interface PlaylistStore {
   title: string
   videoIds: string[]
 }
-export interface UserPlaylistStore {
-  id: string
-  title: string
-  videoIds: string[]
+export interface PlaylistState extends PlaylistStore {
+  isOfficial: boolean
 }
+
 export type PlaylistFirestoreId = string
 
 export type UserId = string

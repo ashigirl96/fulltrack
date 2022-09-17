@@ -7,6 +7,10 @@ export function PlaylistTitle({ playlist }: Props) {
   const { title, handleClick, isOpenEditor, setIsOpenEditor, playlistId } =
     usePlaylistTitle({ playlist })
 
+  if (playlist.isOfficial) {
+    return <h1 className="text-3xl my-10 cursor-default">{title}</h1>
+  }
+
   return (
     <>
       <EditPlaylistTitleModal

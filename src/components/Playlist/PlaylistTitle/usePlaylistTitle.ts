@@ -1,8 +1,8 @@
-import { PlaylistStore } from '@/types'
+import { PlaylistState } from '@/types'
 import { useCallback, useMemo, useState } from 'react'
 
 export type ArgsPlaylistTitle = {
-  playlist: PlaylistStore
+  playlist: PlaylistState
 }
 export function usePlaylistTitle({ playlist }: ArgsPlaylistTitle) {
   const playlistId = useMemo(() => playlist.id, [playlist.id])

@@ -4,5 +4,6 @@ export type {
   PlaylistStore,
   PlaylistFirestoreId,
   UserId,
+  PlaylistState,
 } from './playlistStore'
 export type { VideoFirestore } from './VideoStore'
