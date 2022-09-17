@@ -9,7 +9,8 @@ type Props = {
   readyEvent: SetReadyEventStateType[0]
 }
 export function Playlist({ playlistId, readyEvent }: Props) {
-  const { completed, videoIds } = usePlaylist(playlistId)
+  const { completed, videoIds, indexSelected, setIndexSelected } =
+    usePlaylist(playlistId)
 
   if (!completed) {
     return <div>loading</div>
@@ -39,6 +40,8 @@ export function Playlist({ playlistId, readyEvent }: Props) {
                 playlistId={playlistId}
                 readyEvent={readyEvent}
                 index={index}
+                indexSelected={indexSelected}
+                setIndexSelected={setIndexSelected}
               />
             ))}
           </div>

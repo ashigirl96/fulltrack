@@ -19,4 +19,5 @@ export {
   useCurrentPlaylistVideoIdsValue,
   useCurrentVideoValue,
   useIsShuffled,
+  useIsPlayingVideo,
 } from './states'

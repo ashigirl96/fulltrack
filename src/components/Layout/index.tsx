@@ -36,7 +36,7 @@ export function Layout({ children, setReadyEventState }: LayoutProps) {
             handleReady={handleReady}
           />
 
-          <div className="bg-green-50 flex-1 overflow-y-scroll">{children}</div>
+          <div className="flex-1 overflow-y-scroll">{children}</div>
         </main>
       </div>
       <Footer

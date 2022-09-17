@@ -4,6 +4,7 @@ import { useVideoValue, VideoFirestoreId } from '@/atoms/firestore/video'
 import { PlayerStateKey } from '@/constants/youtube'
 import { playlistState } from '@/atoms/firestore/playlist'
 import { isEqualArray, shuffleWithFirst } from '@/lib/array'
+import { useMemo } from 'react'
 
 // 現在再生してるプレイリストのID
 const currentPlaylistIdState = atom<PlaylistFirestoreId | null>({
@@ -124,6 +125,11 @@ export function useCurrentVideoIdValue() {
 export function useCurrentVideoValue() {
   const currentVideoId = useCurrentVideoIdValue()
   return useVideoValue(currentVideoId)
+}
+
+export function useIsPlayingVideo(videoId: VideoFirestoreId) {
+  const currentVideoId = useCurrentVideoIdValue()
+  return useMemo(() => videoId === currentVideoId, [currentVideoId, videoId])
 }
 
 // shuffle
