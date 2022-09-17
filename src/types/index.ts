@@ -6,3 +6,4 @@ export type {
   UserId,
 } from './playlistStore'
 export type { VideoFirestore } from './VideoStore'
+export type { UserFirestore } from './UserFirestore'
