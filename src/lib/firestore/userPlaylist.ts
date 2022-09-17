@@ -1,4 +1,4 @@
-import { collection } from '@firebase/firestore'
+import { collection, doc } from '@firebase/firestore'
 import {
   DocumentData,
   DocumentReference,
@@ -9,6 +9,7 @@ import {
 } from '@firebase/firestore'
 import { UserId, UserPlaylistStore } from '@/types/playlistStore'
 import { db } from '@/config/firebase'
+import { PlaylistStoreId } from '@/atoms/firestore/playlist'
 
 const playlistConverter: FirestoreDataConverter<UserPlaylistStore> = {
   fromFirestore(
@@ -35,6 +36,15 @@ export const userPlaylistCollectionRef = function userPlaylistCollectionRef(
   userId: UserId,
 ) {
   return collection(db, 'users', userId, 'playlists').withConverter(
+    playlistConverter,
+  )
+}
+
+export const userPlaylistDocRef = function (
+  userId: UserId,
+  playlistId: PlaylistStoreId,
+) {
+  return doc(db, 'users', userId, 'playlists', playlistId).withConverter(
     playlistConverter,
   )
 }

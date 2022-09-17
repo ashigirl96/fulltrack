@@ -1,6 +1,8 @@
 import React from 'react'
 import { usePlaylist } from './usePlaylist'
 import { VideoRow } from './VideoRow'
+import { PlaylistTitle } from './PlaylistTitle'
+
 import { PlaylistStoreId } from '@/atoms/firestore/playlist'
 import { SetReadyEventStateType } from '@/hooks/youtube_player'
 
@@ -9,16 +11,17 @@ type Props = {
   readyEvent: SetReadyEventStateType[0]
 }
 export function Playlist({ playlistId, readyEvent }: Props) {
-  const { completed, videoIds, indexSelected, setIndexSelected } =
+  const { completed, playlist, indexSelected, setIndexSelected } =
     usePlaylist(playlistId)
 
   if (!completed) {
     return <div>loading</div>
   }
 
-  if (videoIds) {
+  if (playlist) {
     return (
       <div className="max-w-full px-4 relative" tabIndex={0}>
+        <PlaylistTitle playlist={playlist} />
         <div
           className="mb-[16] sticky top-0 bg-blue-500 text-white z-10"
           tabIndex={2}
@@ -33,7 +36,7 @@ export function Playlist({ playlistId, readyEvent }: Props) {
 
         <div className="h-[2296px]">
           <div className="translate-y-0">
-            {videoIds.map((videoId, index) => (
+            {playlist.videoIds.map((videoId, index) => (
               <VideoRow
                 key={`${videoId}-${index}`}
                 videoId={videoId}
@@ -49,6 +52,5 @@ export function Playlist({ playlistId, readyEvent }: Props) {
       </div>
     )
   }
-
   return <div>Hello</div>
 }

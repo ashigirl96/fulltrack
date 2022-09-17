@@ -11,7 +11,7 @@ export function usePlaylist(playlistId: PlaylistStoreId) {
 
   return {
     completed,
-    videoIds: playlist?.videoIds,
+    playlist,
     indexSelected,
     setIndexSelected,
   }
