@@ -108,6 +108,9 @@ function useEditPlaylistTitleModal({
   setIsOpenEditor,
 }: Args) {
   const [title, setTitle] = useState(original)
+  useEffect(() => {
+    setTitle(original)
+  }, [original])
   const titleRef = useRef<HTMLInputElement>(null)
 
   const currentUserId = useGetCurrentUserId() || ''
