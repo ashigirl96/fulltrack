@@ -7,6 +7,7 @@ import {
 } from 'react-icons/tb'
 import { FaPauseCircle, FaPlayCircle } from 'react-icons/fa'
 import { SpeakerWaveIcon, SpeakerXMarkIcon } from '@heroicons/react/24/outline'
+import { RepeatStatusState } from '@/atoms/youtubePlayer/states'
 
 function classNames(className: string) {
   return `h-6 text-black-300 cursor-pointer ${className}`
@@ -42,7 +43,7 @@ export function ShuffleIcon({ isShuffle }: ShuffleProps) {
 }
 
 type RepeatProps = {
-  status: 'default' | 'repeat' | 'repeat-one'
+  status: RepeatStatusState
 }
 export function RepeatIcon({ status }: RepeatProps) {
   switch (status) {

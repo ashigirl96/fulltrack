@@ -4,13 +4,12 @@ import {
   useCurrentPlaylistVideoIdsValue,
   useCurrentVideoIdValue,
   useCurrentVideoValue,
-  useIsLoopValue,
   useIsShuffled,
   useIsShuffleValue,
   useSetCurrentVideoIds,
   useSetCurrentVideoIndex,
-  useSetIsLoop,
   useSetIsShuffle,
+  useSetRepeatStatus,
   useShuffledCurrentVideoIds,
 } from '@/atoms/youtubePlayer'
 import { useCallback, useMemo } from 'react'
@@ -18,6 +17,7 @@ import {
   useSetNextVideo,
   useSetPreviousVideo,
 } from '@/atoms/youtubePlayer/hooks'
+import { useRepeatStatusValue } from '@/atoms/youtubePlayer/states'
 
 export function useHandlePlayerController(
   readyEvent: YouTubePlayerType | undefined,
@@ -26,7 +26,6 @@ export function useHandlePlayerController(
     currentPlayerStatus,
     setNextVideo,
     setPreviousVideo,
-    setLoop,
     currentVideo,
     currentVideoId,
     isShuffled,
@@ -35,9 +34,10 @@ export function useHandlePlayerController(
     setIsShuffle,
     shuffledVideoIds,
     videoIds,
-    isLoop,
     isShuffle,
     isPause,
+    setRepeatStatus,
+    repeatStatus,
   } = useHandlePlayerControllerState()
 
   // 再生・停止ボタンを押したときに呼ばれる
@@ -52,7 +52,11 @@ export function useHandlePlayerController(
     setPreviousVideo,
   })
   // 次の動画再生ボタンを押したときに呼ばれる
-  const handleNextVideo = setNextVideo
+  const handleNextVideo = useHandleNextVideo({
+    setNextVideo,
+    repeatStatus,
+    setRepeatStatus,
+  })
   // シャッフルボタンを押したときに呼ばれる
   const handleShuffle = useHandleShuffle({
     currentVideoId,
@@ -64,18 +68,18 @@ export function useHandlePlayerController(
     setIsShuffle,
   })
   // ループボタンを押したときに呼ばれる
-  const handleLoop = useHandleLoop({ setLoop })
+  const handleRepeat = useHandleRepeat({ setRepeatStatus })
 
   return {
     readyEvent,
-    isLoop,
     isShuffle,
     isPause,
-    handleLoop,
+    handleRepeat,
     handlePlayController,
     handleShuffle,
     handlePreviousVideo,
     handleNextVideo,
+    repeatStatus,
   }
 }
 
@@ -128,9 +132,44 @@ function useHandlePreviousVideo({
   }, [setPreviousVideo, readyEvent, currentVideo])
 }
 
-type LoopArgs = Pick<ReturnTypeUseHandlePlayerController, 'setLoop'>
-function useHandleLoop({ setLoop }: LoopArgs) {
-  return useCallback(() => setLoop((prev) => !prev), [setLoop])
+// 次の曲を選択したときに発火する
+type NextArgs = Pick<
+  ReturnTypeUseHandlePlayerController,
+  'setNextVideo' | 'repeatStatus' | 'setRepeatStatus'
+>
+function useHandleNextVideo({
+  setNextVideo,
+  repeatStatus,
+  setRepeatStatus,
+}: NextArgs) {
+  return useCallback(async () => {
+    switch (repeatStatus) {
+      case 'repeat-one':
+        setRepeatStatus('repeat')
+        break
+      default:
+        break
+    }
+    setNextVideo(true)
+  }, [repeatStatus, setNextVideo, setRepeatStatus])
+}
+
+type RepeatArgs = Pick<ReturnTypeUseHandlePlayerController, 'setRepeatStatus'>
+function useHandleRepeat({ setRepeatStatus }: RepeatArgs) {
+  return useCallback(
+    () =>
+      setRepeatStatus((prev) => {
+        switch (prev) {
+          case 'default':
+            return 'repeat'
+          case 'repeat':
+            return 'repeat-one'
+          case 'repeat-one':
+            return 'default'
+        }
+      }),
+    [setRepeatStatus],
+  )
 }
 
 type ShuffleArgs = Pick<
@@ -179,7 +218,7 @@ function useHandlePlayerControllerState() {
   const currentPlayerStatus = useCurrentPlayerStatusValue()
   const setNextVideo = useSetNextVideo()
   const setPreviousVideo = useSetPreviousVideo()
-  const setLoop = useSetIsLoop()
+  const setRepeatStatus = useSetRepeatStatus()
   const currentVideoId = useCurrentVideoIdValue()
   const currentVideo = useCurrentVideoValue()
   const isShuffled = useIsShuffled()
@@ -189,7 +228,7 @@ function useHandlePlayerControllerState() {
   const setCurrentVideoIndex = useSetCurrentVideoIndex()
   const videoIds = useCurrentPlaylistVideoIdsValue()
 
-  const isLoop = useIsLoopValue()
+  const repeatStatus = useRepeatStatusValue()
   const isShuffle = useIsShuffleValue()
   const isPause = useMemo(
     () => currentPlayerStatus === 'PAUSED',
@@ -200,7 +239,7 @@ function useHandlePlayerControllerState() {
     currentPlayerStatus,
     setNextVideo,
     setPreviousVideo,
-    setLoop,
+    setRepeatStatus,
     currentVideo,
     currentVideoId,
     isShuffled,
@@ -209,7 +248,7 @@ function useHandlePlayerControllerState() {
     setIsShuffle,
     shuffledVideoIds,
     videoIds,
-    isLoop,
+    repeatStatus,
     isShuffle,
     isPause,
   }

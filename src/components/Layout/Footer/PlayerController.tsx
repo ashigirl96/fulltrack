@@ -16,14 +16,14 @@ type Props = Pick<
 export function PlayerController({ handlePlayerController }: Props) {
   const {
     readyEvent,
-    isLoop,
     isShuffle,
     isPause,
-    handleLoop,
     handlePlayController,
     handleShuffle,
     handlePreviousVideo,
     handleNextVideo,
+    repeatStatus,
+    handleRepeat,
   } = handlePlayerController
 
   return (
@@ -44,8 +44,8 @@ export function PlayerController({ handlePlayerController }: Props) {
         <button onClick={handleNextVideo}>
           <ForwardStepIcon className="h-6 cursor-pointer" />
         </button>
-        <button onClick={handleLoop}>
-          <RepeatIcon status={isLoop ? 'repeat' : 'default'} />
+        <button onClick={handleRepeat}>
+          <RepeatIcon status={repeatStatus} />
         </button>
       </div>
 

@@ -20,18 +20,19 @@ export function useCurrentPlaylistIdValue() {
   return useRecoilValue(currentPlaylistIdState)
 }
 
-// ループ
-const isLoopState = atom<boolean>({
-  key: 'isLoopState',
-  default: false,
+// リピート
+export type RepeatStatusState = 'default' | 'repeat' | 'repeat-one'
+const repeatStatusState = atom<RepeatStatusState>({
+  key: 'repeatStatusState',
+  default: 'default',
 })
 
-export function useIsLoopValue() {
-  return useRecoilValue(isLoopState)
+export function useRepeatStatusValue() {
+  return useRecoilValue(repeatStatusState)
 }
 
-export function useSetIsLoop() {
-  return useSetRecoilState(isLoopState)
+export function useSetRepeatStatus() {
+  return useSetRecoilState(repeatStatusState)
 }
 
 // ランダム
