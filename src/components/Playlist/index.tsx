@@ -4,11 +4,11 @@ import { VideoRow } from './VideoRow'
 import { PlaylistTitle } from './PlaylistTitle'
 
 import { PlaylistStoreId } from '@/atoms/firestore/playlist'
-import { SetReadyEventStateType } from '@/hooks/youtube_player'
+import { ReturnTypeReadyEventStateType } from '@/hooks/youtube_player'
 
 type Props = {
   playlistId: PlaylistStoreId
-  readyEvent: SetReadyEventStateType[0]
+  readyEvent: ReturnTypeReadyEventStateType[0]
 }
 export function Playlist({ playlistId, readyEvent }: Props) {
   const { completed, playlist, indexSelected, setIndexSelected } =

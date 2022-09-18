@@ -1,2 +1,2 @@
-export { useSetReadyEventState } from './useSetReadyEventState'
-export type { SetReadyEventStateType } from './useSetReadyEventState'
+export { useHandlerReadyEventState } from './useHandlerReadyEventState'
+export type { ReturnTypeReadyEventStateType } from './useHandlerReadyEventState'

@@ -1,12 +1,12 @@
 import type { NextPage } from 'next'
 import { Layout } from '@/components/Layout'
-import { useSetReadyEventState } from '@/hooks/youtube_player'
+import { useHandlerReadyEventState } from '@/hooks/youtube_player'
 
 const Home: NextPage = () => {
-  const setReadyEventState = useSetReadyEventState()
+  const handlerReadyEventState = useHandlerReadyEventState()
 
   return (
-    <Layout setReadyEventState={setReadyEventState}>
+    <Layout handlerReadyEventState={handlerReadyEventState}>
       <div className="bg-amber-200 flex justify-center">Hello</div>
     </Layout>
   )
