@@ -34,8 +34,8 @@ export function VideoRow({
   return (
     <div
       role="row"
-      className={`group hover:bg-gray-500 h-14 grid-playlist ${
-        isSelected && 'bg-gray-300'
+      className={`group hover:bg-accent h-14 grid-playlist ${
+        isSelected && 'bg-secondary'
       }`}
       onClick={setIndex}
       onDoubleClick={handleDoubleClick}

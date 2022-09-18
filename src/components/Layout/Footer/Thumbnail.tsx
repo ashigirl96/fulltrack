@@ -16,12 +16,12 @@ export function Thumbnail() {
           alt={`thumbnail-${thumbnailUrl}`}
         />
         <div className="flex flex-col gap-y-1">
-          <div className="font-medium text-gray-700">
+          <div className="font-medium text-primary">
             <a className="hover:underline" href={originalTitle}>
               {title}
             </a>
           </div>
-          <div className="group-hover:text-white text-xs text-gray-600">
+          <div className="group-hover:text-white text-xs text-accent-content">
             {artists.join(', ')}
           </div>
         </div>

@@ -13,6 +13,7 @@ module.exports = {
   },
   plugins: [require('daisyui'), require('@tailwindcss/line-clamp')],
   daisyui: {
-    themes: ['lofi'],
+    // themes: ['lofi'],
+    themes: ['luxury'],
   },
 }

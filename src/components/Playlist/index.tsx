@@ -23,7 +23,7 @@ export function Playlist({ playlistId, readyEvent }: Props) {
       <div className="max-w-full px-4 relative" tabIndex={0}>
         <PlaylistTitle playlist={playlist} />
         <div
-          className="mb-[16] sticky top-0 bg-blue-500 text-white z-10"
+          className="mb-[16] sticky top-0 bg-primary text-primary-content z-10"
           tabIndex={2}
         >
           <div className="grid-playlist">
