@@ -142,6 +142,7 @@ function useHandleNextVideo({
   repeatStatus,
   setRepeatStatus,
 }: NextArgs) {
+  // TODO: リファクタリング. もっと良い書き方ないか模索
   return useCallback(async () => {
     switch (repeatStatus) {
       case 'repeat-one':

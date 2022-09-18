@@ -29,6 +29,7 @@ export function useHandleStateChange() {
           case 'UN_STARTED':
             break
           case 'ENDED': {
+            // TODO: リファクタリング
             switch (repeatStatus) {
               case 'repeat-one': {
                 const { start } = currentVideo
