@@ -1,4 +1,4 @@
-import { collection } from '@firebase/firestore'
+import { collection, doc } from '@firebase/firestore'
 import { db } from '@/config/firebase'
 import {
   DocumentData,
@@ -8,6 +8,7 @@ import {
   WithFieldValue,
 } from '@firebase/firestore'
 import type { VideoFirestore } from '@/types'
+import { VideoFirestoreId } from '@/atoms/firestore/video'
 
 const videoConverter: FirestoreDataConverter<VideoFirestore> = {
   fromFirestore(
@@ -46,3 +47,7 @@ const videoConverter: FirestoreDataConverter<VideoFirestore> = {
 export const videoCollectionRef = collection(db, 'videos').withConverter(
   videoConverter,
 )
+
+export function videoDocRef(videoId: VideoFirestoreId) {
+  return doc(db, 'videos', videoId).withConverter(videoConverter)
+}
