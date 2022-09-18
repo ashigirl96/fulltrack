@@ -1,5 +1,5 @@
-import { SpeakerWaveIcon, SpeakerXMarkIcon } from '@heroicons/react/24/outline'
 import { ReturnTypeOfUseYouTubePlayerComponent } from '@/components/shared/YouTubePlayer'
+import { SpeakerIcon } from '@/components/icons'
 
 type Props = Pick<ReturnTypeOfUseYouTubePlayerComponent, 'handleVolume'>
 export function Speaker({ handleVolume }: Props) {
@@ -8,17 +8,11 @@ export function Speaker({ handleVolume }: Props) {
   return (
     <div className="flex justify-end items-center w-[30%] min-w-[100px]">
       <div className="flex flex-row justify-center items-center gap-x-2">
-        {currentVolume === 0 ? (
-          <SpeakerXMarkIcon
-            className="h-6 w-6 text-black-300 cursor-pointer"
-            onClick={handleUnmute}
-          />
-        ) : (
-          <SpeakerWaveIcon
-            className="h-6 w-6 text-black-300 cursor-pointer"
-            onClick={handleMute}
-          />
-        )}
+        <SpeakerIcon
+          currentVolume={currentVolume}
+          handleUnmute={handleUnmute}
+          handleMute={handleMute}
+        />
         <input
           id="steps-range"
           type="range"
