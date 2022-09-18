@@ -8,7 +8,7 @@ export function PlaylistTitle({ playlist }: Props) {
     usePlaylistTitle({ playlist })
 
   if (playlist.isOfficial) {
-    return <h1 className="text-3xl my-10 cursor-default">{title}</h1>
+    return <h1 className="text-3xl cursor-default">{title}</h1>
   }
 
   return (
@@ -19,7 +19,7 @@ export function PlaylistTitle({ playlist }: Props) {
         setIsOpenEditor={setIsOpenEditor}
         playlistId={playlistId}
       />
-      <h1 className="text-3xl my-10">
+      <h1 className="text-3xl">
         <button onClick={handleClick}>{title}</button>
       </h1>
     </>
