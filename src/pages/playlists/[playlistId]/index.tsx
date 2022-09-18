@@ -1,18 +1,13 @@
 import type { NextPage } from 'next'
 import { Layout } from '@/components/Layout'
 import { NextRouter } from 'next/router'
-import { Playlist } from '@/components/Playlist'
+import { PlaylistWrapper } from '@/components/Playlist'
 import { useHandlerReadyEventState } from '@/hooks/youtube_player'
 import { ReturnTypeSetReadyEvent } from '@/hooks/youtube_player/useSetReadyEvent'
 
 type Props = ReturnTypeSetReadyEvent & { router: NextRouter }
-const PlaylistShow: NextPage<Props> = ({
-  readyEvent,
-  setReadyEvent,
-  router,
-}) => {
+const Component: NextPage<Props> = ({ readyEvent, setReadyEvent, router }) => {
   const { isReady, query } = router
-  // const playlistId: string | undefined = router?.query?.playlistId
   const handlerReadyEventState = useHandlerReadyEventState({
     readyEvent,
     setReadyEvent,
@@ -26,7 +21,7 @@ const PlaylistShow: NextPage<Props> = ({
 
   return (
     <Layout handlerReadyEventState={handlerReadyEventState}>
-      <Playlist
+      <PlaylistWrapper
         playlistId={playlist}
         readyEvent={handlerReadyEventState.readyEvent}
       />
@@ -34,4 +29,4 @@ const PlaylistShow: NextPage<Props> = ({
   )
 }
 
-export default PlaylistShow
+export default Component
