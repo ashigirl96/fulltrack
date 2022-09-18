@@ -1,7 +1,10 @@
 import { usePlaylist } from './usePlaylist'
 import { TrackList } from './TrackList'
+import { OfficialTracks } from './OfficialTracks'
+
 import type { TrackListProps } from './TrackList'
 
+// プレイリストに遷移したときに、video一覧を取得してレンダリングする
 type Props = Pick<TrackListProps, 'playlistId' | 'readyEvent'>
 export function PlaylistWrapper({ playlistId, readyEvent }: Props) {
   const { completed, playlist, indexSelected, setIndexSelected } =
@@ -22,5 +25,5 @@ export function PlaylistWrapper({ playlistId, readyEvent }: Props) {
       />
     )
   }
-  return <div>Hello222</div>
+  return <OfficialTracks />
 }

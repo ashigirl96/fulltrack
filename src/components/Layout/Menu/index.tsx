@@ -1,4 +1,4 @@
-import { UserPlaylists, Playlists } from './Playlists'
+import { UserPlaylists } from './Playlists'
 import { useGetCurrentUserId } from '@/hooks/firebaseAuth'
 import { CreateUserPlaylist } from './CreateUserPlaylist'
 import Link from 'next/link'
@@ -18,7 +18,6 @@ export function Menu({ width }: Props) {
       <CreateUserPlaylist currentUserId={currentUserId} />
       <div className="border border-gray-300 my-5 mx-4" />
       <div className="overflow-y-scroll flex-1">
-        <Playlists />
         {currentUserId && <UserPlaylists userId={currentUserId} />}
       </div>
     </div>

@@ -21,13 +21,15 @@ const playlistConverter: FirestoreDataConverter<PlaylistStore> = {
       id: snapshot.id,
       title: data.title,
       videoIds: data.videoIds.map((video: DocumentReference) => video.id),
+      thumbnailUrl: data.thumbnailUrl,
     }
   },
   toFirestore(playlist: WithFieldValue<PlaylistStore>): DocumentData {
-    const { title, videoIds } = playlist
+    const { title, videoIds, thumbnailUrl } = playlist
     return {
       title,
       videoIds,
+      thumbnailUrl,
     }
   },
 }

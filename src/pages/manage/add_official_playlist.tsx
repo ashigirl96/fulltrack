@@ -17,6 +17,7 @@ const AddOfficialPlaylist: NextPage = () => {
       id: documentId(),
       title,
       videoIds: _videoIds,
+      thumbnailUrl: '',
     })
       .then(() => setUploadedMessage(`${title}の登録できました`))
       .catch((reason) => setUploadedMessage(`ERROR ${JSON.stringify(reason)}`))
