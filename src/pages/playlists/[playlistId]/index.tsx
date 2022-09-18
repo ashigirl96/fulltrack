@@ -1,28 +1,35 @@
 import type { NextPage } from 'next'
 import { Layout } from '@/components/Layout'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { NextRouter } from 'next/router'
 import { Playlist } from '@/components/Playlist'
 import { useHandlerReadyEventState } from '@/hooks/youtube_player'
+import { ReturnTypeSetReadyEvent } from '@/hooks/youtube_player/useSetReadyEvent'
 
-const PlaylistShow: NextPage = () => {
-  const router = useRouter()
-  const [playlistId, setPlaylistId] = useState<string | null>(null)
-  useEffect(() => {
-    if (router.isReady) {
-      setPlaylistId(router.query.playlistId as string)
-    }
-  }, [router])
-  const handlerReadyEventState = useHandlerReadyEventState()
+type Props = ReturnTypeSetReadyEvent & { router: NextRouter }
+const PlaylistShow: NextPage<Props> = ({
+  readyEvent,
+  setReadyEvent,
+  router,
+}) => {
+  const { isReady, query } = router
+  // const playlistId: string | undefined = router?.query?.playlistId
+  const handlerReadyEventState = useHandlerReadyEventState({
+    readyEvent,
+    setReadyEvent,
+  })
+
+  if (!isReady) {
+    return <div>isLoading...</div>
+  }
+
+  const playlist = query.playlistId as string
 
   return (
     <Layout handlerReadyEventState={handlerReadyEventState}>
-      {playlistId && (
-        <Playlist
-          playlistId={playlistId}
-          readyEvent={handlerReadyEventState.readyEvent}
-        />
-      )}
+      <Playlist
+        playlistId={playlist}
+        readyEvent={handlerReadyEventState.readyEvent}
+      />
     </Layout>
   )
 }

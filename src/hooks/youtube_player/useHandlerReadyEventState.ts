@@ -1,9 +1,10 @@
 import { YouTubeEvent } from '@/types'
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 import { useCurrentVolumeValue } from '@/atoms/youtubePlayer'
+import { ReturnTypeSetReadyEvent } from '@/hooks/youtube_player/useSetReadyEvent'
 
-export function useHandlerReadyEventState() {
-  const [readyEvent, setReadyEvent] = useState<YouTubeEvent['target']>()
+type Args = ReturnTypeSetReadyEvent
+export function useHandlerReadyEventState({ readyEvent, setReadyEvent }: Args) {
   const volume = useCurrentVolumeValue()
 
   const handleReadyEvent = useCallback(
@@ -11,7 +12,7 @@ export function useHandlerReadyEventState() {
       setReadyEvent(event.target)
       await event.target.setVolume(volume)
     },
-    [volume],
+    [setReadyEvent, volume],
   )
 
   return {

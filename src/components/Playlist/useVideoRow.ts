@@ -19,7 +19,7 @@ export type ArgsVideoRow = {
   index: number
   videoId: VideoFirestoreId
   playlistId: PlaylistStoreId
-  readyEvent: ReturnTypeReadyEventStateType[0]
+  readyEvent: ReturnTypeReadyEventStateType['readyEvent']
 } & Pick<ReturnTypeUsePlaylist, 'setIndexSelected' | 'indexSelected'>
 export function useVideoRow({
   videoId,

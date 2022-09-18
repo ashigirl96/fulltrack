@@ -8,7 +8,7 @@ import { ReturnTypeReadyEventStateType } from '@/hooks/youtube_player'
 
 type Props = {
   playlistId: PlaylistStoreId
-  readyEvent: ReturnTypeReadyEventStateType[0]
+  readyEvent: ReturnTypeReadyEventStateType['readyEvent']
 }
 export function Playlist({ playlistId, readyEvent }: Props) {
   const { completed, playlist, indexSelected, setIndexSelected } =
@@ -52,5 +52,5 @@ export function Playlist({ playlistId, readyEvent }: Props) {
       </div>
     )
   }
-  return <div>Hello</div>
+  return <div>Hello222</div>
 }
