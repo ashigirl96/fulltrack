@@ -17,7 +17,7 @@ export function PlayerController({ handlePlayerController }: Props) {
   const {
     readyEvent,
     isShuffle,
-    isPause,
+    isPlaying,
     handlePlayController,
     handleShuffle,
     handlePreviousVideo,
@@ -27,7 +27,7 @@ export function PlayerController({ handlePlayerController }: Props) {
   } = handlePlayerController
 
   return (
-    <div className="flex flex-col items-center gap-y-3 w-[40%] max-w-[722px]">
+    <div className="flex flex-col items-center gap-y-1 w-[40%] max-w-[722px]">
       <div className="flex gap-x-4">
         <button onClick={handleShuffle}>
           <ShuffleIcon isShuffle={isShuffle} />
@@ -35,11 +35,11 @@ export function PlayerController({ handlePlayerController }: Props) {
         <button onClick={handlePreviousVideo}>
           <BackwardStepIcon className="h-6 cursor-pointer" />
         </button>
-        <button onClick={handlePlayController} hidden={isPause}>
-          <PauseIcon className="h-8 cursor-pointer" />
+        <button onClick={handlePlayController} hidden={!isPlaying}>
+          <PauseIcon className="cursor-pointer" />
         </button>
-        <button hidden={!isPause} onClick={handlePlayController}>
-          <PlayIcon className="h-8 cursor-pointer" />
+        <button hidden={isPlaying} onClick={handlePlayController}>
+          <PlayIcon className="cursor-pointer" />
         </button>
         <button onClick={handleNextVideo}>
           <ForwardStepIcon className="h-6 cursor-pointer" />

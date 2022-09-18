@@ -17,19 +17,19 @@ type Props = {
   className: string
 }
 export function PlayIcon({ className }: Props) {
-  return <FaPlayCircle className={className} />
+  return <FaPlayCircle size={36} className={className} />
 }
 
 export function PauseIcon({ className }: Props) {
-  return <FaPauseCircle className={className} />
+  return <FaPauseCircle size={36} className={className} />
 }
 
 export function ForwardStepIcon({ className }: Props) {
-  return <TbPlayerSkipForward className={className} />
+  return <TbPlayerSkipForward size={20} className={className} />
 }
 
 export function BackwardStepIcon({ className }: Props) {
-  return <TbPlayerSkipBack className={className} />
+  return <TbPlayerSkipBack size={20} className={className} />
 }
 
 type ShuffleProps = {
@@ -37,9 +37,9 @@ type ShuffleProps = {
 }
 export function ShuffleIcon({ isShuffle }: ShuffleProps) {
   if (isShuffle) {
-    return <TbArrowsShuffle className={classNames('text-green-600')} />
+    return <TbArrowsShuffle size={20} className={classNames('text-greedy')} />
   }
-  return <TbArrowsShuffle className={classNames('')} />
+  return <TbArrowsShuffle size={20} className={classNames('')} />
 }
 
 type RepeatProps = {
@@ -48,11 +48,11 @@ type RepeatProps = {
 export function RepeatIcon({ status }: RepeatProps) {
   switch (status) {
     case 'default':
-      return <TbRepeat className={classNames('')} />
+      return <TbRepeat size={20} className={classNames('')} />
     case 'repeat':
-      return <TbRepeat className={classNames('text-green-600')} />
+      return <TbRepeat size={20} className={classNames('text-greedy')} />
     case 'repeat-one':
-      return <TbRepeatOnce className={classNames('text-green-600')} />
+      return <TbRepeatOnce size={20} className={classNames('text-greedy')} />
   }
 }
 
@@ -71,15 +71,15 @@ export function SpeakerIcon({
       <SpeakerXMarkIcon
         width={40}
         onClick={handleUnmute}
-        className="h-6 cursor-pointer"
+        className="cursor-pointer"
       />
     )
   }
   return (
     <SpeakerWaveIcon
-      width={40}
+      width={20}
       onClick={handleMute}
-      className="h-6 cursor-pointer"
+      className="cursor-pointer"
     />
   )
 }

@@ -9,6 +9,9 @@ module.exports = {
       gridTemplateColumns: {
         playlist: '16px 4fr 6fr minmax(120px, 1fr)',
       },
+      colors: {
+        greedy: '#c8ea31',
+      },
     },
   },
   plugins: [require('daisyui'), require('@tailwindcss/line-clamp')],

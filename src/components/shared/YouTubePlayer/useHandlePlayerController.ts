@@ -35,7 +35,7 @@ export function useHandlePlayerController(
     shuffledVideoIds,
     videoIds,
     isShuffle,
-    isPause,
+    isPlaying,
     setRepeatStatus,
     repeatStatus,
   } = useHandlePlayerControllerState()
@@ -73,7 +73,7 @@ export function useHandlePlayerController(
   return {
     readyEvent,
     isShuffle,
-    isPause,
+    isPlaying,
     handleRepeat,
     handlePlayController,
     handleShuffle,
@@ -231,8 +231,8 @@ function useHandlePlayerControllerState() {
 
   const repeatStatus = useRepeatStatusValue()
   const isShuffle = useIsShuffleValue()
-  const isPause = useMemo(
-    () => currentPlayerStatus === 'PAUSED',
+  const isPlaying = useMemo(
+    () => currentPlayerStatus === 'PLAYING',
     [currentPlayerStatus],
   )
 
@@ -251,7 +251,7 @@ function useHandlePlayerControllerState() {
     videoIds,
     repeatStatus,
     isShuffle,
-    isPause,
+    isPlaying,
   }
 }
 

@@ -12,4 +12,7 @@
     .md-hidden {
         @apply md:flex hidden
     }
+    .text-greedy {
+
+    }
 }
