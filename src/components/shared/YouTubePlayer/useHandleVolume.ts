@@ -3,7 +3,7 @@ import {
   useCurrentVolumeValue,
   useSetCurrentVolume,
 } from '@/atoms/youtubePlayer'
-import { ChangeEvent, useCallback } from 'react'
+import { ChangeEvent, useCallback, useMemo, useState } from 'react'
 
 export function useHandleVolume(readyEvent: YouTubePlayerType | undefined) {
   const { setCurrentVolume, currentVolume } = useHandleVolumeState()
@@ -14,15 +14,30 @@ export function useHandleVolume(readyEvent: YouTubePlayerType | undefined) {
     setCurrentVolume,
   })
   // ミュートの制御
-  const handleMute = useHandleMute({ readyEvent, setCurrentVolume })
+  const [isMuted, setIsMuted] = useState(false)
+  const setMute = useCallback(() => setIsMuted(true), [])
+  const setUnmute = useCallback(() => setIsMuted(false), [])
+  const handleMute = useHandleMute({
+    readyEvent,
+    setMute,
+  })
   // アンミュートの制御
-  const handleUnmute = useHandleUnMute({ readyEvent, setCurrentVolume })
+  const handleUnmute = useHandleUnMute({
+    readyEvent,
+    setUnmute,
+  })
+
+  const volume = useMemo(
+    () => (isMuted ? 0 : currentVolume),
+    [currentVolume, isMuted],
+  )
 
   return {
-    currentVolume,
+    volume,
     handleInputVolume,
     handleMute,
     handleUnmute,
+    isMuted,
   }
 }
 
@@ -49,30 +64,28 @@ function useHandleInputVolume({
   )
 }
 
-type MuteArgs = Pick<
-  ReturnTypeHandleVolumeState,
-  'readyEvent' | 'setCurrentVolume'
->
-function useHandleMute({ readyEvent, setCurrentVolume }: MuteArgs) {
+type MuteArgs = Pick<ReturnTypeHandleVolumeState, 'readyEvent'> & {
+  setMute: () => void
+}
+function useHandleMute({ readyEvent, setMute }: MuteArgs) {
   return useCallback(async () => {
     if (readyEvent) {
-      setCurrentVolume(0)
+      setMute()
       await readyEvent.mute()
     }
-  }, [readyEvent, setCurrentVolume])
+  }, [readyEvent, setMute])
 }
 
-type UnMuteArgs = Pick<
-  ReturnTypeHandleVolumeState,
-  'readyEvent' | 'setCurrentVolume'
->
-function useHandleUnMute({ readyEvent, setCurrentVolume }: UnMuteArgs) {
+type UnMuteArgs = Pick<ReturnTypeHandleVolumeState, 'readyEvent'> & {
+  setUnmute: () => void
+}
+function useHandleUnMute({ readyEvent, setUnmute }: UnMuteArgs) {
   return useCallback(async () => {
     if (readyEvent) {
+      setUnmute()
       await readyEvent.unMute()
-      setCurrentVolume(await readyEvent.getVolume())
     }
-  }, [readyEvent, setCurrentVolume])
+  }, [readyEvent, setUnmute])
 }
 
 function useHandleVolumeState() {

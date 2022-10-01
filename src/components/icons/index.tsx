@@ -57,19 +57,19 @@ export function RepeatIcon({ status }: RepeatProps) {
 }
 
 type SpeakerProps = {
-  currentVolume: number
   handleUnmute: () => void
   handleMute: () => void
+  isMuted: boolean
 }
 export function SpeakerIcon({
-  currentVolume,
   handleMute,
   handleUnmute,
+  isMuted,
 }: SpeakerProps) {
-  if (currentVolume === 0) {
+  if (isMuted) {
     return (
       <SpeakerXMarkIcon
-        width={40}
+        width={20}
         onClick={handleUnmute}
         className="cursor-pointer"
       />
