@@ -1,7 +1,7 @@
 import { atom, useRecoilValue, useSetRecoilState } from 'recoil'
 import { PlaylistFirestoreId } from '@/types'
 import { VideoFirestoreId } from '@/atoms/firestore/video'
-import React, { useCallback } from 'react'
+import React, { useCallback, useMemo } from 'react'
 
 type ContextType =
   | {
@@ -53,5 +53,27 @@ export function useSetPlaylistContext(playlistId: PlaylistFirestoreId) {
       setter({ type: 'playlist', playlistId })
     },
     [playlistId, setter],
+  )
+}
+
+const isEditPlaylistNameState = atom<PlaylistFirestoreId | null>({
+  key: 'contextMenu/isEditPlaylistNameState',
+  default: null,
+})
+
+export function useSetIsEditPlaylistName(
+  playlistId: PlaylistFirestoreId | null,
+) {
+  const setter = useSetRecoilState(isEditPlaylistNameState)
+  return useCallback(() => {
+    setter(playlistId)
+  }, [playlistId, setter])
+}
+
+export function useIsEditPlaylistNameValue(playlistId: PlaylistFirestoreId) {
+  const currentEditPlaylistId = useRecoilValue(isEditPlaylistNameState)
+  return useMemo(
+    () => currentEditPlaylistId === playlistId,
+    [currentEditPlaylistId, playlistId],
   )
 }

@@ -2,6 +2,7 @@ import React, { useCallback } from 'react'
 import { useDeleteUserPlaylistCollection } from '@/hooks/playlist'
 import { PlaylistStoreId } from '@/atoms/firestore/playlist'
 import { useRouter } from 'next/router'
+import { useSetIsEditPlaylistName } from '@/atoms/contextMenu/states'
 
 type Props = {
   playlistId: PlaylistStoreId
@@ -17,13 +18,16 @@ export function PlaylistMenu({ playlistId }: Props) {
       await router.push(`/playlists/list`)
     }
   }, [deleteUserPlaylist, playlistId, router])
+
+  const handleRename = useSetIsEditPlaylistName(playlistId)
+
   return (
     <>
       <li>
         <button onClick={handleClickDelete}>削除</button>
       </li>
       <li>
-        <a>名前を変更</a>
+        <button onClick={handleRename}>名前を変更する</button>
       </li>
       <li>
         <a>プレイリストを作成する</a>

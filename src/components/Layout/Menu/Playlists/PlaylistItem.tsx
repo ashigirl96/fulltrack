@@ -15,5 +15,6 @@ export function PlaylistItem({ playlist, isOfficial }: Props) {
       isOfficial,
     })
   }, [isOfficial, playlist, setPlaylistState])
+
   return <div>{playlist.title}</div>
 }

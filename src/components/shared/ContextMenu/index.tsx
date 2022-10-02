@@ -2,6 +2,7 @@ import { useInitializeContext, useSelectedContext } from '@/atoms/contextMenu'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import type { PageCoord } from '@/types'
 import { PlaylistMenu } from './PlaylistMenu'
+import { VideoMenu } from './VideoMenu'
 
 export function ContextMenu() {
   const [pageCoord, setPageCoord] = useState<PageCoord>({ x: 0, y: 0 })
@@ -35,7 +36,7 @@ export function ContextMenu() {
       style={{ top, left }}
     >
       {ctx.type === 'playlist' && <PlaylistMenu playlistId={ctx.playlistId} />}
-      {/*{ctx.type === "video" && <VideoMenu pageCoord={} />}*/}
+      {ctx.type === 'video' && <VideoMenu videoId={ctx.videoId} />}
     </ul>
   )
 }
