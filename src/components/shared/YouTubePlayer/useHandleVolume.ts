@@ -8,15 +8,15 @@ import { ChangeEvent, useCallback, useMemo, useState } from 'react'
 export function useHandleVolume(readyEvent: YouTubePlayerType | undefined) {
   const { setCurrentVolume, currentVolume } = useHandleVolumeState()
 
+  const { isMuted, setMute, setUnmute } = useSetMute({ currentVolume })
   // 手動でボリュームを制御する
   const handleInputVolume = useHandleInputVolume({
     readyEvent,
     setCurrentVolume,
+    setUnmute,
   })
+
   // ミュートの制御
-  const [isMuted, setIsMuted] = useState(false)
-  const setMute = useCallback(() => setIsMuted(true), [])
-  const setUnmute = useCallback(() => setIsMuted(false), [])
   const handleMute = useHandleMute({
     readyEvent,
     setMute,
@@ -41,17 +41,38 @@ export function useHandleVolume(readyEvent: YouTubePlayerType | undefined) {
   }
 }
 
+type SetMuteArgs = Pick<ReturnTypeHandleVolumeState, 'currentVolume'>
+function useSetMute({ currentVolume }: SetMuteArgs) {
+  const [_isMuted, setIsMuted] = useState(false)
+  const setMute = useCallback(() => setIsMuted(true), [])
+  const setUnmute = useCallback(() => setIsMuted(false), [])
+  const isMuted = useMemo(
+    () => _isMuted || currentVolume === 0,
+    [_isMuted, currentVolume],
+  )
+  return {
+    isMuted,
+    setMute,
+    setUnmute,
+  }
+}
+type ReturnMute = ReturnType<typeof useSetMute>
+
 type InputVolumeArgs = Pick<
   ReturnTypeHandleVolumeState,
   'readyEvent' | 'setCurrentVolume'
->
+> & {
+  setUnmute: () => void
+}
 function useHandleInputVolume({
   readyEvent,
   setCurrentVolume,
+  setUnmute,
 }: InputVolumeArgs) {
   return useCallback(
     async (event: ChangeEvent<HTMLInputElement>) => {
       if (readyEvent) {
+        setUnmute()
         const _volume = Number(event.currentTarget.value)
         setCurrentVolume(_volume)
         if (_volume !== 0 && (await readyEvent.isMuted())) {
@@ -64,9 +85,8 @@ function useHandleInputVolume({
   )
 }
 
-type MuteArgs = Pick<ReturnTypeHandleVolumeState, 'readyEvent'> & {
-  setMute: () => void
-}
+type MuteArgs = Pick<ReturnTypeHandleVolumeState, 'readyEvent'> &
+  Pick<ReturnMute, 'setMute'>
 function useHandleMute({ readyEvent, setMute }: MuteArgs) {
   return useCallback(async () => {
     if (readyEvent) {
@@ -76,9 +96,8 @@ function useHandleMute({ readyEvent, setMute }: MuteArgs) {
   }, [readyEvent, setMute])
 }
 
-type UnMuteArgs = Pick<ReturnTypeHandleVolumeState, 'readyEvent'> & {
-  setUnmute: () => void
-}
+type UnMuteArgs = Pick<ReturnTypeHandleVolumeState, 'readyEvent'> &
+  Pick<ReturnMute, 'setUnmute'>
 function useHandleUnMute({ readyEvent, setUnmute }: UnMuteArgs) {
   return useCallback(async () => {
     if (readyEvent) {
