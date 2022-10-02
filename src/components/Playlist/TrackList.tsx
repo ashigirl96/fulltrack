@@ -35,7 +35,7 @@ export function TrackList({
         </div>
       </div>
 
-      <div className="h-[2296px]">
+      <div className="max-h-[2296px]">
         <div className="translate-y-0">
           {playlist.videoIds.map((videoId, index) => (
             <VideoRow
