@@ -5,8 +5,8 @@ import { PlaylistMenu } from './PlaylistMenu'
 
 export function ContextMenu() {
   const [pageCoord, setPageCoord] = useState<PageCoord>({ x: 0, y: 0 })
-  const top = useMemo(() => `${pageCoord.x}px`, [pageCoord.x])
-  const left = useMemo(() => `${pageCoord.y}px`, [pageCoord.y])
+  const top = useMemo(() => `${pageCoord.y}px`, [pageCoord.y])
+  const left = useMemo(() => `${pageCoord.x}px`, [pageCoord.x])
 
   const ctx = useSelectedContext()
 

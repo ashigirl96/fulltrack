@@ -43,31 +43,3 @@ function Playlist({ playlist }: PlaylistProps) {
     </div>
   )
 }
-
-// export function Playlists() {
-//   const { playlists, isLoading, error } = usePlaylists()
-//   if (error) {
-//     return <div>{JSON.stringify(error)}</div>
-//   }
-//   if (isLoading) {
-//     return <div>Loading</div>
-//   }
-//   if (!playlists) {
-//     return <div>Please login...</div>
-//   }
-//   return (
-//     <div>
-//       {playlists.map((playlist) => {
-//         return (
-//           <div key={`playlist-${playlist.id}`}>
-//             <Link href={`/playlists/${encodeURIComponent(playlist.id)}`}>
-//               <a>
-//                 <PlaylistItem playlist={playlist} isOfficial={true} />
-//               </a>
-//             </Link>
-//           </div>
-//         )
-//       })}
-//     </div>
-//   )
-// }
