@@ -1,11 +1,11 @@
-import { useSetSelectedContext, useSelectedContext } from '@/atoms/contextMenu'
+import { useInitialContext, useSelectedContext } from '@/atoms/contextMenu'
 import React, { useCallback, useEffect, useState } from 'react'
 
 export function ContextMenu() {
   const [xPos, setXPos] = useState('0px')
   const [yPos, setYPos] = useState('0px')
 
-  const setSelectedPlaylist = useSetSelectedContext()
+  const initializeContext = useInitialContext()
   const ctx = useSelectedContext()
 
   const handleContextMenu = useCallback((e: MouseEvent) => {
@@ -14,8 +14,8 @@ export function ContextMenu() {
     setYPos(`${e.pageY}px`)
   }, [])
   const handleClick = useCallback(() => {
-    setSelectedPlaylist({ type: null })
-  }, [setSelectedPlaylist])
+    initializeContext()
+  }, [initializeContext])
 
   useEffect(() => {
     document.addEventListener('click', handleClick)

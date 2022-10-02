@@ -1,15 +1,14 @@
 import { useUserPlaylists } from './usePlaylists'
 import { PlaylistItem } from './PlaylistItem'
 import Link from 'next/link'
-import { UserId } from '@/types'
-import { useSetSelectedContext } from '@/atoms/contextMenu'
+import { PlaylistStore, UserId } from '@/types'
+import { useSetPlaylistContext } from '@/atoms/contextMenu'
 
 type Props = {
   userId: UserId
 }
 export function UserPlaylists({ userId }: Props) {
   const { playlists, isLoading, error } = useUserPlaylists(userId)
-  const setSelectedPlaylist = useSetSelectedContext()
 
   if (error) {
     return <div>{JSON.stringify(error)}</div>
@@ -22,23 +21,25 @@ export function UserPlaylists({ userId }: Props) {
   }
   return (
     <div>
-      {playlists.map((playlist) => {
-        return (
-          <div
-            key={`playlist-${playlist.id}`}
-            onContextMenu={(e) => {
-              e.preventDefault()
-              setSelectedPlaylist({ type: 'playlist', playlistId: playlist.id })
-            }}
-          >
-            <Link href={`/playlists/${encodeURIComponent(playlist.id)}`}>
-              <a>
-                <PlaylistItem playlist={playlist} isOfficial={false} />
-              </a>
-            </Link>
-          </div>
-        )
-      })}
+      {playlists.map((playlist) => (
+        <Playlist playlist={playlist} />
+      ))}
+    </div>
+  )
+}
+
+type PlaylistProps = {
+  playlist: PlaylistStore
+}
+function Playlist({ playlist }: PlaylistProps) {
+  const setSelectedPlaylist = useSetPlaylistContext(playlist.id)
+  return (
+    <div key={`playlist-${playlist.id}`} onContextMenu={setSelectedPlaylist}>
+      <Link href={`/playlists/${encodeURIComponent(playlist.id)}`}>
+        <a>
+          <PlaylistItem playlist={playlist} isOfficial={false} />
+        </a>
+      </Link>
     </div>
   )
 }
