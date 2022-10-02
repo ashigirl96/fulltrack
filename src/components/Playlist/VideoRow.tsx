@@ -1,6 +1,7 @@
 import React from 'react'
 import { useVideoRow } from './useVideoRow'
 import type { ArgsVideoRow } from './useVideoRow'
+import { useSetSelectedContext } from '@/atoms/contextMenu'
 
 type Props = ArgsVideoRow
 export function VideoRow({
@@ -26,6 +27,7 @@ export function VideoRow({
     readyEvent,
     playlistId,
   })
+  const setSelectedContext = useSetSelectedContext()
 
   if (!video) {
     return <div>loading..</div>
@@ -39,6 +41,10 @@ export function VideoRow({
       }`}
       onClick={setIndex}
       onDoubleClick={handleDoubleClick}
+      onContextMenu={(e) => {
+        e.preventDefault()
+        setSelectedContext({ type: 'video', videoId: video.videoId })
+      }}
     >
       <div className="flex justify-self-end items-center">{index + 1}</div>
       <div className="flex justify-self-start items-center">
