@@ -1,11 +1,12 @@
 import { useInitializeContext, useSelectedContext } from '@/atoms/contextMenu'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import type { PageCoord } from '@/types'
 import { PlaylistMenu } from './PlaylistMenu'
-import { VideoMenu } from './VideoMenu'
 
 export function ContextMenu() {
   const [pageCoord, setPageCoord] = useState<PageCoord>({ x: 0, y: 0 })
+  const top = useMemo(() => `${pageCoord.x}px`, [pageCoord.x])
+  const left = useMemo(() => `${pageCoord.y}px`, [pageCoord.y])
 
   const ctx = useSelectedContext()
 
@@ -24,12 +25,17 @@ export function ContextMenu() {
     }
   }, [handleClick, handleContextMenu])
 
-  switch (ctx.type) {
-    case 'playlist':
-      return <PlaylistMenu pageCoord={pageCoord} />
-    case 'video':
-      return <VideoMenu pageCoord={pageCoord} />
-    default:
-      return null
+  if (!ctx.type) {
+    return null
   }
+
+  return (
+    <ul
+      className="absolute menu bg-base-100 w-56 p-2 rounded-box divider-y divide-blue-300"
+      style={{ top, left }}
+    >
+      {ctx.type === 'playlist' && <PlaylistMenu playlistId={ctx.playlistId} />}
+      {/*{ctx.type === "video" && <VideoMenu pageCoord={} />}*/}
+    </ul>
+  )
 }

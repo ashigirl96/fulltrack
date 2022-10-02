@@ -1,20 +1,20 @@
 import React from 'react'
+import { useDeleteUserPlaylistCollection } from '@/hooks/playlist'
+import { VideoFirestoreId } from '@/atoms/firestore/video'
 
 type Props = {
-  pageCoord: { x: number; y: number }
+  videoId: VideoFirestoreId
 }
-export function VideoMenu({ pageCoord }: Props) {
+export function VideoMenu({ videoId }: Props) {
+  const deleteUserPlaylist = useDeleteUserPlaylistCollection(videoId)
   return (
-    <ul
-      className="absolute menu bg-base-100 w-56 p-2 rounded-box divider-y divide-blue-300"
-      style={{ top: `${pageCoord.x}px`, left: `${pageCoord.y}px` }}
-    >
+    <>
       <li>
-        <a>削除</a>
+        <button onClick={deleteUserPlaylist}>削除</button>
       </li>
       <li>
         <a>名前を変更</a>
       </li>
-    </ul>
+    </>
   )
 }

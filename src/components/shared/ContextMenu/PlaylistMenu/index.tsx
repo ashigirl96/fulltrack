@@ -1,16 +1,17 @@
 import React from 'react'
+import { useDeleteUserPlaylistCollection } from '@/hooks/playlist'
+import { PlaylistStoreId } from '@/atoms/firestore/playlist'
 
 type Props = {
-  pageCoord: { x: number; y: number }
+  playlistId: PlaylistStoreId
 }
-export function PlaylistMenu({ pageCoord }: Props) {
+export function PlaylistMenu({ playlistId }: Props) {
+  const deleteUserPlaylist = useDeleteUserPlaylistCollection(playlistId)
+  // TODO: 削除されるプレイリストにいるとき、/listに遷移する
   return (
-    <ul
-      className="absolute menu bg-base-100 w-56 p-2 rounded-box divider-y divide-blue-300"
-      style={{ top: `${pageCoord.x}px`, left: `${pageCoord.y}px` }}
-    >
+    <>
       <li>
-        <a>削除</a>
+        <button onClick={deleteUserPlaylist}>削除</button>
       </li>
       <li>
         <a>名前を変更</a>
@@ -18,6 +19,6 @@ export function PlaylistMenu({ pageCoord }: Props) {
       <li>
         <a>プレイリストを作成する</a>
       </li>
-    </ul>
+    </>
   )
 }
