@@ -16,7 +16,6 @@ import { useSetReadyEvent } from '@/hooks/youtube_player/useSetReadyEvent'
 
 function MyApp({ Component, pageProps, router }: AppProps) {
   const { readyEvent, setReadyEvent } = useSetReadyEvent()
-  console.log(`readyEvent ${readyEvent}`)
   return (
     <RecoilRoot>
       <Component
