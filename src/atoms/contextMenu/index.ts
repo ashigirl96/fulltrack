@@ -2,5 +2,5 @@ export {
   useSelectedContext,
   useSetPlaylistContext,
   useSetVideoContext,
-  useInitialContext,
+  useInitializeContext,
 } from './states'

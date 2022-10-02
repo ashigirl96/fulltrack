@@ -7,3 +7,4 @@ export type {
   PlaylistState,
 } from './playlistStore'
 export type { VideoFirestore } from './VideoStore'
+export type { PageCoord } from './contextMenu'

@@ -2,7 +2,7 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { RecoilRoot } from 'recoil'
 import { useSetReadyEvent } from '@/hooks/youtube_player/useSetReadyEvent'
-import { ContextMenu } from '@/components/shared/PlaylistContextMenu'
+import { ContextMenu } from '@/components/shared/ContextMenu'
 // import dynamic from 'next/dynamic'
 // const RecoilizeDebugger = dynamic(() => import('recoilize'), { ssr: false })
 // const [root, setRoot] = useState<HTMLElement | null>(null)

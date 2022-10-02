@@ -29,7 +29,7 @@ export function useSelectedContext() {
   return useRecoilValue(selectedContext)
 }
 
-export function useInitialContext() {
+export function useInitializeContext() {
   const setter = useSetSelectedContext()
   return useCallback(() => setter({ type: null }), [setter])
 }
