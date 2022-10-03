@@ -1,8 +1,6 @@
 import { ReturnTypePlaylistTitle } from './usePlaylistTitle'
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { userPlaylistDocRef } from '@/lib/firestore/userPlaylist'
-import { useGetCurrentUserId } from '@/hooks/firebaseAuth'
-import { updateDoc } from '@firebase/firestore'
+import { useEffect, useRef, useState } from 'react'
+import { useUpdatePlaylistTitle } from '@/hooks/playlist/useUpdatePlaylistTitle'
 
 type HeaderProps = Pick<Props, 'setIsOpenEditor'>
 function Header({ setIsOpenEditor }: HeaderProps) {
@@ -113,14 +111,11 @@ function useEditPlaylistTitleModal({
   }, [original])
   const titleRef = useRef<HTMLInputElement>(null)
 
-  const currentUserId = useGetCurrentUserId() || ''
-  const saveDetails = useCallback(async () => {
-    if (currentUserId) {
-      const playlistRef = userPlaylistDocRef(currentUserId, playlistId)
-      await updateDoc(playlistRef, { title })
-      setIsOpenEditor(false)
-    }
-  }, [currentUserId, playlistId, setIsOpenEditor, title])
+  const saveDetails = useUpdatePlaylistTitle({
+    playlistId,
+    title,
+    callback: () => setIsOpenEditor(false),
+  })
 
   return {
     title,

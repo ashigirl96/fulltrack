@@ -22,8 +22,5 @@ export function useGetCurrentUser() {
 
 export function useGetCurrentUserId() {
   const user = useGetCurrentUser()
-  if (user) {
-    return user.uid
-  }
-  return null
+  return useMemo(() => (user ? user.uid : null), [user])
 }
