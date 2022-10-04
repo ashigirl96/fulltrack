@@ -1,5 +1,5 @@
 import { useCollectionData } from '@/hooks/firestore'
-import { userPlaylistCollectionRef } from '@/lib/firestore/userPlaylist'
+import { userPlaylistCollectionRef } from '@/lib/firestore/playlist'
 import { playlistCollectionRef } from '@/lib/firestore/playlist'
 
 export function useUserPlaylistCollection(userId: string) {

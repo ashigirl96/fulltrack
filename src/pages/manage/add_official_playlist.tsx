@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import { useCallback, useState } from 'react'
 import { addDoc, doc, documentId } from '@firebase/firestore'
-import { playlistCollectionRef } from '@/lib/firestore/playlist'
+import { firestoreNow, playlistCollectionRef } from '@/lib/firestore/playlist'
 import { db } from '@/config/firebase'
 
 const AddOfficialPlaylist: NextPage = () => {
@@ -18,6 +18,7 @@ const AddOfficialPlaylist: NextPage = () => {
       title,
       videoIds: _videoIds,
       thumbnailUrl: '',
+      createdAt: firestoreNow(),
     })
       .then(() => setUploadedMessage(`${title}の登録できました`))
       .catch((reason) => setUploadedMessage(`ERROR ${JSON.stringify(reason)}`))

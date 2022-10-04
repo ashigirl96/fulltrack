@@ -81,7 +81,7 @@ function useHandleInputVolume({
         await readyEvent.setVolume(_volume)
       }
     },
-    [readyEvent, setCurrentVolume],
+    [readyEvent, setCurrentVolume, setUnmute],
   )
 }
 

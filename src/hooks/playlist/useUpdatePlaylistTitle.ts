@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { PlaylistFirestoreId } from '@/types'
-import { userPlaylistDocRef } from '@/lib/firestore/userPlaylist'
+import { userPlaylistDocRef } from '@/lib/firestore/playlist'
 import { updateDoc } from '@firebase/firestore'
 import { useGetCurrentUserId } from '@/hooks/firebaseAuth'
 
