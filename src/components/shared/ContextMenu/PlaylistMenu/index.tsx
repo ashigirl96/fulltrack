@@ -30,7 +30,6 @@ export function PlaylistMenu({ playlistId }: Props) {
         <button onClick={handleRename}>名前を変更する</button>
       </li>
       <li>
-        {/*<a>プレイリストを作成する</a>*/}
         <button>プレイリストを作成する</button>
       </li>
     </>

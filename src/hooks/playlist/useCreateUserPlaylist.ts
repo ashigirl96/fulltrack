@@ -1,18 +1,27 @@
-import { useCallback } from 'react'
-import { addDoc, collection } from '@firebase/firestore'
-import { db } from '@/config/firebase'
-import { useGetCurrentUserId } from '@/hooks/firebaseAuth'
+import { useCallback, useMemo } from 'react'
+import { addDoc, documentId } from '@firebase/firestore'
+import {
+  firestoreNow,
+  userPlaylistCollectionRef,
+} from '@/lib/firestore/playlist'
+import { useUserPlaylistCollection } from '@/hooks/playlist/useUserPlaylistCollection'
+import { UserId } from '@/types'
 
-export function useCreateUserPlaylist() {
-  const userId = useGetCurrentUserId()
+type Args = { userId: UserId }
+export function useCreateUserPlaylist({ userId }: Args) {
+  const { playlistsSnapshot } = useUserPlaylistCollection(userId)
+  const title = useMemo(
+    () => `My Playlist ${playlistsSnapshot?.size || 0}`,
+    [playlistsSnapshot],
+  )
   return useCallback(async () => {
-    if (!userId) {
-      return
-    }
-    const playlists = collection(db, 'users', userId, 'playlists')
+    const playlists = userPlaylistCollectionRef(userId)
     await addDoc(playlists, {
-      title: 'My Playlist',
+      title,
+      id: documentId(),
       videoIds: [],
+      thumbnailUrl: '',
+      createdAt: firestoreNow(),
     })
-  }, [userId])
+  }, [title, userId])
 }

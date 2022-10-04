@@ -1,7 +1,11 @@
 import { useCreateUserPlaylist } from '@/hooks/playlist/useCreateUserPlaylist'
+import { UserId } from '@/types'
 
-export function CreateUserPlaylist() {
-  const handleClick = useCreateUserPlaylist()
+type Props = {
+  currentUserId: UserId
+}
+export function CreateUserPlaylist({ currentUserId }: Props) {
+  const handleClick = useCreateUserPlaylist({ userId: currentUserId })
 
   return (
     <div>

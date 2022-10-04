@@ -15,7 +15,7 @@ export function Menu({ width }: Props) {
           <a>動画一覧</a>
         </Link>
       </div>
-      <CreateUserPlaylist />
+      {currentUserId && <CreateUserPlaylist currentUserId={currentUserId} />}
       <div className="border border-gray-300 my-5 mx-4" />
       <div className="overflow-y-scroll flex-1">
         {currentUserId && <UserPlaylists userId={currentUserId} />}
