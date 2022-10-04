@@ -1,19 +1,20 @@
 import React from 'react'
-import { useDeleteUserPlaylistCollection } from '@/hooks/playlist'
 import { VideoFirestoreId } from '@/atoms/firestore/video'
+import { useGetCurrentUserId } from '@/hooks/firebaseAuth'
+import { ListAddPlaylist } from './ListAddPlaylist'
 
 type Props = {
   videoId: VideoFirestoreId
 }
 export function VideoMenu({ videoId }: Props) {
-  const deleteUserPlaylist = useDeleteUserPlaylistCollection(videoId)
+  const currentUserId = useGetCurrentUserId()
   return (
     <>
+      {currentUserId && (
+        <ListAddPlaylist userId={currentUserId} videoId={videoId} />
+      )}
       <li>
-        <button onClick={deleteUserPlaylist}>削除</button>
-      </li>
-      <li>
-        <a>名前を変更</a>
+        <button>プレイリストから削除</button>
       </li>
     </>
   )
