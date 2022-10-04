@@ -1,4 +1,4 @@
-import { collection, doc, Timestamp } from '@firebase/firestore'
+import { collection, doc, orderBy, query, Timestamp } from '@firebase/firestore'
 import {
   DocumentData,
   DocumentReference,
@@ -44,6 +44,10 @@ export function userPlaylistCollectionRef(userId: UserId) {
   return collection(db, 'users', userId, 'playlists').withConverter(
     playlistConverter,
   )
+}
+
+export function userPlaylistCollectionOrderByCreatedAtRef(userId: UserId) {
+  return query(userPlaylistCollectionRef(userId), orderBy('createdAt', 'desc'))
 }
 
 export const userPlaylistDocRef = function (
