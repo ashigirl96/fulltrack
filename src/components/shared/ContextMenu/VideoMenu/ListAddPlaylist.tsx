@@ -1,4 +1,4 @@
-import { UserId } from '@/types'
+import { PlaylistState, PlaylistStore, UserId } from '@/types'
 import { useUserPlaylistCollection } from '@/hooks/playlist'
 import { VideoFirestoreId } from '@/atoms/firestore/video'
 import { useUpdatePlaylistVideos } from '@/hooks/playlist/useUpdatePlaylistVideos'
@@ -9,26 +9,55 @@ type Props = {
 }
 export function ListAddPlaylist({ userId, videoId }: Props) {
   const { isLoading, error, playlists } = useUserPlaylistCollection(userId)
-  const handleClick = useUpdatePlaylistVideos({ videoId })
   return (
     <li className="dropdown dropdown-right dropdown-end dropdown-open">
       <label tabIndex={0}>プレイリストに追加</label>
-      <ul
-        tabIndex={0}
-        className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
-      >
-        {!isLoading && !error && (
-          <>
-            {playlists?.map((playlist) => (
-              <li>
-                <button onClick={() => handleClick(playlist.id)}>
-                  {playlist.title}
-                </button>
-              </li>
-            ))}
-          </>
-        )}
-      </ul>
+      <UnorderedPlaylists
+        videoId={videoId}
+        playlists={playlists}
+        error={error}
+        isLoading={isLoading}
+      />
+    </li>
+  )
+}
+
+type ListsProps = Pick<
+  ReturnType<typeof useUserPlaylistCollection>,
+  'isLoading' | 'playlists' | 'error'
+> & {
+  videoId: VideoFirestoreId
+}
+function UnorderedPlaylists({
+  isLoading,
+  playlists,
+  error,
+  videoId,
+}: ListsProps) {
+  if (isLoading || error || playlists === undefined) {
+    return null
+  }
+  return (
+    <ul
+      tabIndex={0}
+      className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
+    >
+      {playlists.map((playlist) => (
+        <ListPlaylist playlist={playlist} videoId={videoId} />
+      ))}
+    </ul>
+  )
+}
+
+type ListProps = { playlist: PlaylistStore; videoId: VideoFirestoreId }
+function ListPlaylist({ playlist, videoId }: ListProps) {
+  const handleClick = useUpdatePlaylistVideos({
+    videoId,
+    playlistId: playlist.id,
+  })
+  return (
+    <li>
+      <button onClick={handleClick}>{playlist.title}</button>
     </li>
   )
 }
