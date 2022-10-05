@@ -9,7 +9,7 @@ type Args = {
   videoId: string
   playlistId: PlaylistFirestoreId
 }
-export function useUpdatePlaylistVideos({ videoId, playlistId }: Args) {
+export function useUnionPlaylistVideos({ videoId, playlistId }: Args) {
   const userId = useGetCurrentUserId()
   return useCallback(async () => {
     if (userId) {

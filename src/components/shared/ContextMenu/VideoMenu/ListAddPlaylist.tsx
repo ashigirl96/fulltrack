@@ -1,7 +1,7 @@
-import { PlaylistState, PlaylistStore, UserId } from '@/types'
+import { PlaylistStore, UserId } from '@/types'
 import { useUserPlaylistCollection } from '@/hooks/playlist'
 import { VideoFirestoreId } from '@/atoms/firestore/video'
-import { useUpdatePlaylistVideos } from '@/hooks/playlist/useUpdatePlaylistVideos'
+import { useUnionPlaylistVideos } from '@/hooks/playlist/useUnionPlaylistVideos'
 
 type Props = {
   userId: UserId
@@ -51,7 +51,7 @@ function UnorderedPlaylists({
 
 type ListProps = { playlist: PlaylistStore; videoId: VideoFirestoreId }
 function ListPlaylist({ playlist, videoId }: ListProps) {
-  const handleClick = useUpdatePlaylistVideos({
+  const handleClick = useUnionPlaylistVideos({
     videoId,
     playlistId: playlist.id,
   })
