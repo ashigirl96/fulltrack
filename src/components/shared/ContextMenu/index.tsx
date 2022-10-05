@@ -36,7 +36,9 @@ export function ContextMenu() {
       style={{ top, left }}
     >
       {ctx.type === 'playlist' && <PlaylistMenu playlistId={ctx.playlistId} />}
-      {ctx.type === 'video' && <VideoMenu videoId={ctx.videoId} />}
+      {ctx.type === 'video' && (
+        <VideoMenu videoId={ctx.videoId} videoIndex={ctx.videoIndex} />
+      )}
     </ul>
   )
 }

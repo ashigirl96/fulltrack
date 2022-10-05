@@ -1,12 +1,12 @@
-import { VideoFirestoreId } from '@/atoms/firestore/video'
 import { useRouter } from 'next/router'
-import { PlaylistStoreId, usePlaylistValue } from '@/atoms/firestore/playlist'
+import { usePlaylistValue } from '@/atoms/firestore/playlist'
 import { useRemovePlaylistVideos } from '@/hooks/playlist/useRemovePlaylistVideo'
+import { PlaylistState } from '@/types'
 
 type Props = {
-  videoId: VideoFirestoreId
+  videoIndex: number
 }
-export function ListDeleteVideo({ videoId }: Props) {
+export function ListDeleteVideo({ videoIndex }: Props) {
   const router = useRouter()
   const playlistId = router.query['playlistId'] as string
   const playlist = usePlaylistValue(playlistId)
@@ -18,16 +18,16 @@ export function ListDeleteVideo({ videoId }: Props) {
   }
   return (
     <li>
-      <DeleteButton playlistId={playlist.id} videoId={videoId} />
+      <DeleteButton playlist={playlist} videoIndex={videoIndex} />
     </li>
   )
 }
 
 type DeleteProps = {
-  playlistId: PlaylistStoreId
-  videoId: VideoFirestoreId
+  playlist: PlaylistState
+  videoIndex: number
 }
-function DeleteButton({ playlistId, videoId }: DeleteProps) {
-  const handleClick = useRemovePlaylistVideos({ playlistId, videoId })
+function DeleteButton({ playlist, videoIndex }: DeleteProps) {
+  const handleClick = useRemovePlaylistVideos({ playlist, videoIndex })
   return <button onClick={handleClick}>プレイリストから削除</button>
 }

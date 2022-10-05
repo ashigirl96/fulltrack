@@ -27,7 +27,7 @@ export function VideoRow({
     readyEvent,
     playlistId,
   })
-  const setVideoContext = useSetVideoContext(videoId)
+  const setVideoContext = useSetVideoContext(videoId, index)
 
   if (!video) {
     return <div>loading..</div>

@@ -22,3 +22,9 @@ export function isEqualArray<T>(x: T[], y: T[]) {
   }
   return true
 }
+
+export function removeFromArray<T>(array: T[], index: number) {
+  const x = [...array]
+  x.splice(index, 1)
+  return x
+}

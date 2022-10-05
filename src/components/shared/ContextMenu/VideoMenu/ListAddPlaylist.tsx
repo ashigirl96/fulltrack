@@ -53,7 +53,7 @@ type ListProps = { playlist: PlaylistStore; videoId: VideoFirestoreId }
 function ListPlaylist({ playlist, videoId }: ListProps) {
   const handleClick = useUnionPlaylistVideos({
     videoId,
-    playlistId: playlist.id,
+    playlist,
   })
   return (
     <li>

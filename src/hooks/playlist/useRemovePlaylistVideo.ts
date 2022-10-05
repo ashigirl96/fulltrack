@@ -1,21 +1,24 @@
 import { useCallback } from 'react'
-import { PlaylistFirestoreId } from '@/types'
 import { userPlaylistDocRef } from '@/lib/firestore/playlist'
-import { arrayRemove, updateDoc } from '@firebase/firestore'
+import { FieldValue, updateDoc } from '@firebase/firestore'
 import { useGetCurrentUserId } from '@/hooks/firebaseAuth'
 import { videoDocRef } from '@/lib/firestore/video'
+import { PlaylistState } from '@/types'
+import { removeFromArray } from '@/lib/array'
 
 type Args = {
-  videoId: string
-  playlistId: PlaylistFirestoreId
+  videoIndex: number
+  playlist: PlaylistState
 }
-export function useRemovePlaylistVideos({ videoId, playlistId }: Args) {
+export function useRemovePlaylistVideos({ videoIndex, playlist }: Args) {
   const userId = useGetCurrentUserId()
   return useCallback(async () => {
     if (userId) {
-      const playlistRef = userPlaylistDocRef(userId, playlistId)
-      const videoIds = arrayRemove(videoDocRef(videoId))
+      const playlistRef = userPlaylistDocRef(userId, playlist.id)
+      const videoIds = removeFromArray(playlist.videoIds, videoIndex).map((v) =>
+        videoDocRef(v),
+      ) as unknown as FieldValue[]
       await updateDoc(playlistRef, { videoIds })
     }
-  }, [playlistId, userId, videoId])
+  }, [playlist.id, playlist.videoIds, userId, videoIndex])
 }

@@ -6,8 +6,9 @@ import { ListDeleteVideo } from './ListDeleteVideo'
 
 type Props = {
   videoId: VideoFirestoreId
+  videoIndex: number
 }
-export function VideoMenu({ videoId }: Props) {
+export function VideoMenu({ videoId, videoIndex }: Props) {
   const currentUserId = useGetCurrentUserId()
   if (!currentUserId) {
     return (
@@ -19,7 +20,7 @@ export function VideoMenu({ videoId }: Props) {
   return (
     <>
       <ListAddPlaylist userId={currentUserId} videoId={videoId} />
-      <ListDeleteVideo videoId={videoId} />
+      <ListDeleteVideo videoIndex={videoIndex} />
     </>
   )
 }

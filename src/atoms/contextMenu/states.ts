@@ -14,6 +14,7 @@ type ContextType =
   | {
       type: 'video'
       videoId: VideoFirestoreId
+      videoIndex: number
     }
 
 const selectedContext = atom<ContextType>({
@@ -34,14 +35,17 @@ export function useInitializeContext() {
   return useCallback(() => setter({ type: null }), [setter])
 }
 
-export function useSetVideoContext(videoId: VideoFirestoreId) {
+export function useSetVideoContext(
+  videoId: VideoFirestoreId,
+  videoIndex: number,
+) {
   const setter = useSetSelectedContext()
   return useCallback(
     (e: React.MouseEvent) => {
       e.preventDefault()
-      setter({ type: 'video', videoId })
+      setter({ type: 'video', videoId, videoIndex })
     },
-    [setter, videoId],
+    [setter, videoId, videoIndex],
   )
 }
 
