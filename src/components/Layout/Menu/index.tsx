@@ -12,7 +12,7 @@ export function Menu({ width }: Props) {
     <div className="flex-shrink flex flex-col drawer-side" style={{ width }}>
       <ul className="menu p-4 overflow-y-auto bg-base-100 text-base-content flex flex-col">
         <li>
-          <Link href="/playlists/list" shallow={true}>
+          <Link href="/playlists" shallow={true}>
             <a>動画一覧</a>
           </Link>
         </li>

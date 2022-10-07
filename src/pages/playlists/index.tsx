@@ -17,7 +17,7 @@ const Component: NextPage<Props> = ({ readyEvent, setReadyEvent, router }) => {
     return <div>isLoading...</div>
   }
 
-  const playlist = query.playlistId as string
+  const playlist = query.id as string
 
   return (
     <Layout handlerReadyEventState={handlerReadyEventState}>
