@@ -16,5 +16,5 @@ export function PlaylistItem({ playlist, isOfficial }: Props) {
     })
   }, [isOfficial, playlist, setPlaylistState])
 
-  return <div>{playlist.title}</div>
+  return <div className="ellipsis-one-line">{playlist.title}</div>
 }

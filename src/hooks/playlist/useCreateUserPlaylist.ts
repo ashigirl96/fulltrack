@@ -11,7 +11,7 @@ type Args = { userId: UserId }
 export function useCreateUserPlaylist({ userId }: Args) {
   const { playlistsSnapshot } = useUserPlaylistCollection(userId)
   const title = useMemo(
-    () => `My Playlist #${playlistsSnapshot?.size || 0}`,
+    () => `My Playlist #${playlistsSnapshot ? playlistsSnapshot.size + 1 : 0}`,
     [playlistsSnapshot],
   )
   return useCallback(async () => {

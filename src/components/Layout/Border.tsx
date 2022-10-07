@@ -4,7 +4,7 @@ type Props = ReturnTypeOfUseMoveOnDrag
 export function Border({ onPointerMove, onPointerUp, onPointerDown }: Props) {
   return (
     <div
-      className="w-0.5 cursor-ew-resize"
+      className="cursor-ew-resize border border-2 border-gray-700"
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}

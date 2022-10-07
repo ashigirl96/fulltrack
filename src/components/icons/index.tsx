@@ -8,6 +8,7 @@ import {
 import { FaPauseCircle, FaPlayCircle } from 'react-icons/fa'
 import { SpeakerWaveIcon, SpeakerXMarkIcon } from '@heroicons/react/24/outline'
 import { RepeatStatusState } from '@/atoms/youtubePlayer/states'
+import { AiOutlinePlusCircle } from 'react-icons/ai'
 
 function classNames(className: string) {
   return `h-6 text-black-300 cursor-pointer ${className}`
@@ -82,4 +83,8 @@ export function SpeakerIcon({
       className="cursor-pointer"
     />
   )
+}
+
+export function PlusCircle() {
+  return <AiOutlinePlusCircle width={100} />
 }

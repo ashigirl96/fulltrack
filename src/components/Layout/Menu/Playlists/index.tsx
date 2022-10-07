@@ -22,11 +22,11 @@ export function UserPlaylists({ userId }: Props) {
     return <div>Please login...</div>
   }
   return (
-    <div>
+    <>
       {playlists.map((playlist) => (
         <Playlist playlist={playlist} />
       ))}
-    </div>
+    </>
   )
 }
 
