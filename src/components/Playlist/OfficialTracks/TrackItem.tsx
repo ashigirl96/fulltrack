@@ -18,7 +18,7 @@ export function TrackItem({ playlist }: Props) {
   }, [playlist, setPlaylistState])
 
   return (
-    <Link href={`/playlists?id=${playlist.id}`} passHref>
+    <Link href={`/playlists/${playlist.id}`} passHref>
       <a>
         <div className="flex flex-col justify-start items-start gap-y-1 bg-gray-900 p-4 pb-8 rounded-lg w-48">
           <img

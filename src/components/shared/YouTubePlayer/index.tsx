@@ -4,10 +4,10 @@ import { useYouTubePlayer } from './useYouTubePlayer'
 import { useHandlePlayerController } from './useHandlePlayerController'
 import { useHandleVolume } from './useHandleVolume'
 
-type Props = Pick<ReturnTypeOfUseYouTubePlayerComponent, 'handleReady'>
-export function YouTubePlayer({ handleReady }: Props) {
+type Props = Pick<ReturnTypeOfUseYouTubePlayerComponent, 'handleReadyEvent'>
+export function YouTubePlayer({ handleReadyEvent }: Props) {
   const { videoId, opts, handleStateChange } = useYouTubePlayer({
-    handleReady,
+    handleReadyEvent,
   })
 
   return (
@@ -21,7 +21,7 @@ export function YouTubePlayer({ handleReady }: Props) {
         videoId={videoId}
         opts={opts}
         onStateChange={(event) => handleStateChange(event.target)}
-        onReady={handleReady}
+        onReady={handleReadyEvent}
       />
     </>
   )
@@ -36,7 +36,7 @@ export function useYouTubePlayerComponent(
 
   return {
     YouTubePlayer,
-    handleReady: handleReadyEvent,
+    handleReadyEvent,
     handlePlayerController,
     handleVolume,
   }

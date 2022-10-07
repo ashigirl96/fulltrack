@@ -2,12 +2,12 @@ import { ReturnTypeOfUseYouTubePlayerComponent } from '@/components/shared/YouTu
 
 type Props = Pick<
   ReturnTypeOfUseYouTubePlayerComponent,
-  'YouTubePlayer' | 'handleReady'
+  'YouTubePlayer' | 'handleReadyEvent'
 >
-export function PlayerPreview({ YouTubePlayer, handleReady }: Props) {
+export function PlayerPreview({ YouTubePlayer, handleReadyEvent }: Props) {
   return (
     <div className="blur-sm border border-transparent bg-inherit bg-clip-border">
-      <YouTubePlayer handleReady={handleReady} />
+      <YouTubePlayer handleReadyEvent={handleReadyEvent} />
     </div>
   )
 }

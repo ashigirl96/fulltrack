@@ -25,7 +25,7 @@ export default function AddVideo() {
     addVideo,
     uploadedMessage,
     setUploadedMessage,
-    handleReady,
+    handleReadyEvent,
   } = useAddVideo()
 
   const opts = getPropsOptions({ start, end, controls: 1 })
@@ -89,7 +89,7 @@ export default function AddVideo() {
                 videoId={videoId}
                 opts={opts}
                 onStateChange={handleStateChange}
-                onReady={handleReady}
+                onReady={handleReadyEvent}
               />
             </div>
           </div>

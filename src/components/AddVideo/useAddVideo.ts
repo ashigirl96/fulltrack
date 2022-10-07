@@ -43,7 +43,7 @@ export function useAddVideo() {
     f()
   }, [videoId])
 
-  const handleReady = useCallback(async (event: YouTubeEvent) => {
+  const handleReadyEvent = useCallback(async (event: YouTubeEvent) => {
     if (event) {
       setReadyEvent(event.target)
       const duration = await event.target.getDuration()
@@ -86,6 +86,6 @@ export function useAddVideo() {
     addVideo,
     uploadedMessage,
     setUploadedMessage,
-    handleReady,
+    handleReadyEvent,
   }
 }

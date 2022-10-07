@@ -4,11 +4,11 @@ import { useCurrentVideoValue } from '@/atoms/youtubePlayer'
 import { useHandleStateChange } from './useHandleStateChange'
 
 export type YouTubePlayerArgs = {
-  handleReady: (x: YouTubeEvent) => void
+  handleReadyEvent: (x: YouTubeEvent) => void
 }
 // TODO: レンダリング多すぎるような気もするから問題の箇所を見つける
 // YouTubePlayerに必要な値を渡すためのフック
-export function useYouTubePlayer({ handleReady }: YouTubePlayerArgs) {
+export function useYouTubePlayer({ handleReadyEvent }: YouTubePlayerArgs) {
   const handleStateChange = useHandleStateChange()
   const currentVideo = useCurrentVideoValue()
 
@@ -25,6 +25,6 @@ export function useYouTubePlayer({ handleReady }: YouTubePlayerArgs) {
     videoId,
     opts,
     handleStateChange,
-    handleReady,
+    handleReadyEvent,
   }
 }

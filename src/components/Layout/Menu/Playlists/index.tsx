@@ -47,7 +47,7 @@ function Playlist({ playlist }: PlaylistProps) {
 
   return (
     <li key={`playlist-${playlist.id}`} onContextMenu={setSelectedPlaylist}>
-      <Link href={`/playlists?id=${encodeURIComponent(playlist.id)}`}>
+      <Link href={`/playlists/${encodeURIComponent(playlist.id)}`}>
         <a>
           <PlaylistItem playlist={playlist} isOfficial={false} />
         </a>

@@ -1,30 +1,41 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { RecoilRoot } from 'recoil'
-import { useSetReadyEvent } from '@/hooks/youtube_player/useSetReadyEvent'
+import {
+  ReturnTypeSetReadyEvent,
+  useSetReadyEvent,
+} from '@/hooks/youtube_player/useSetReadyEvent'
 import { ContextMenu } from '@/components/shared/ContextMenu'
-// import dynamic from 'next/dynamic'
-// const RecoilizeDebugger = dynamic(() => import('recoilize'), { ssr: false })
-// const [root, setRoot] = useState<HTMLElement | null>(null)
-// useEffect(() => {
-//   if (typeof window.document !== 'undefined') {
-//     setRoot(document.getElementById('__next'))
-//   }
-// }, [root])
-{
-  /*<RecoilizeDebugger root={root} />*/
+import { NextPage } from 'next'
+import { ReactElement, ReactNode } from 'react'
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+  getLayout?: (
+    page: ReactElement,
+    props: Pick<ReturnTypeSetReadyEvent, 'handleReadyEvent' | 'readyEvent'>,
+  ) => ReactNode
 }
 
-function MyApp({ Component, pageProps, router }: AppProps) {
-  const { readyEvent, setReadyEvent } = useSetReadyEvent()
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout
+}
+
+function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
+  const { readyEvent, setReadyEvent, handleReadyEvent } = useSetReadyEvent()
+  const getLayout = Component.getLayout || ((page) => page)
+
   return (
     <RecoilRoot>
-      <Component
-        {...pageProps}
-        readyEvent={readyEvent}
-        setReadyEvent={setReadyEvent}
-        router={router}
-      />
+      {getLayout(
+        <Component
+          {...pageProps}
+          readyEvent={readyEvent}
+          setReadyEvent={setReadyEvent}
+          router={router}
+        />,
+        { handleReadyEvent, readyEvent },
+      )}
       <ContextMenu />
     </RecoilRoot>
   )
