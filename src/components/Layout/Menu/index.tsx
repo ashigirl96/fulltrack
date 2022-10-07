@@ -9,23 +9,25 @@ type Props = {
 export function Menu({ width }: Props) {
   const currentUserId = useGetCurrentUserId()
   return (
-    <div className="flex-shrink flex flex-col" style={{ width }}>
-      <div className="flex flex-col gap-1 m-4">
-        <div className="" key="playlist">
+    <div className="flex-shrink flex flex-col drawer-side" style={{ width }}>
+      <ul className="menu p-4 overflow-y-auto bg-base-100 text-base-content flex flex-col">
+        <li>
           <Link href="/playlists/list" shallow={true}>
             <a>動画一覧</a>
           </Link>
-        </div>
-        {currentUserId ? (
-          <CreateUserPlaylist currentUserId={currentUserId} />
-        ) : (
-          <SignIn />
-        )}
-      </div>
-      <div className="border border-2 border-gray-700" />
-      <div className="overflow-y-scroll flex-1 flex flex-col gap-1 m-4">
-        {currentUserId && <UserPlaylists userId={currentUserId} />}
-      </div>
+        </li>
+        <li>
+          {currentUserId ? (
+            <CreateUserPlaylist currentUserId={currentUserId} />
+          ) : (
+            <SignIn />
+          )}
+        </li>
+        <div className="border border-2 border-gray-700 w-full my-4" />
+        <ul className="overflow-y-scroll flex-1">
+          {currentUserId && <UserPlaylists userId={currentUserId} />}
+        </ul>
+      </ul>
     </div>
   )
 }

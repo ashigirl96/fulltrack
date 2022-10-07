@@ -38,16 +38,20 @@ function Playlist({ playlist }: PlaylistProps) {
   const isCurrentEdit = useIsEditPlaylistNameValue(playlist.id)
 
   if (isCurrentEdit) {
-    return <InputPlaylistTitle playlist={playlist} />
+    return (
+      <li>
+        <InputPlaylistTitle playlist={playlist} />
+      </li>
+    )
   }
 
   return (
-    <div key={`playlist-${playlist.id}`} onContextMenu={setSelectedPlaylist}>
+    <li key={`playlist-${playlist.id}`} onContextMenu={setSelectedPlaylist}>
       <Link href={`/playlists/${encodeURIComponent(playlist.id)}`}>
         <a>
           <PlaylistItem playlist={playlist} isOfficial={false} />
         </a>
       </Link>
-    </div>
+    </li>
   )
 }
