@@ -5,13 +5,16 @@ import { Menu } from './Menu'
 import { Footer } from './Footer'
 import { PlayerPreview } from './PlayerPreview'
 import { useYouTubePlayerComponent } from '@/components/shared/YouTubePlayer'
-import { ReturnTypeReadyEventStateType } from '@/hooks/youtube_player'
+import { ReturnTypeSetReadyEvent } from '@/hooks/youtube_player/useSetReadyEvent'
 
 type LayoutProps = {
   children: React.ReactNode
-  handlerReadyEventState: ReturnTypeReadyEventStateType
+  handlerSetReadyEvent: ReturnTypeSetReadyEvent
 }
-export function Layout({ children, handlerReadyEventState }: LayoutProps) {
+export function Layout({
+  children,
+  handlerSetReadyEvent: { setReadyEvent, readyEvent },
+}: LayoutProps) {
   const { width, dragging, onPointerMove, onPointerUp, onPointerDown } =
     useMenuWidth()
   const {
@@ -19,7 +22,7 @@ export function Layout({ children, handlerReadyEventState }: LayoutProps) {
     handlePlayerController,
     handleReadyEvent,
     handleVolume,
-  } = useYouTubePlayerComponent(handlerReadyEventState)
+  } = useYouTubePlayerComponent({ setReadyEvent, readyEvent })
 
   return (
     <div className="h-screen flex flex-col overflow-x-hidden">

@@ -1,12 +1,12 @@
 import { useVideoValue, VideoFirestoreId } from '@/atoms/firestore/video'
 import { PlaylistStoreId } from '@/atoms/firestore/playlist'
 import { useSetCurrentVideo } from '@/atoms/youtubePlayer/hooks'
-import { ReturnTypeReadyEventStateType } from '@/hooks/youtube_player'
 import { useCallback, useMemo } from 'react'
 import { useIsPlayingVideo } from '@/atoms/youtubePlayer'
 import type { ReturnTypeUsePlaylist } from '../Playlist/usePlaylist'
 import { VideoFirestore } from '@/types'
 import { secsToMS } from '@/lib/time'
+import { ReturnTypeSetReadyEvent } from '@/hooks/youtube_player/useSetReadyEvent'
 
 function useVideoDuration(video: VideoFirestore | null) {
   if (!video) {
@@ -19,7 +19,7 @@ export type ArgsVideoRow = {
   index: number
   videoId: VideoFirestoreId
   playlistId: PlaylistStoreId
-  readyEvent: ReturnTypeReadyEventStateType['readyEvent']
+  readyEvent: ReturnTypeSetReadyEvent['readyEvent']
 } & Pick<ReturnTypeUsePlaylist, 'setIndexSelected' | 'indexSelected'>
 export function useVideoRow({
   videoId,

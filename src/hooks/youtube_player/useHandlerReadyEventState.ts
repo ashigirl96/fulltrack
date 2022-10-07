@@ -4,7 +4,7 @@ import { useCurrentVolumeValue } from '@/atoms/youtubePlayer'
 import { ReturnTypeSetReadyEvent } from '@/hooks/youtube_player/useSetReadyEvent'
 
 type Args = ReturnTypeSetReadyEvent
-export function useHandlerReadyEventState({ readyEvent, setReadyEvent }: Args) {
+export function useHandlerReadyEventState({ setReadyEvent }: Args) {
   const volume = useCurrentVolumeValue()
 
   const handleReadyEvent = useCallback(
@@ -16,7 +16,6 @@ export function useHandlerReadyEventState({ readyEvent, setReadyEvent }: Args) {
   )
 
   return {
-    readyEvent,
     handleReadyEvent,
   }
 }

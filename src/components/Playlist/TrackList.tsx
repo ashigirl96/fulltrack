@@ -2,8 +2,8 @@ import { PlaylistState } from '@/types'
 import { PlaylistTitle } from '@/components/Playlist/PlaylistTitle'
 import { VideoRow } from '@/components/Playlist/VideoRow'
 import type { ReturnTypeUsePlaylist } from '@/components/Playlist/usePlaylist'
-import type { ReturnTypeReadyEventStateType } from '@/hooks/youtube_player'
 import type { PlaylistStoreId } from '@/atoms/firestore/playlist'
+import { ReturnTypeSetReadyEvent } from '@/hooks/youtube_player/useSetReadyEvent'
 
 export type TrackListProps = Pick<
   ReturnTypeUsePlaylist,
@@ -11,7 +11,7 @@ export type TrackListProps = Pick<
 > & {
   playlistId: PlaylistStoreId
   playlist: PlaylistState
-  readyEvent: ReturnTypeReadyEventStateType['readyEvent']
+  readyEvent: ReturnTypeSetReadyEvent['readyEvent']
 }
 export function TrackList({
   playlistId,

@@ -1,14 +1,13 @@
 import YouTube from 'react-youtube'
-import { ReturnTypeReadyEventStateType } from '@/hooks/youtube_player'
+import { useHandlerReadyEventState } from '@/hooks/youtube_player'
 import { useYouTubePlayer } from './useYouTubePlayer'
 import { useHandlePlayerController } from './useHandlePlayerController'
 import { useHandleVolume } from './useHandleVolume'
+import { ReturnTypeSetReadyEvent } from '@/hooks/youtube_player/useSetReadyEvent'
 
 type Props = Pick<ReturnTypeOfUseYouTubePlayerComponent, 'handleReadyEvent'>
 export function YouTubePlayer({ handleReadyEvent }: Props) {
-  const { videoId, opts, handleStateChange } = useYouTubePlayer({
-    handleReadyEvent,
-  })
+  const { videoId, opts, handleStateChange } = useYouTubePlayer()
 
   return (
     <>
@@ -27,10 +26,14 @@ export function YouTubePlayer({ handleReadyEvent }: Props) {
   )
 }
 
-export function useYouTubePlayerComponent(
-  setReadyEventState: ReturnTypeReadyEventStateType,
-) {
-  const { handleReadyEvent, readyEvent } = setReadyEventState
+export function useYouTubePlayerComponent({
+  setReadyEvent,
+  readyEvent,
+}: ReturnTypeSetReadyEvent) {
+  const { handleReadyEvent } = useHandlerReadyEventState({
+    readyEvent,
+    setReadyEvent,
+  })
   const handlePlayerController = useHandlePlayerController(readyEvent)
   const handleVolume = useHandleVolume(readyEvent)
 

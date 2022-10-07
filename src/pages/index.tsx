@@ -8,9 +8,9 @@ const Component = () => {
 
 Component.getLayout = function getLayout(
   page: React.ReactElement,
-  props: Pick<ReturnTypeSetReadyEvent, 'handleReadyEvent' | 'readyEvent'>,
+  props: ReturnTypeSetReadyEvent,
 ) {
-  return <Layout handlerReadyEventState={props}>{page}</Layout>
+  return <Layout handlerSetReadyEvent={props}>{page}</Layout>
 }
 
 export default Component

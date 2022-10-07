@@ -11,10 +11,7 @@ import { ReactElement, ReactNode } from 'react'
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
-  getLayout?: (
-    page: ReactElement,
-    props: Pick<ReturnTypeSetReadyEvent, 'handleReadyEvent' | 'readyEvent'>,
-  ) => ReactNode
+  getLayout?: (page: ReactElement, props: ReturnTypeSetReadyEvent) => ReactNode
 }
 
 type AppPropsWithLayout = AppProps & {
@@ -22,7 +19,7 @@ type AppPropsWithLayout = AppProps & {
 }
 
 function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
-  const { readyEvent, setReadyEvent, handleReadyEvent } = useSetReadyEvent()
+  const { readyEvent, setReadyEvent } = useSetReadyEvent()
   const getLayout = Component.getLayout || ((page) => page)
 
   return (
@@ -34,7 +31,7 @@ function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
           setReadyEvent={setReadyEvent}
           router={router}
         />,
-        { handleReadyEvent, readyEvent },
+        { setReadyEvent, readyEvent },
       )}
       <ContextMenu />
     </RecoilRoot>
