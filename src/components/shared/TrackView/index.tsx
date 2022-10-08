@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { Artists } from '@/components/shared/Artists'
 import { PlaylistStore } from '@/types'
+import { VideoFirestoreId } from '@/atoms/firestore/video'
+import { useVideoById } from '@/hooks/video/useVideoById'
 
 type Props = {
   playlist: PlaylistStore
@@ -19,10 +21,21 @@ export function TrackView({ playlist }: Props) {
             {playlist.title}
           </span>
           <span className="text-xs font-light text-primary">
-            {/*<Artists artistIds={video.artists} />*/}
+            <Artist videoId={playlist.videoIds[0]} />
           </span>
         </div>
       </a>
     </Link>
   )
+}
+
+type ArtistProps = {
+  videoId: VideoFirestoreId
+}
+function Artist({ videoId }: ArtistProps) {
+  const video = useVideoById(videoId)
+  if (!video) {
+    return <div />
+  }
+  return <Artists artistIds={video.artists} />
 }
