@@ -10,10 +10,10 @@ export function useArtistById(artistId: ArtistFirebaseId) {
   useEffect(() => {
     ;(async () => {
       if (!artist) {
-        const result = (await getDoc(artistDocRef(artistId))).data()!
+        const result = (await getDoc(artistDocRef(artistId))).data()
         setArtist({
           id: artistId,
-          name: result.name,
+          name: result?.name || '',
         })
       }
     })()

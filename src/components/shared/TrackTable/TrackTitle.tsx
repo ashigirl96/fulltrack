@@ -1,4 +1,6 @@
-type Props = {}
-export function TrackTitle({}: Props) {
-  return <div>Hello Track Title</div>
+type Props = {
+  title: string
+}
+export function TrackTitle({ title }: Props) {
+  return <div>Hello Track {title}</div>
 }

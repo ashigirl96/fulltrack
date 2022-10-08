@@ -16,7 +16,7 @@ export function TrackTable({ readyEvent, videos }: Props) {
 
   return (
     <div className="max-w-full px-4 relative" tabIndex={0}>
-      <TrackTitle />
+      <TrackTitle title={'xxx'} />
       <TrackHeader />
       <TrackBody>
         <>
