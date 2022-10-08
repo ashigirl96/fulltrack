@@ -8,7 +8,7 @@ export function useVideoById(videoId: VideoFirestoreId) {
     async () => (await getDoc(videoDocRef(videoId))).data(),
     [videoId],
   )
-  if (result.loading || !result.value) {
+  if (result.isLoading || !result.value) {
     return undefined
   }
   if (result.error) {

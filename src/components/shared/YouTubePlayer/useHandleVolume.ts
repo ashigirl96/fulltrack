@@ -3,12 +3,16 @@ import {
   useCurrentVolumeValue,
   useSetCurrentVolume,
 } from '@/atoms/youtubePlayer'
-import { ChangeEvent, useCallback, useMemo, useState } from 'react'
+import { ChangeEvent, useCallback, useMemo } from 'react'
+import {
+  useCurrentMuteValue,
+  useSetCurrentMute,
+} from '@/atoms/youtubePlayer/states'
 
 export function useHandleVolume(readyEvent: YouTubePlayerType | undefined) {
   const { setCurrentVolume, currentVolume } = useHandleVolumeState()
 
-  const { isMuted, setMute, setUnmute } = useSetMute({ currentVolume })
+  const { isMuted, setMute, setUnmute } = useSetMute()
   // 手動でボリュームを制御する
   const handleInputVolume = useHandleInputVolume({
     readyEvent,
@@ -41,15 +45,11 @@ export function useHandleVolume(readyEvent: YouTubePlayerType | undefined) {
   }
 }
 
-type SetMuteArgs = Pick<ReturnTypeHandleVolumeState, 'currentVolume'>
-function useSetMute({ currentVolume }: SetMuteArgs) {
-  const [_isMuted, setIsMuted] = useState(false)
-  const setMute = useCallback(() => setIsMuted(true), [])
-  const setUnmute = useCallback(() => setIsMuted(false), [])
-  const isMuted = useMemo(
-    () => _isMuted || currentVolume === 0,
-    [_isMuted, currentVolume],
-  )
+function useSetMute() {
+  const isMuted = useCurrentMuteValue()
+  const setCurrentMute = useSetCurrentMute()
+  const setMute = useCallback(() => setCurrentMute(true), [setCurrentMute])
+  const setUnmute = useCallback(() => setCurrentMute(false), [setCurrentMute])
   return {
     isMuted,
     setMute,

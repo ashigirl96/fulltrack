@@ -48,7 +48,7 @@ function Component({ readyEvent, videos, playlistId }: Props) {
   }, [setVideoValues])
 
   return (
-    <div>
+    <div className="max-w-full px-4">
       <TrackTitle.Playlist playlistId={playlistId} />
       <TrackTable readyEvent={readyEvent} videos={videos} />
     </div>

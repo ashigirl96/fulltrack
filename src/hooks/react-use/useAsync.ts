@@ -9,7 +9,7 @@ export function useAsync<T extends FunctionReturningPromise>(
   deps: DependencyList = [],
 ) {
   const [state, callback] = useAsyncFn(fn, deps, {
-    loading: true,
+    isLoading: true,
   })
 
   useEffect(() => {

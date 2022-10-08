@@ -114,6 +114,22 @@ export function useCurrentVolumeValue() {
   return useRecoilValue(currentVolumeState)
 }
 
+// ミュート
+const currentMuteState = atom<boolean>({
+  key: 'currentMuteState',
+  default: false,
+})
+
+export function useSetCurrentMute() {
+  return useSetRecoilState(currentMuteState)
+}
+
+export function useCurrentMuteValue() {
+  const isMute = useRecoilValue(currentMuteState)
+  const currentVolume = useCurrentVolumeValue()
+  return isMute || currentVolume === 0
+}
+
 export function useCurrentVideoIdValue() {
   const currentVideoIndex = useCurrentVideoIndexValue()
   const currentVideoIds = useCurrentVideoIdsValue()

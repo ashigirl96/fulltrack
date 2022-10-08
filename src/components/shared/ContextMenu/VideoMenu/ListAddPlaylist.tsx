@@ -43,7 +43,11 @@ function UnorderedPlaylists({
       className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
     >
       {playlists.map((playlist) => (
-        <ListPlaylist playlist={playlist} videoId={videoId} />
+        <ListPlaylist
+          key={`unordered-playlist-${playlist.id}`}
+          playlist={playlist}
+          videoId={videoId}
+        />
       ))}
     </ul>
   )

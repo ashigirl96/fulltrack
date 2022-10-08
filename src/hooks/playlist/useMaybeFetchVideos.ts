@@ -19,8 +19,7 @@ export function useMaybeFetchVideos(videoIds: VideoFirestoreId[] | undefined) {
   }, [videoIds])
 
   return {
-    isLoading: result.loading,
-    error: result.error,
+    ...result,
     videos: result.value,
   }
 }
