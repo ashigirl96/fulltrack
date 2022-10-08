@@ -8,3 +8,4 @@ export type {
 } from './playlistStore'
 export type { VideoFirestore } from './VideoStore'
 export type { PageCoord } from './contextMenu'
+export type { ArtistFirebaseId, ArtistFirestore } from './ArtistStore'

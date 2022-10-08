@@ -11,10 +11,7 @@ import type { VideoFirestore } from '@/types'
 import { VideoFirestoreId } from '@/atoms/firestore/video'
 
 const videoConverter: FirestoreDataConverter<VideoFirestore> = {
-  fromFirestore(
-    snapshot: QueryDocumentSnapshot,
-    options?: SnapshotOptions,
-  ): VideoFirestore {
+  fromFirestore(snapshot: QueryDocumentSnapshot, options?: SnapshotOptions) {
     const data = snapshot.data(options)
     const { videoId, start, end, title, originalTitle, thumbnailUrl, artists } =
       data
@@ -26,7 +23,7 @@ const videoConverter: FirestoreDataConverter<VideoFirestore> = {
       title,
       originalTitle,
       thumbnailUrl,
-      artists,
+      artists: artists.map((a: { id: string }) => a.id),
     }
   },
   toFirestore(video: WithFieldValue<VideoFirestore>): DocumentData {

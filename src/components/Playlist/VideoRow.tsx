@@ -2,6 +2,8 @@ import React from 'react'
 import { useVideoRow } from './useVideoRow'
 import type { ArgsVideoRow } from './useVideoRow'
 import { useSetVideoContext } from '@/atoms/contextMenu'
+import { ArtistFirebaseId } from '@/types'
+import { Artists } from '@/components/shared/Artists'
 
 type Props = ArgsVideoRow
 export function VideoRow({
@@ -59,7 +61,7 @@ export function VideoRow({
                 </span>
               </div>
               <div className="group-hover:text-white text-xs ellipsis-one-line">
-                {video.artists.join(',')}
+                <Artists artistIds={video.artists} />
               </div>
             </div>
           </div>

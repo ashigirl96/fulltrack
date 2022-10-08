@@ -1,8 +1,9 @@
-import { PlaylistStore } from '@/types'
+import { PlaylistStore, VideoFirestore } from '@/types'
 import { useSetPlaylist } from '@/atoms/firestore/playlist'
 import { useEffect } from 'react'
 import Link from 'next/link'
 import { useVideoById } from '@/hooks/video/useVideoById'
+import { Artists } from '@/components/shared/Artists'
 
 type Props = {
   playlist: PlaylistStore
@@ -17,6 +18,20 @@ export function TrackItem({ playlist }: Props) {
     })
   }, [playlist, setPlaylistState])
 
+  if (!video) {
+    return <div>loading...</div>
+  }
+
+  return <Component playlist={playlist} video={video} />
+}
+
+function Component({
+  playlist,
+  video,
+}: {
+  playlist: PlaylistStore
+  video: VideoFirestore
+}) {
   return (
     <Link href={`/playlists/${playlist.id}`} passHref>
       <a>
@@ -24,12 +39,13 @@ export function TrackItem({ playlist }: Props) {
           <img
             src={playlist.thumbnailUrl}
             className="object-cover aspect-square"
+            alt={`thumbnailUrl-${playlist.thumbnailUrl}`}
           />
           <span className="ellipsis-one-line font-semibold">
             {playlist.title}
           </span>
           <span className="text-xs font-light text-primary">
-            {video?.artists?.join(', ')}
+            <Artists artistIds={video.artists} />
           </span>
         </div>
       </a>
