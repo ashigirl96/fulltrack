@@ -1,41 +1,35 @@
-import { VideoFirestore } from '@/types'
-import { ReturnTypeSetReadyEvent } from '@/hooks/youtube_player/useSetReadyEvent'
-import type { ReturnTypeUseIndexSelected } from './useIndexSelected'
-import { useCallback, useMemo } from 'react'
-import { secsToMS } from '@/lib/time'
+import { VideoFirestore, YouTubePlayerType } from '@/types'
 import { useIsPlayingVideo } from '@/atoms/youtubePlayer'
 import { Artists } from '@/components/shared/Artists'
 import { useSetVideoContext } from '@/atoms/contextMenu'
-
-function useVideoDuration(video: VideoFirestore | null) {
-  if (!video) {
-    return '00:00'
-  }
-  return secsToMS(video.end - video.start)
-}
+import { useVideoDuration } from './useVideoDuration'
+import { ReturnTypeUseIndexSelected } from '../useIndexSelected'
+import { useSetIndex } from './useSetIndex'
+import { useIsSelected } from './useIsSelected'
+import { useSetCurrentVideo } from '../useSetCurrentVideo'
+import { VideoFirestoreId } from '@/atoms/firestore/video'
 
 type Props = {
   index: number
   video: VideoFirestore
-  readyEvent: ReturnTypeSetReadyEvent['readyEvent']
+  videoIds: VideoFirestoreId[]
+  readyEvent: YouTubePlayerType | undefined
 } & ReturnTypeUseIndexSelected
 export function TrackRow({
   index,
   video,
-  readyEvent,
   indexSelected,
   setIndexSelected,
+  videoIds,
+  readyEvent,
 }: Props) {
   const duration = useVideoDuration(video)
   const isPlayingVideo = useIsPlayingVideo(video.id)
-  const setIndex = useCallback(() => {
-    setIndexSelected(index)
-  }, [index, setIndexSelected])
-  const isSelected = useMemo(
-    () => indexSelected === index,
-    [index, indexSelected],
-  )
+  const setIndex = useSetIndex(index, setIndexSelected)
+  const isSelected = useIsSelected(index, indexSelected)
   const setVideoContext = useSetVideoContext(video.id, index)
+  // TODO: 親にもたせれないか考える
+  const handleDoubleClick = useSetCurrentVideo(video.id, videoIds, readyEvent)
 
   return (
     <div
@@ -44,8 +38,7 @@ export function TrackRow({
         isSelected && 'bg-secondary'
       }`}
       onClick={setIndex}
-      // TODO: impl here
-      // onDoubleClick={handleDoubleClick}
+      onDoubleClick={handleDoubleClick}
       onContextMenu={setVideoContext}
     >
       <div className="flex justify-self-end items-center">{index + 1}</div>

@@ -1,17 +1,18 @@
-import { ReturnTypeSetReadyEvent } from '@/hooks/youtube_player/useSetReadyEvent'
-import { VideoFirestore } from '@/types'
+import { VideoFirestore, YouTubePlayerType } from '@/types'
 import { TrackHeader } from './TrackHeader'
 import { TrackTitle } from './TrackTitle'
 import { TrackBody } from './TrackBody'
 import { useIndexSelected } from './useIndexSelected'
 import { TrackRow } from '@/components/shared/TrackTable/TrackRow'
+import { useMemo } from 'react'
 
 type Props = {
-  readyEvent: ReturnTypeSetReadyEvent['readyEvent']
+  readyEvent: YouTubePlayerType | undefined
   videos: VideoFirestore[]
 }
 export function TrackTable({ readyEvent, videos }: Props) {
   const { indexSelected, setIndexSelected } = useIndexSelected()
+  const videoIds = useMemo(() => videos.map((video) => video.id), [videos])
 
   return (
     <div className="max-w-full px-4 relative" tabIndex={0}>
@@ -21,9 +22,10 @@ export function TrackTable({ readyEvent, videos }: Props) {
         <>
           {videos.map((video, index) => (
             <TrackRow
-              key={`video-id-${video.videoId}-${index}`}
-              video={video}
               readyEvent={readyEvent}
+              videoIds={videoIds}
+              key={`video-id-${video.id}-${index}`}
+              video={video}
               indexSelected={indexSelected}
               setIndexSelected={setIndexSelected}
               index={index}

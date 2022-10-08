@@ -9,10 +9,10 @@ export function Artists({ artistIds }: Props) {
     <span>
       {artistIds.map((artistId, index) => {
         return (
-          <>
+          <span key={`${artistId}-${index}`}>
             <Artist artistId={artistId} />
             <Comma index={index} length={length} />
-          </>
+          </span>
         )
       })}
     </span>
