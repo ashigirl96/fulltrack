@@ -1,69 +1,58 @@
 import { Layout } from '@/components/Layout'
 import { ReturnTypeSetReadyEvent } from '@/hooks/youtube_player/useSetReadyEvent'
-import React from 'react'
-//
-// type Props = ReturnTypeSetReadyEvent & { router: NextRouter }
-// function Component({ readyEvent, router }: Props) {
-//   const { isReady, query } = router
-//   if (!isReady) {
-//     return <div>isLoading...</div>
-//   }
-//   const artistId = query.id as string
-//
-//   return <C artistId={artistId} readyEvent={readyEvent} />
-// }
-//
-// function C({ artistId, readyEvent }) {
-//   const artistRef = artistDocRef(artistId)
-//   const q = query(
-//     videoCollectionRef,
-//     where('artists', 'array-contains', artistRef),
-//   )
-//   const [videos, isLoading, error] = useCollectionData(q)
-//
-//   console.log(`videos ${JSON.stringify(videos && videos[0])}`)
-//
-//   return (
-//     <>
-//       <div className="grid-playlist">
-//         <div className="justify-self-end">#</div>
-//         <div>タイトル</div>
-//         <div className="md-hidden">オリジナルタイトル</div>
-//         <div className="justify-self-end">再生時間</div>
-//       </div>
-//       <div className="max-h-[2296px]">
-//         <div className="translate-y-0">
-//           {videos?.map((video, index) => (
-//             // <VideoRow
-//             //   key={`${video.id}-${index}`}
-//             //   videoId={video.id}
-//             //   playlistId={''}
-//             //   readyEvent={readyEvent}
-//             //   index={index}
-//             //   indexSelected={0}
-//             //   setIndexSelected={() => {}}
-//             // />
-//             <div>
-//               {video.title}
-//               {video.videoId}
-//             </div>
-//           ))}
-//         </div>
-//       </div>
-//     </>
-//   )
-// }
-//
+import React, { useMemo } from 'react'
+import { NextRouter } from 'next/router'
+import { ArtistFirebaseId, VideoFirestore } from '@/types'
+import { artistDocRef } from '@/lib/firestore/artist'
+import { query, where } from '@firebase/firestore'
+import { videoCollectionRef } from '@/lib/firestore/video'
+import { useCollectionData } from '@/hooks/firestore'
+import { TrackTable } from '@/components/shared/TrackTable'
 
-function Component() {
-  return <div>Artists</div>
+type RoutingProps = ReturnTypeSetReadyEvent & { router: NextRouter }
+function RoutingComponent({ readyEvent, router }: RoutingProps) {
+  const { isReady, query } = router
+  const artistId = useMemo(() => query.id, [query.id]) as string
+  if (!isReady) {
+    return <div>isLoading...</div>
+  }
+  return <FetchingComponent readyEvent={readyEvent} artistId={artistId} />
 }
 
-Component.getLayout = function getLayout(
+type FetchProps = Pick<RoutingProps, 'readyEvent'> & {
+  artistId: ArtistFirebaseId
+}
+function FetchingComponent({ readyEvent, artistId }: FetchProps) {
+  const artistRef = artistDocRef(artistId)
+  const q = query(
+    videoCollectionRef,
+    where('artists', 'array-contains', artistRef),
+  )
+  const [videos, isLoading, error] = useCollectionData(q)
+  if (isLoading || !videos) return <div>loading fetch...</div>
+  if (error) return <div>error fetching...</div>
+
+  return <Component videos={videos} readyEvent={readyEvent} />
+}
+
+type Props = Pick<FetchProps, 'readyEvent'> & {
+  videos: VideoFirestore[]
+}
+function Component({ readyEvent, videos }: Props) {
+  return (
+    <div>
+      {/*TODO: 必要なものを考える*/}
+      <span>ARTIST!!</span>
+      <TrackTable readyEvent={readyEvent} videos={videos} />
+    </div>
+  )
+}
+
+RoutingComponent.getLayout = function getLayout(
   page: React.ReactElement,
   props: ReturnTypeSetReadyEvent,
 ) {
   return <Layout handlerSetReadyEvent={props}>{page}</Layout>
 }
 
-export default Component
+export default RoutingComponent
