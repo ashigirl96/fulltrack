@@ -38,7 +38,7 @@ function Component({ playlists }: Props) {
   return (
     <div className="max-w-full px-4">
       <Title text="プレイリスト" />
-      <div className="flex flex-wrap">
+      <div className="flex flex-wrap gap-x-8">
         {playlists.map((playlist) => (
           <TrackView key={`track-view-${playlist.id}`} playlist={playlist} />
         ))}

@@ -1,8 +1,9 @@
 import type { NextPage } from 'next'
 import { useCallback, useState } from 'react'
-import { addDoc, doc, documentId } from '@firebase/firestore'
+import { addDoc, doc, documentId, getDoc } from '@firebase/firestore'
 import { firestoreNow, playlistCollectionRef } from '@/lib/firestore/playlist'
 import { db } from '@/config/firebase'
+import { videoDocRef } from '@/lib/firestore/video'
 
 const AddOfficialPlaylist: NextPage = () => {
   const [title, setTitle] = useState('')
@@ -13,16 +14,22 @@ const AddOfficialPlaylist: NextPage = () => {
     .filter((x) => x)
     .map((x) => doc(db, `videos/${x}`)) as unknown as string[]
   const addPlaylist = useCallback(async () => {
+    const thumbnailUrl = (await getDoc(videoDocRef(videoIds[0]))).data()
+      ?.thumbnailUrl
     await addDoc(playlistCollectionRef, {
       id: documentId(),
       title,
       videoIds: _videoIds,
-      thumbnailUrl: '',
+      thumbnailUrl: thumbnailUrl || '',
       createdAt: firestoreNow(),
     })
-      .then(() => setUploadedMessage(`${title}の登録できました`))
+      .then(() =>
+        setUploadedMessage(
+          `${title} ${JSON.stringify(videoIds[0])}の登録できました`,
+        ),
+      )
       .catch((reason) => setUploadedMessage(`ERROR ${JSON.stringify(reason)}`))
-  }, [_videoIds, title])
+  }, [_videoIds, title, videoIds])
 
   return (
     <div className="grid grid-cols-1 gap-y-4 py-4 justify-center">
