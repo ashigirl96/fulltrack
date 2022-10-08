@@ -31,8 +31,6 @@ export function TrackRow({
   // TODO: 親にもたせれないか考える
   const handleDoubleClick = useSetCurrentVideo(video.id, videoIds, readyEvent)
 
-  // TODO: DEBUG
-
   return (
     <div
       role="row"

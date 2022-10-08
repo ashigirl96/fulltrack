@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useHandleStateChange } from './useHandleStateChange'
 import { YouTubeEvent, YouTubePlayerType } from '@/types'
 import { fetchThumbnailUrl } from '@/lib/youtube/fetchThumbnailUrl'
-import { addDoc, documentId } from '@firebase/firestore'
+import { addDoc, documentId, getDocs, query, where } from '@firebase/firestore'
 import { videoCollectionRef } from '@/lib/firestore/video'
+import { artistCollectionRef, artistDocRef } from '@/lib/firestore/artist'
 
 export function useAddVideo() {
   const [start, setStart] = useState<number>(1)
@@ -31,6 +32,25 @@ export function useAddVideo() {
     }
   }, [readyEvent])
 
+  const setRawStartTime = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const [hours, minutes, seconds] = e.currentTarget.value
+        .split(':')
+        .map((x) => Number(x))
+      setStart(hours * 3600 + minutes * 60 + seconds)
+    },
+    [],
+  )
+  const setRawEndTime = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const [hours, minutes, seconds] = e.currentTarget.value
+        .split(':')
+        .map((x) => Number(x))
+      setEnd(hours * 3600 + minutes * 60 + seconds)
+    },
+    [],
+  )
+
   useEffect(() => {
     const f = async () => {
       if (videoId) {
@@ -53,6 +73,9 @@ export function useAddVideo() {
 
   const [uploadedMessage, setUploadedMessage] = useState<string | null>(null)
   const addVideo = useCallback(async () => {
+    const q = query(artistCollectionRef, where('name', 'in', artists))
+    const _artists = (await getDocs(q)).docs.map((x) => artistDocRef(x.id))
+    console.log(JSON.stringify(_artists))
     await addDoc(videoCollectionRef, {
       id: documentId(),
       videoId,
@@ -61,7 +84,9 @@ export function useAddVideo() {
       originalTitle,
       title,
       thumbnailUrl,
-      artists,
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      artists: _artists,
     })
       .then(() => setUploadedMessage(`${videoId}の登録できました`))
       .catch((reason) => setUploadedMessage(`ERROR ${JSON.stringify(reason)}`))
@@ -87,5 +112,7 @@ export function useAddVideo() {
     uploadedMessage,
     setUploadedMessage,
     handleReadyEvent,
+    setRawStartTime,
+    setRawEndTime,
   }
 }

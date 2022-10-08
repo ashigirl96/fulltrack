@@ -26,6 +26,8 @@ export default function AddVideo() {
     uploadedMessage,
     setUploadedMessage,
     handleReadyEvent,
+    setRawStartTime,
+    setRawEndTime,
   } = useAddVideo()
 
   const opts = getPropsOptions({ start, end, controls: 1 })
@@ -72,6 +74,26 @@ export default function AddVideo() {
                 type="text"
                 className="input input-bordered flex-1"
                 onChange={(e) => setArtists(e.currentTarget.value.split(','))}
+              />
+            </label>
+
+            <label className="input-group w-full">
+              <span>開始時間</span>
+              <input
+                placeholder="12:34"
+                type="text"
+                className="input input-bordered flex-1"
+                onChange={setRawStartTime}
+              />
+            </label>
+
+            <label className="input-group w-full">
+              <span>終了時間</span>
+              <input
+                placeholder="12:34"
+                type="text"
+                className="input input-bordered flex-1"
+                onChange={setRawEndTime}
               />
             </label>
 
