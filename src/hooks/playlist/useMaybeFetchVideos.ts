@@ -26,9 +26,15 @@ export function useMaybeFetchVideos(videoIds: VideoFirestoreId[] | undefined) {
       videoCollectionRef,
       unFetchedVideoIds,
     )
-    // const x = [...videos, ...unFetchedVideos]
 
-    return [...videos, ...unFetchedVideos]
+    // TODO: おもすぎる
+    const sorted: VideoFirestore[] = []
+    const unsorted = [...videos, ...unFetchedVideos]
+    videoIds.forEach((id) => {
+      sorted.push(unsorted.filter((i) => i.id === id)[0])
+    })
+
+    return sorted
   }, [videoIds])
 
   return {
