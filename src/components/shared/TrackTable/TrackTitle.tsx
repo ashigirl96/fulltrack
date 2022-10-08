@@ -10,7 +10,13 @@ type ArtistProps = {
 }
 function Artist({ artistId }: ArtistProps) {
   const artist = useArtistValue(artistId)
-  return <div className="font-bold text-3xl">{artist?.name}</div>
+  return (
+    <div className="my-4 cursor-default">
+      <span className="bg-primary-content text-primary rounded p-2 font-bold text-3xl">
+        {artist?.name}
+      </span>
+    </div>
+  )
 }
 
 export const TrackTitle = {

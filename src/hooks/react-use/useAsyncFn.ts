@@ -4,22 +4,22 @@ import { FunctionReturningPromise, PromiseType } from './misc/types'
 
 export type AsyncState<T> =
   | {
-      loading: boolean
+      isLoading: boolean
       error?: undefined
       value?: undefined
     }
   | {
-      loading: true
+      isLoading: true
       error?: Error | undefined
       value?: T
     }
   | {
-      loading: false
+      isLoading: false
       error: Error
       value?: undefined
     }
   | {
-      loading: false
+      isLoading: false
       error?: undefined
       value: T
     }
@@ -34,7 +34,7 @@ export type AsyncFnReturn<
 export default function useAsyncFn<T extends FunctionReturningPromise>(
   fn: T,
   deps: DependencyList = [],
-  initialState: StateFromFunctionReturningPromise<T> = { loading: false },
+  initialState: StateFromFunctionReturningPromise<T> = { isLoading: false },
 ): AsyncFnReturn<T> {
   const lastCallId = useRef(0)
   const isMounted = useMountedState()
@@ -44,22 +44,22 @@ export default function useAsyncFn<T extends FunctionReturningPromise>(
   const callback = useCallback((...args: Parameters<T>): ReturnType<T> => {
     const callId = ++lastCallId.current
 
-    if (!state.loading) {
-      set((prevState) => ({ ...prevState, loading: true }))
+    if (!state.isLoading) {
+      set((prevState) => ({ ...prevState, isLoading: true }))
     }
 
     return fn(...args).then(
       (value) => {
         isMounted() &&
           callId === lastCallId.current &&
-          set({ value, loading: false })
+          set({ value, isLoading: false })
 
         return value
       },
       (error) => {
         isMounted() &&
           callId === lastCallId.current &&
-          set({ error, loading: false })
+          set({ error, isLoading: false })
 
         return error
       },

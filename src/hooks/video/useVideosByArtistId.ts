@@ -14,8 +14,7 @@ export function useVideosByArtistId(artistId: ArtistFirebaseId) {
     return (await getDocs(q)).docs.map((doc) => doc.data())
   }, [artistId])
   return {
-    isLoading: result.loading,
-    error: result.error,
+    ...result,
     videos: result.value,
   }
 }
