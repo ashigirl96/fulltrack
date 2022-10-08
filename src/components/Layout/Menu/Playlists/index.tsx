@@ -24,7 +24,7 @@ export function UserPlaylists({ userId }: Props) {
   return (
     <>
       {playlists.map((playlist) => (
-        <Playlist playlist={playlist} />
+        <Playlist key={`user-playlist-${playlist.id}`} playlist={playlist} />
       ))}
     </>
   )

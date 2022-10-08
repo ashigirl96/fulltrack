@@ -22,6 +22,7 @@ export function useVideoValue(videoId: VideoFirestoreId) {
   return useRecoilValue(videoState(videoId))
 }
 
+// TODO: refactor
 export function useSetVideoValues(videos: VideoFirestore[]) {
   return useRecoilCallback(
     ({ set }) =>

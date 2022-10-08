@@ -3,6 +3,7 @@ import { useInitializeVideos } from '@/hooks/playlist'
 import { useState } from 'react'
 
 export function usePlaylist(playlistId: PlaylistStoreId) {
+  // TODO: サイドメニューがプレイリストをフェッチしてることを前提にしてる
   const playlist = usePlaylistValue(playlistId)
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const { completed } = useInitializeVideos(playlist!)
