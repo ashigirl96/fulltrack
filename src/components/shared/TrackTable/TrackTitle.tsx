@@ -1,8 +1,13 @@
 import { ArtistFirebaseId } from '@/types'
 import { useArtistValue } from '@/atoms/firestore/artist'
+import { PlaylistStoreId, usePlaylistValue } from '@/atoms/firestore/playlist'
 
-function Playlist() {
-  return <div>Official</div>
+type PlaylistProps = {
+  playlistId: PlaylistStoreId
+}
+function Playlist({ playlistId }: PlaylistProps) {
+  const playlist = usePlaylistValue(playlistId)
+  return <Title text={playlist?.title || ''} />
 }
 
 type ArtistProps = {
@@ -10,12 +15,14 @@ type ArtistProps = {
 }
 function Artist({ artistId }: ArtistProps) {
   const artist = useArtistValue(artistId)
+  return <Title text={artist?.name || ''} />
+}
+
+function Title({ text }: { text: string }) {
   return (
-    <div className="my-4 cursor-default">
-      <span className="bg-primary-content text-primary rounded p-2 font-bold text-3xl">
-        {artist?.name}
-      </span>
-    </div>
+    <h1 className="my-4 cursor-default">
+      <span className="p-2 font-bold text-3xl">{text}</span>
+    </h1>
   )
 }
 

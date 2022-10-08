@@ -29,13 +29,19 @@ function FetchingComponent({ readyEvent, playlistId }: FetchProps) {
   if (!videos) return <div>no videos...</div>
   if (error) return <div>error fetching...</div>
 
-  return <Component videos={videos} readyEvent={readyEvent} />
+  return (
+    <Component
+      videos={videos}
+      readyEvent={readyEvent}
+      playlistId={playlistId}
+    />
+  )
 }
 
-type Props = Pick<FetchProps, 'readyEvent'> & {
+type Props = Pick<FetchProps, 'readyEvent' | 'playlistId'> & {
   videos: VideoFirestore[]
 }
-function Component({ readyEvent, videos }: Props) {
+function Component({ readyEvent, videos, playlistId }: Props) {
   const setVideoValues = useSetVideoValues(videos)
   useEffect(() => {
     setVideoValues()
@@ -43,7 +49,7 @@ function Component({ readyEvent, videos }: Props) {
 
   return (
     <div>
-      <TrackTitle.Playlist />
+      <TrackTitle.Playlist playlistId={playlistId} />
       <TrackTable readyEvent={readyEvent} videos={videos} />
     </div>
   )
