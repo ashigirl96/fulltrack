@@ -1,8 +1,8 @@
 import { useCollectionData } from '@/hooks/firestore'
-import { userPlaylistCollectionOrderByCreatedAtRef } from '@/lib/firestore/playlist'
+import { playlistCollectionOrderByCreatedAtRef } from '@/lib/firestore/playlist'
 
-export function useUserPlaylistCollection(userId: string) {
-  const playlistQuery = userPlaylistCollectionOrderByCreatedAtRef(userId)
+export function usePlaylistCollection() {
+  const playlistQuery = playlistCollectionOrderByCreatedAtRef()
   const [playlists, isLoading, error, playlistsSnapshot] =
     useCollectionData(playlistQuery)
 

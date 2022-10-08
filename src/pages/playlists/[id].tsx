@@ -22,8 +22,8 @@ type FetchProps = Pick<RoutingProps, 'readyEvent'> & {
   playlistId: PlaylistStoreId
 }
 function FetchingComponent({ readyEvent, playlistId }: FetchProps) {
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const playlist = usePlaylistValue(playlistId) // TODO: サイドメニューがプレイリストをフェッチしてることを前提にしてる
+  console.log(`playlist ${JSON.stringify(playlist)}`)
   const { isLoading, videos, error } = useMaybeFetchVideos(playlist?.videoIds)
   if (isLoading) return <div>loading fetch...</div>
   if (!videos) return <div>no videos...</div>

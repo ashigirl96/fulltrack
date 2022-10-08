@@ -18,7 +18,7 @@ function Artist({ artistId }: ArtistProps) {
   return <Title text={artist?.name || ''} />
 }
 
-function Title({ text }: { text: string }) {
+export function Title({ text }: { text: string }) {
   return (
     <h1 className="my-4 cursor-default">
       <span className="p-2 font-bold text-3xl">{text}</span>

@@ -30,6 +30,7 @@ export function UserPlaylists({ userId }: Props) {
   )
 }
 
+// TODO: src/pages/playlists/index.tsx:36 を見習ってリファクタ
 type PlaylistProps = {
   playlist: PlaylistStore
 }

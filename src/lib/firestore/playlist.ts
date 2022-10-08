@@ -40,6 +40,10 @@ export const playlistCollectionRef = collection(db, 'playlists').withConverter(
   playlistConverter,
 )
 
+export function playlistCollectionOrderByCreatedAtRef() {
+  return query(playlistCollectionRef, orderBy('createdAt', 'desc'))
+}
+
 export function userPlaylistCollectionRef(userId: UserId) {
   return collection(db, 'users', userId, 'playlists').withConverter(
     playlistConverter,

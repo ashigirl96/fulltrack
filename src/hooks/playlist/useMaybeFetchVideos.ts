@@ -1,21 +1,34 @@
-import { VideoFirestoreId } from '@/atoms/firestore/video'
-import { videoDocRef } from '@/lib/firestore/video'
+import { VideoFirestoreId, videoState } from '@/atoms/firestore/video'
+import { videoCollectionRef } from '@/lib/firestore/video'
 import { useAsync } from '@/hooks/react-use/useAsync'
-import { getDoc } from '@firebase/firestore'
 import { VideoFirestore } from '@/types'
+import { useRecoilSnapshot } from 'recoil'
+import { getDocsByIds } from '@/lib/firestore/getDocsByIds'
 
-// TODO: まだ取ってきてないvideo一覧を取ってくる
 export function useMaybeFetchVideos(videoIds: VideoFirestoreId[] | undefined) {
+  const snapshot = useRecoilSnapshot()
+
   const result = useAsync(async () => {
     const videos: VideoFirestore[] = []
     if (!videoIds) {
       return videos
     }
+    const unFetchedVideoIds = []
     for (const videoId of videoIds) {
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      videos.push((await getDoc(videoDocRef(videoId))).data()!)
+      const video = await snapshot.getPromise(videoState(videoId))
+      if (video) {
+        videos.push(video)
+      } else {
+        unFetchedVideoIds.push(videoId)
+      }
     }
-    return videos
+    const unFetchedVideos = await getDocsByIds(
+      videoCollectionRef,
+      unFetchedVideoIds,
+    )
+    // const x = [...videos, ...unFetchedVideos]
+
+    return [...videos, ...unFetchedVideos]
   }, [videoIds])
 
   return {

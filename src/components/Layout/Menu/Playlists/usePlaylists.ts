@@ -1,12 +1,4 @@
-import {
-  useUserPlaylistCollection,
-  usePlaylistCollection,
-} from '@/hooks/playlist'
-
-export function usePlaylists() {
-  const { playlists, isLoading, error } = usePlaylistCollection()
-  return { playlists, isLoading, error }
-}
+import { useUserPlaylistCollection } from '@/hooks/playlist'
 
 export function useUserPlaylists(userId: string) {
   const { playlists, isLoading, error } = useUserPlaylistCollection(userId)

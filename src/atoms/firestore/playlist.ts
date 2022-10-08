@@ -1,5 +1,10 @@
-import { atomFamily, useRecoilValue, useSetRecoilState } from 'recoil'
-import { PlaylistState } from '@/types'
+import {
+  atomFamily,
+  useRecoilCallback,
+  useRecoilValue,
+  useSetRecoilState,
+} from 'recoil'
+import { PlaylistState, PlaylistStore } from '@/types'
 
 export type PlaylistStoreId = string
 
@@ -14,4 +19,29 @@ export function useSetPlaylist(playlistId: PlaylistStoreId) {
 
 export function usePlaylistValue(playlistId: PlaylistStoreId) {
   return useRecoilValue(playlistState(playlistId))
+}
+
+// TODO: refactor. useRecoilSnapshotを使う
+export function useSetPlaylistValues(playlists: PlaylistStore[]) {
+  // const snapshot = useRecoilSnapshot()
+  // return playlists.map((playlist) =>
+  //   snapshot.map(({ set }) =>
+  //     set(playlistState(playlist.id), {
+  //       isOfficial: true,
+  //       ...playlist,
+  //     }),
+  //   ),
+  // )
+  return useRecoilCallback(
+    ({ set }) =>
+      () => {
+        for (const playlist of playlists) {
+          set(playlistState(playlist.id), {
+            isOfficial: true,
+            ...playlist,
+          })
+        }
+      },
+    [playlists],
+  )
 }

@@ -1,25 +1,57 @@
 import { Layout } from '@/components/Layout'
 import { NextRouter } from 'next/router'
 import { ReturnTypeSetReadyEvent } from '@/hooks/youtube_player/useSetReadyEvent'
-import React from 'react'
-import { OfficialTracks } from '@/components/Playlist/OfficialTracks'
+import React, { useEffect } from 'react'
+import { PlaylistStore } from '@/types'
+import { Title } from '@/components/shared/TrackTable/TrackTitle'
+import { usePlaylistCollection } from '@/hooks/playlist/usePlaylistCollection'
+import { useSetPlaylistValues } from '@/atoms/firestore/playlist'
+import { TrackView } from '@/components/shared/TrackView'
 
-type Props = ReturnTypeSetReadyEvent & { router: NextRouter }
-const Component = ({ router }: Props) => {
+type RoutingProps = { router: NextRouter }
+const RoutingComponent = ({ router }: RoutingProps) => {
   const { isReady } = router
 
   if (!isReady) {
     return <div>isLoading...</div>
   }
 
-  return <OfficialTracks />
+  return <FetchingComponent />
 }
 
-Component.getLayout = function getLayout(
+function FetchingComponent() {
+  const { playlists, error } = usePlaylistCollection()
+  if (!playlists) return <div suppressHydrationWarning>no playlists...</div>
+  if (error) return <div>error fetching...</div>
+
+  return <Component playlists={playlists} />
+}
+
+type Props = {
+  playlists: PlaylistStore[]
+}
+function Component({ playlists }: Props) {
+  const setPlaylistValues = useSetPlaylistValues(playlists)
+  useEffect(() => {
+    setPlaylistValues()
+  }, [setPlaylistValues])
+  return (
+    <div className="max-w-full px-4">
+      <Title text="プレイリスト" />
+      <div className="flex flex-wrap">
+        {playlists.map((playlist) => (
+          <TrackView key={`track-view-${playlist.id}`} playlist={playlist} />
+        ))}
+      </div>
+    </div>
+  )
+}
+
+RoutingComponent.getLayout = function getLayout(
   page: React.ReactElement,
   props: ReturnTypeSetReadyEvent,
 ) {
   return <Layout handlerSetReadyEvent={props}>{page}</Layout>
 }
 
-export default Component
+export default RoutingComponent
