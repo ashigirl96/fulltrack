@@ -9,6 +9,7 @@ import {
 } from '@/atoms/youtubePlayer'
 import { useCallback, useMemo } from 'react'
 import { shuffleWithFirst } from '@/lib/array'
+import { useSetCurrentTrackVideoIds } from '@/atoms/youtubePlayer/states'
 
 export function useSetCurrentVideo(
   videoId: VideoFirestoreId,
@@ -19,6 +20,7 @@ export function useSetCurrentVideo(
   const currentVideoIndex = videoIds.indexOf(videoId)
   const setCurrentVideoIndex = useSetCurrentVideoIndex()
   const setCurrentVideoIds = useSetCurrentVideoIds()
+  const setCurrentTrackVideoIds = useSetCurrentTrackVideoIds()
   const isSameVideo = useMemo(
     () => currentVideo && currentVideo.id === videoId,
     [currentVideo, videoId],
@@ -26,17 +28,21 @@ export function useSetCurrentVideo(
   const isShuffle = useIsShuffleValue()
 
   return useCallback(async () => {
+    setCurrentTrackVideoIds(videoIds)
+
     // if check shuffle, to shuffle video ids
     if (isShuffle) {
       setCurrentVideoIds(shuffleWithFirst([...videoIds], videoId))
       setCurrentVideoIndex(0)
       return
     }
+
     // if select the same video, restart
     if (isSameVideo && currentVideo && readyEvent) {
       await readyEvent.seekTo(currentVideo.start, true)
       return
     }
+
     // set default playlist
     setCurrentVideoIds(videoIds)
     setCurrentVideoIndex(currentVideoIndex)
@@ -46,6 +52,7 @@ export function useSetCurrentVideo(
     isSameVideo,
     isShuffle,
     readyEvent,
+    setCurrentTrackVideoIds,
     setCurrentVideoIds,
     setCurrentVideoIndex,
     videoId,

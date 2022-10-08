@@ -1,6 +1,6 @@
 import { Layout } from '@/components/Layout'
 import { ReturnTypeSetReadyEvent } from '@/hooks/youtube_player/useSetReadyEvent'
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { NextRouter } from 'next/router'
 import { ArtistFirebaseId, VideoFirestore } from '@/types'
 import { artistDocRef } from '@/lib/firestore/artist'
@@ -8,6 +8,7 @@ import { query, where } from '@firebase/firestore'
 import { videoCollectionRef } from '@/lib/firestore/video'
 import { useCollectionData } from '@/hooks/firestore'
 import { TrackTable } from '@/components/shared/TrackTable'
+import { useSetVideoValues } from '@/atoms/firestore/video'
 
 type RoutingProps = ReturnTypeSetReadyEvent & { router: NextRouter }
 function RoutingComponent({ readyEvent, router }: RoutingProps) {
@@ -39,6 +40,11 @@ type Props = Pick<FetchProps, 'readyEvent'> & {
   videos: VideoFirestore[]
 }
 function Component({ readyEvent, videos }: Props) {
+  const setVideoValues = useSetVideoValues(videos)
+  useEffect(() => {
+    setVideoValues()
+  }, [setVideoValues])
+
   return (
     <div>
       {/*TODO: 必要なものを考える*/}

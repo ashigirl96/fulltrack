@@ -1,7 +1,6 @@
 import { YouTubePlayerType } from '@/types'
 import {
   useCurrentPlayerStatusValue,
-  useCurrentPlaylistVideoIdsValue,
   useCurrentVideoIdValue,
   useCurrentVideoValue,
   useIsShuffled,
@@ -17,7 +16,10 @@ import {
   useSetNextVideo,
   useSetPreviousVideo,
 } from '@/atoms/youtubePlayer/hooks'
-import { useRepeatStatusValue } from '@/atoms/youtubePlayer/states'
+import {
+  useCurrentTrackVideoIdsValue,
+  useRepeatStatusValue,
+} from '@/atoms/youtubePlayer/states'
 
 export function useHandlePlayerController(
   readyEvent: YouTubePlayerType | undefined,
@@ -227,8 +229,7 @@ function useHandlePlayerControllerState() {
   const shuffledVideoIds = useShuffledCurrentVideoIds(currentVideoId)
   const setCurrentVideoIds = useSetCurrentVideoIds()
   const setCurrentVideoIndex = useSetCurrentVideoIndex()
-  const videoIds = useCurrentPlaylistVideoIdsValue()
-
+  const videoIds = useCurrentTrackVideoIdsValue()
   const repeatStatus = useRepeatStatusValue()
   const isShuffle = useIsShuffleValue()
   const isPlaying = useMemo(

@@ -2,7 +2,6 @@ import { atom, useRecoilValue, useSetRecoilState } from 'recoil'
 import { PlaylistFirestoreId } from '@/types'
 import { useVideoValue, VideoFirestoreId } from '@/atoms/firestore/video'
 import { PlayerStateKey } from '@/constants/youtube'
-import { playlistState } from '@/atoms/firestore/playlist'
 import { isEqualArray, shuffleWithFirst } from '@/lib/array'
 import { useMemo } from 'react'
 
@@ -14,10 +13,6 @@ const currentPlaylistIdState = atom<PlaylistFirestoreId | null>({
 
 export function useSetCurrentPlaylistId() {
   return useSetRecoilState(currentPlaylistIdState)
-}
-
-export function useCurrentPlaylistIdValue() {
-  return useRecoilValue(currentPlaylistIdState)
 }
 
 // リピート
@@ -77,6 +72,20 @@ export function useSetCurrentVideoIds() {
   return useSetRecoilState(currentVideoIdsState)
 }
 
+// 現在再生する元のトラックのvideoのID
+const currentTrackVideoIdsState = atom<VideoFirestoreId[]>({
+  key: 'currentTrackVideoIdsState',
+  default: [],
+})
+
+export function useCurrentTrackVideoIdsValue() {
+  return useRecoilValue(currentTrackVideoIdsState)
+}
+
+export function useSetCurrentTrackVideoIds() {
+  return useSetRecoilState(currentTrackVideoIdsState)
+}
+
 // プレイヤーのステータス
 const currentPlayerStatusState = atom<PlayerStateKey>({
   key: 'currentPlayerStatusState',
@@ -105,18 +114,6 @@ export function useCurrentVolumeValue() {
   return useRecoilValue(currentVolumeState)
 }
 
-// Playlist
-export function useCurrentPlaylistValue() {
-  const currentPlaylistId = useCurrentPlaylistIdValue()
-  return useRecoilValue(playlistState(currentPlaylistId || ''))
-}
-
-// video
-export function useCurrentPlaylistVideoIdsValue() {
-  const currentPlaylist = useCurrentPlaylistValue()
-  return currentPlaylist ? currentPlaylist.videoIds : []
-}
-
 export function useCurrentVideoIdValue() {
   const currentVideoIndex = useCurrentVideoIndexValue()
   const currentVideoIds = useCurrentVideoIdsValue()
@@ -141,6 +138,6 @@ export function useShuffledCurrentVideoIds(first: VideoFirestoreId) {
 
 export function useIsShuffled() {
   const currentVideoIds = useCurrentVideoIdsValue()
-  const videoIds = useCurrentPlaylistVideoIdsValue()
+  const videoIds = useCurrentTrackVideoIdsValue()
   return !isEqualArray(currentVideoIds, videoIds)
 }

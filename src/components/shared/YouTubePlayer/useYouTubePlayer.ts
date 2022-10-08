@@ -7,6 +7,7 @@ import { useHandleStateChange } from './useHandleStateChange'
 export function useYouTubePlayer() {
   const handleStateChange = useHandleStateChange()
   const currentVideo = useCurrentVideoValue()
+  console.log(`currentVideo ${JSON.stringify(currentVideo)}`)
 
   // TODO: リファクタリング
   let videoId = ''
