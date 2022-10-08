@@ -63,6 +63,10 @@ export const userPlaylistDocRef = function (
   )
 }
 
+export const playlistDocRef = function (playlistId: PlaylistStoreId) {
+  return doc(db, 'playlists', playlistId).withConverter(playlistConverter)
+}
+
 export function firestoreNow() {
   return Timestamp.now()
 }
