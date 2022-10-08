@@ -2,7 +2,6 @@ import React from 'react'
 import { useVideoRow } from './useVideoRow'
 import type { ArgsVideoRow } from './useVideoRow'
 import { useSetVideoContext } from '@/atoms/contextMenu'
-import { ArtistFirebaseId } from '@/types'
 import { Artists } from '@/components/shared/Artists'
 
 type Props = ArgsVideoRow

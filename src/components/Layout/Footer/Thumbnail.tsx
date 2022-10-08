@@ -1,4 +1,5 @@
 import { useCurrentVideoValue } from '@/atoms/youtubePlayer'
+import { Artists } from '@/components/shared/Artists'
 
 export function Thumbnail() {
   const currentVideo = useCurrentVideoValue()
@@ -22,7 +23,7 @@ export function Thumbnail() {
             </a>
           </div>
           <div className="group-hover:text-white text-xs text-accent-content">
-            {artists.join(', ')}
+            <Artists artistIds={artists} />
           </div>
         </div>
       </div>
