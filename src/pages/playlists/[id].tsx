@@ -6,21 +6,8 @@ import { VideoFirestore } from '@/types'
 import { PlaylistStoreId, usePlaylistValue } from '@/atoms/firestore/playlist'
 import { useMaybeFetchVideos } from '@/hooks/playlist/useMaybeFetchVideos'
 import { useSetVideoValues } from '@/atoms/firestore/video'
-import { TrackTable } from '@/components/shared/TrackTable'
+import { TrackTable, TrackTitle } from '@/components/shared/TrackTable'
 
-// type Props = ReturnTypeSetReadyEvent & { router: NextRouter }
-// const Component = ({ readyEvent, router }: Props) => {
-//   const { isReady, query } = router
-//
-//   if (!isReady) {
-//     return <div>isLoading...</div>
-//   }
-//
-//   const playlistId = query.id as string
-//
-//   return <PlaylistWrapper playlistId={playlistId} readyEvent={readyEvent} />
-// }
-//
 type RoutingProps = ReturnTypeSetReadyEvent & { router: NextRouter }
 function RoutingComponent({ readyEvent, router }: RoutingProps) {
   const { isReady, query } = router
@@ -56,8 +43,7 @@ function Component({ readyEvent, videos }: Props) {
 
   return (
     <div>
-      {/*TODO: 必要なものを考える*/}
-      <span>VIDEO!!</span>
+      <TrackTitle.Playlist />
       <TrackTable readyEvent={readyEvent} videos={videos} />
     </div>
   )

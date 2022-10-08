@@ -1,10 +1,10 @@
 import { VideoFirestore, YouTubePlayerType } from '@/types'
 import { TrackHeader } from './TrackHeader'
-import { TrackTitle } from './TrackTitle'
 import { TrackBody } from './TrackBody'
 import { useIndexSelected } from './useIndexSelected'
 import { TrackRow } from '@/components/shared/TrackTable/TrackRow'
 import { useMemo } from 'react'
+export { TrackTitle } from './TrackTitle'
 
 type Props = {
   readyEvent: YouTubePlayerType | undefined
@@ -15,8 +15,7 @@ export function TrackTable({ readyEvent, videos }: Props) {
   const videoIds = useMemo(() => videos.map((video) => video.id), [videos])
 
   return (
-    <div className="max-w-full px-4 relative" tabIndex={0}>
-      <TrackTitle title={'xxx'} />
+    <div className="relative" tabIndex={0}>
       <TrackHeader />
       <TrackBody>
         <>

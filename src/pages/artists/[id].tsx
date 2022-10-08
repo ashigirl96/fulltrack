@@ -7,8 +7,9 @@ import { artistDocRef } from '@/lib/firestore/artist'
 import { query, where } from '@firebase/firestore'
 import { videoCollectionRef } from '@/lib/firestore/video'
 import { useCollectionData } from '@/hooks/firestore'
-import { TrackTable } from '@/components/shared/TrackTable'
+import { TrackTable, TrackTitle } from '@/components/shared/TrackTable'
 import { useSetVideoValues } from '@/atoms/firestore/video'
+import { useVideosByArtistId } from '@/hooks/video/useVideosByArtistId'
 
 type RoutingProps = ReturnTypeSetReadyEvent & { router: NextRouter }
 function RoutingComponent({ readyEvent, router }: RoutingProps) {
@@ -24,31 +25,29 @@ type FetchProps = Pick<RoutingProps, 'readyEvent'> & {
   artistId: ArtistFirebaseId
 }
 function FetchingComponent({ readyEvent, artistId }: FetchProps) {
-  const artistRef = artistDocRef(artistId)
-  const q = query(
-    videoCollectionRef,
-    where('artists', 'array-contains', artistRef),
-  )
-  const [videos, isLoading, error] = useCollectionData(q)
-  if (isLoading || !videos) return <div>loading fetch...</div>
+  const { videos, isLoading, error } = useVideosByArtistId(artistId)
+  if (isLoading) return <div>loading fetch...</div>
+  if (!videos) return <div>no videos!</div>
   if (error) return <div>error fetching...</div>
 
-  return <Component videos={videos} readyEvent={readyEvent} />
+  return (
+    <Component videos={videos} artistId={artistId} readyEvent={readyEvent} />
+  )
 }
 
 type Props = Pick<FetchProps, 'readyEvent'> & {
   videos: VideoFirestore[]
+  artistId: ArtistFirebaseId
 }
-function Component({ readyEvent, videos }: Props) {
+function Component({ readyEvent, videos, artistId }: Props) {
   const setVideoValues = useSetVideoValues(videos)
   useEffect(() => {
     setVideoValues()
   }, [setVideoValues])
 
   return (
-    <div>
-      {/*TODO: 必要なものを考える*/}
-      <span>ARTIST!!</span>
+    <div className="max-w-full px-4">
+      <TrackTitle.Artist artistId={artistId} />
       <TrackTable readyEvent={readyEvent} videos={videos} />
     </div>
   )
