@@ -24,7 +24,7 @@ function Artist({ artistId }: ArtistProps) {
   const artist = useArtistById(artistId)
   if (artist) {
     return (
-      <Link href={`/artists/${artist.id}`}>
+      <Link href={`/artists/${artist.id}`} shallow>
         <a>
           <span className="hover:underline">{artist.name}</span>
         </a>

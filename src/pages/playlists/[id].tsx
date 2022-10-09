@@ -3,7 +3,7 @@ import { NextRouter } from 'next/router'
 import { ReturnTypeSetReadyEvent } from '@/hooks/youtube_player/useSetReadyEvent'
 import React, { useEffect, useMemo } from 'react'
 import { PlaylistStore, VideoFirestore } from '@/types'
-import { PlaylistStoreId } from '@/atoms/firestore/playlist'
+import { PlaylistStoreId, usePlaylistValue } from '@/atoms/firestore/playlist'
 import { useMaybeFetchVideos } from '@/hooks/playlist/useMaybeFetchVideos'
 import { useSetVideoValues } from '@/atoms/firestore/video'
 import { TrackTable, TrackTitle } from '@/components/shared/TrackTable'
@@ -13,20 +13,25 @@ type RoutingProps = ReturnTypeSetReadyEvent & { router: NextRouter }
 function RoutingComponent({ readyEvent, router }: RoutingProps) {
   const { isReady, query } = router
   const playlistId = useMemo(() => query.id, [query.id]) as string
+  const playlist = usePlaylistValue(playlistId)
   if (!isReady) {
     return <div>isLoading...</div>
   }
-  return <FetchingComponent readyEvent={readyEvent} playlistId={playlistId} />
+  return playlist ? (
+    <FetchingVideosComponent playlist={playlist} readyEvent={readyEvent} />
+  ) : (
+    <FetchingComponent readyEvent={readyEvent} playlistId={playlistId} />
+  )
 }
 
 type FetchProps = Pick<RoutingProps, 'readyEvent'> & {
   playlistId: PlaylistStoreId
 }
 function FetchingComponent({ readyEvent, playlistId }: FetchProps) {
-  // TODO: あれば、fetchしないようにする
   const { playlist, isLoading, error } = usePlaylistDoc(playlistId)
+  console.log(`playlist ${JSON.stringify(playlist)} isLoading ${isLoading}`)
   if (isLoading) return <div>loading fetch...</div>
-  if (!playlist) return <div>no videos...</div>
+  if (!playlist) return <div>no playlist...</div>
   if (error) return <div>error fetching...</div>
 
   return <FetchingVideosComponent playlist={playlist} readyEvent={readyEvent} />
