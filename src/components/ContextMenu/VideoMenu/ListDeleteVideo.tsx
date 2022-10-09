@@ -8,7 +8,22 @@ type Props = {
 }
 export function ListDeleteVideo({ videoIndex }: Props) {
   const router = useRouter()
-  const playlistId = router.query['playlistId'] as string
+  const { isReady, query } = router
+  if (!isReady) {
+    return <div />
+  }
+  const playlistId = query.id as string
+
+  return <Component playlistId={playlistId} videoIndex={videoIndex} />
+}
+
+function Component({
+  playlistId,
+  videoIndex,
+}: {
+  playlistId: string
+  videoIndex: number
+}) {
   const playlist = usePlaylistValue(playlistId)
   if (!playlist) {
     return null

@@ -22,26 +22,20 @@ export function usePlaylistValue(playlistId: PlaylistStoreId) {
 }
 
 // TODO: refactor. useRecoilSnapshotを使う
-export function useSetPlaylistValues(playlists: PlaylistStore[]) {
-  // const snapshot = useRecoilSnapshot()
-  // return playlists.map((playlist) =>
-  //   snapshot.map(({ set }) =>
-  //     set(playlistState(playlist.id), {
-  //       isOfficial: true,
-  //       ...playlist,
-  //     }),
-  //   ),
-  // )
+export function useSetPlaylistValues(
+  playlists: PlaylistStore[],
+  isOfficial: boolean,
+) {
   return useRecoilCallback(
     ({ set }) =>
       () => {
         for (const playlist of playlists) {
           set(playlistState(playlist.id), {
-            isOfficial: true,
+            isOfficial,
             ...playlist,
           })
         }
       },
-    [playlists],
+    [playlists, isOfficial],
   )
 }

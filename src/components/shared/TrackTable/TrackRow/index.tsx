@@ -31,6 +31,7 @@ export function TrackRow({
   // TODO: 親にもたせれないか考える
   const handleDoubleClick = useSetCurrentVideo(video.id, videoIds, readyEvent)
 
+  //TODO: でかくなりすぎだからリファクタする
   return (
     <div
       role="row"
@@ -66,8 +67,8 @@ export function TrackRow({
       <div className="md-hidden">
         <div className="flex justify-self-start items-center">
           <a
-            href={`https://youtube.com/watch?v=${video.videoId}`}
-            className="ellipsis-one-line"
+            href={`https://youtube.com/watch?v=${video.videoId}?t=${video.start}`}
+            className="ellipsis-one-line hover:underline"
           >
             {video.originalTitle}
           </a>

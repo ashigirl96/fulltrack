@@ -31,7 +31,8 @@ type Props = {
   playlists: PlaylistStore[]
 }
 function Component({ playlists }: Props) {
-  const setPlaylistValues = useSetPlaylistValues(playlists)
+  const setPlaylistValues = useSetPlaylistValues(playlists, true)
+  // 動画一覧を開いた時に、フェッチした公式のプレイリスト一覧をatomにつっこむ
   useEffect(() => {
     setPlaylistValues()
   }, [setPlaylistValues])
