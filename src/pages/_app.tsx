@@ -5,7 +5,7 @@ import {
   ReturnTypeSetReadyEvent,
   useSetReadyEvent,
 } from '@/hooks/youtube_player/useSetReadyEvent'
-import { ContextMenu } from '@/components/shared/ContextMenu'
+import { ContextMenu } from '@/components/ContextMenu'
 import { NextPage } from 'next'
 import { ReactElement, ReactNode } from 'react'
 
