@@ -24,7 +24,6 @@ export default function AddVideo() {
     thumbnailUrl,
     addVideo,
     uploadedMessage,
-    setUploadedMessage,
     handleReadyEvent,
     setRawStartTime,
     setRawEndTime,
@@ -138,7 +137,7 @@ export default function AddVideo() {
         </div>
       </div>
       {uploadedMessage && (
-        <div className="toast" onClick={() => setUploadedMessage(null)}>
+        <div className="toast">
           <div className="alert alert-info">
             <div>
               <span>{uploadedMessage}</span>

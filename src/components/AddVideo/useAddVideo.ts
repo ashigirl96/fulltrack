@@ -88,7 +88,7 @@ export function useAddVideo() {
       // @ts-ignore
       artists: _artists,
     })
-      .then(() => setUploadedMessage(`${videoId}の登録できました`))
+      .then((x) => setUploadedMessage(`${x.id}の登録できました`))
       .catch((reason) => setUploadedMessage(`ERROR ${JSON.stringify(reason)}`))
   }, [artists, end, originalTitle, start, thumbnailUrl, title, videoId])
 
@@ -110,7 +110,6 @@ export function useAddVideo() {
     thumbnailUrl,
     addVideo,
     uploadedMessage,
-    setUploadedMessage,
     handleReadyEvent,
     setRawStartTime,
     setRawEndTime,
