@@ -28,9 +28,6 @@ function Component({
   if (!playlist) {
     return null
   }
-  if (playlist.isOfficial) {
-    return null
-  }
   return (
     <li>
       <DeleteButton playlist={playlist} videoIndex={videoIndex} />

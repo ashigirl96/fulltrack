@@ -1,5 +1,5 @@
 import { PlaylistStore, UserId } from '@/types'
-import { useUserPlaylistCollection } from '@/hooks/playlist'
+import { usePlaylistCollection } from '@/hooks/playlist'
 import { VideoFirestoreId } from '@/atoms/firestore/video'
 import { useUnionPlaylistVideos } from '@/hooks/playlist/useUnionPlaylistVideos'
 
@@ -8,7 +8,7 @@ type Props = {
   videoId: VideoFirestoreId
 }
 export function ListAddPlaylist({ userId, videoId }: Props) {
-  const { isLoading, error, playlists } = useUserPlaylistCollection(userId)
+  const { isLoading, error, playlists } = usePlaylistCollection(userId)
   return (
     <li className="dropdown dropdown-right dropdown-end dropdown-open">
       <label tabIndex={0}>プレイリストに追加</label>
@@ -23,7 +23,7 @@ export function ListAddPlaylist({ userId, videoId }: Props) {
 }
 
 type ListsProps = Pick<
-  ReturnType<typeof useUserPlaylistCollection>,
+  ReturnType<typeof usePlaylistCollection>,
   'isLoading' | 'playlists' | 'error'
 > & {
   videoId: VideoFirestoreId

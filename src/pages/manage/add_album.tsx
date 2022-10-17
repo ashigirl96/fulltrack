@@ -1,12 +1,14 @@
 import type { NextPage } from 'next'
 import { useCallback, useState } from 'react'
 import { addDoc, doc, documentId, getDoc } from '@firebase/firestore'
-import { firestoreNow, playlistCollectionRef } from '@/lib/firestore/playlist'
+import { firestoreNow } from '@/lib/firestore/playlist'
+import { albumCollectionRef } from '@/lib/firestore/album'
+
 import { db } from '@/config/firebase'
 import { videoCollectionRef, videoDocRef } from '@/lib/firestore/video'
 import { getDocsByIds } from '@/lib/firestore/getDocsByIds'
 
-const AddOfficialPlaylist: NextPage = () => {
+const AlbumPlaylist: NextPage = () => {
   const [title, setTitle] = useState('')
   const [videoIds, setVideoIds] = useState<string[]>([])
   const [uploadedMessage, setUploadedMessage] = useState<string | null>(null)
@@ -18,7 +20,7 @@ const AddOfficialPlaylist: NextPage = () => {
   const addPlaylist = useCallback(async () => {
     const thumbnailUrl = (await getDoc(videoDocRef(videoIds[0]))).data()
       ?.thumbnailUrl
-    await addDoc(playlistCollectionRef, {
+    await addDoc(albumCollectionRef, {
       id: documentId(),
       title,
       videoIds: _videoIds,
@@ -32,7 +34,7 @@ const AddOfficialPlaylist: NextPage = () => {
         ),
       )
       .catch((reason) => setUploadedMessage(`ERROR ${JSON.stringify(reason)}`))
-  }, [_videoIds, title, videoIds])
+  }, [_type, _videoIds, title, videoIds])
 
   const [videoNames, setVideoNames] = useState<string[]>([])
   const confirm = useCallback(async () => {
@@ -88,4 +90,4 @@ const AddOfficialPlaylist: NextPage = () => {
   )
 }
 
-export default AddOfficialPlaylist
+export default AlbumPlaylist

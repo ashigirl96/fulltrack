@@ -1,2 +1,2 @@
-export { useUserPlaylistCollection } from './useUserPlaylistCollection'
+export { usePlaylistCollection } from './usePlaylistCollection'
 export { useDeleteUserPlaylistCollection } from './useDeleteUserPlaylistCollection'

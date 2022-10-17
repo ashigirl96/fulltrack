@@ -4,12 +4,12 @@ import {
   firestoreNow,
   userPlaylistCollectionRef,
 } from '@/lib/firestore/playlist'
-import { useUserPlaylistCollection } from '@/hooks/playlist'
+import { usePlaylistCollection } from '@/hooks/playlist'
 import { UserId } from '@/types'
 
 type Args = { userId: UserId }
 export function useCreateUserPlaylist({ userId }: Args) {
-  const { playlistsSnapshot } = useUserPlaylistCollection(userId)
+  const { playlistsSnapshot } = usePlaylistCollection(userId)
   const title = useMemo(
     () => `My Playlist #${playlistsSnapshot ? playlistsSnapshot.size + 1 : 0}`,
     [playlistsSnapshot],

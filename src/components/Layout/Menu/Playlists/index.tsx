@@ -11,7 +11,7 @@ type Props = {
   userId: UserId
 }
 // TODO: refactor isLoadingあたり
-export function UserPlaylists({ userId }: Props) {
+export function Playlists({ userId }: Props) {
   const { playlists, isLoading, error } = useUserPlaylists(userId)
 
   if (error) {
@@ -27,7 +27,7 @@ export function UserPlaylists({ userId }: Props) {
 }
 
 function Component({ playlists }: { playlists: PlaylistStore[] }) {
-  const setPlaylistValues = useSetPlaylistValues(playlists, false)
+  const setPlaylistValues = useSetPlaylistValues(playlists)
   // 動画一覧を開いた時に、フェッチした公式のプレイリスト一覧をatomにつっこむ
   useEffect(() => {
     setPlaylistValues()

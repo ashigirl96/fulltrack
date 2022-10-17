@@ -1,4 +1,4 @@
-import { UserPlaylists } from './Playlists'
+import { Playlists } from './Playlists'
 import { useGetCurrentUserId } from '@/hooks/firebaseAuth'
 import { CreateUserPlaylist, SignIn } from './CreateUserPlaylist'
 import Link from 'next/link'
@@ -25,7 +25,7 @@ export function Menu({ width }: Props) {
         </li>
         <div className="border border-2 border-gray-700 w-full my-4" />
         <ul className="overflow-y-scroll flex-1">
-          {currentUserId && <UserPlaylists userId={currentUserId} />}
+          {currentUserId && <Playlists userId={currentUserId} />}
         </ul>
       </ul>
     </div>

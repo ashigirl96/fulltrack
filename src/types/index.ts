@@ -5,6 +5,8 @@ export type {
   PlaylistFirestoreId,
   UserId,
   PlaylistState,
+  AlbumStore,
+  AlbumState,
 } from './playlistStore'
 export type { VideoFirestore } from './VideoStore'
 export type { PageCoord } from './contextMenu'

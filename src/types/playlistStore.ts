@@ -6,11 +6,13 @@ export interface PlaylistStore {
   videoIds: string[]
   thumbnailUrl: string
   createdAt: Timestamp
+}
+export type PlaylistState = PlaylistStore
+
+export interface AlbumStore extends PlaylistStore {
   type: 'single' | 'live'
 }
-export interface PlaylistState extends PlaylistStore {
-  isOfficial: boolean
-}
+export type AlbumState = AlbumStore
 
 export type PlaylistFirestoreId = string
 
