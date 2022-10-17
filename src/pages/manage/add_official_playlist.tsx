@@ -10,6 +10,7 @@ const AddOfficialPlaylist: NextPage = () => {
   const [title, setTitle] = useState('')
   const [videoIds, setVideoIds] = useState<string[]>([])
   const [uploadedMessage, setUploadedMessage] = useState<string | null>(null)
+  const [_type, setType] = useState<'single' | 'live'>('single')
 
   const _videoIds = videoIds
     .filter((x) => x)
@@ -23,6 +24,7 @@ const AddOfficialPlaylist: NextPage = () => {
       videoIds: _videoIds,
       thumbnailUrl: thumbnailUrl || '',
       createdAt: firestoreNow(),
+      type: _type,
     })
       .then(() =>
         setUploadedMessage(
@@ -55,6 +57,18 @@ const AddOfficialPlaylist: NextPage = () => {
         onChangeCapture={(e) => setVideoIds(e.currentTarget.value.split(','))}
         value={videoIds.join(',')}
       />
+
+      <div className="w-1/2">
+        <select
+          id="type"
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          value={_type}
+          onChange={(e) => setType(e.currentTarget.value as 'live' | 'single')}
+        >
+          <option value="single">single</option>
+          <option value="live">live</option>
+        </select>
+      </div>
       <div className="self-center">VideoIds: {videoIds.join('/')}</div>
       <button className="btn w-full max-w-xl" onClick={confirm}>
         確認
@@ -69,6 +83,7 @@ const AddOfficialPlaylist: NextPage = () => {
           <li key={`video-name-${i}`}>{name}</li>
         ))}
       </ul>
+      <div>type {_type}</div>
     </div>
   )
 }

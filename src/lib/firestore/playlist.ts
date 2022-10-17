@@ -23,15 +23,17 @@ const playlistConverter: FirestoreDataConverter<PlaylistStore> = {
       videoIds: data.videoIds.map((video: DocumentReference) => video.id),
       thumbnailUrl: data.thumbnailUrl,
       createdAt: data.createdAt,
+      type: data.type,
     }
   },
   toFirestore(playlist: WithFieldValue<PlaylistStore>): DocumentData {
-    const { title, videoIds, thumbnailUrl, createdAt } = playlist
+    const { title, videoIds, thumbnailUrl, createdAt, type } = playlist
     return {
       title,
       videoIds,
       thumbnailUrl,
       createdAt,
+      type,
     }
   },
 }

@@ -6,6 +6,7 @@ export interface PlaylistStore {
   videoIds: string[]
   thumbnailUrl: string
   createdAt: Timestamp
+  type: 'single' | 'live'
 }
 export interface PlaylistState extends PlaylistStore {
   isOfficial: boolean
