@@ -1,4 +1,4 @@
-import { useCreateUserPlaylist } from '@/hooks/playlist/useCreateUserPlaylist'
+import { useCreatePlaylist } from '@/hooks/playlist/useCreatePlaylist'
 import { UserId } from '@/types'
 import { PlusCircle } from '@/components/icons'
 import { useGoogleSignIn } from '@/hooks/firebaseAuth'
@@ -7,8 +7,8 @@ import { useCallback } from 'react'
 type Props = {
   currentUserId: UserId
 }
-export function CreateUserPlaylist({ currentUserId }: Props) {
-  const handleClick = useCreateUserPlaylist({ userId: currentUserId })
+export function CreatePlaylist({ currentUserId }: Props) {
+  const handleClick = useCreatePlaylist({ userId: currentUserId })
 
   return <Component handleClick={handleClick} />
 }

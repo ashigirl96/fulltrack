@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { PlaylistFirestoreId } from '@/types'
-import { userPlaylistDocRef } from '@/lib/firestore/playlist'
+import { playlistDocRef } from '@/lib/firestore/playlist'
 import { updateDoc } from '@firebase/firestore'
 import { useGetCurrentUserId } from '@/hooks/firebaseAuth'
 
@@ -13,7 +13,7 @@ export function useUpdatePlaylistTitle({ playlistId, callback, title }: Args) {
   const userId = useGetCurrentUserId()
   return useCallback(async () => {
     if (userId) {
-      const playlistRef = userPlaylistDocRef(userId, playlistId)
+      const playlistRef = playlistDocRef(userId, playlistId)
       await updateDoc(playlistRef, { title })
     }
     callback && callback()

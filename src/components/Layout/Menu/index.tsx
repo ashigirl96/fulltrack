@@ -1,6 +1,6 @@
 import { Playlists } from './Playlists'
 import { useGetCurrentUserId } from '@/hooks/firebaseAuth'
-import { CreateUserPlaylist, SignIn } from './CreateUserPlaylist'
+import { CreatePlaylist, SignIn } from './CreatePlaylist'
 import Link from 'next/link'
 
 type Props = {
@@ -18,7 +18,7 @@ export function Menu({ width }: Props) {
         </li>
         <li>
           {currentUserId ? (
-            <CreateUserPlaylist currentUserId={currentUserId} />
+            <CreatePlaylist currentUserId={currentUserId} />
           ) : (
             <SignIn />
           )}

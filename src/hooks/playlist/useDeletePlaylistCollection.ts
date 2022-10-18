@@ -4,7 +4,7 @@ import { db } from '@/config/firebase'
 import { useGetCurrentUserId } from '@/hooks/firebaseAuth'
 import { useCallback } from 'react'
 
-export function useDeleteUserPlaylistCollection(playlistId: PlaylistStoreId) {
+export function useDeletePlaylistCollection(playlistId: PlaylistStoreId) {
   const userId = useGetCurrentUserId()
   return useCallback(async () => {
     if (userId) {

@@ -1,4 +1,4 @@
-import { useUserPlaylists } from './usePlaylists'
+import { usePlaylists } from './usePlaylists'
 import Link from 'next/link'
 import { PlaylistStore, UserId } from '@/types'
 import { useSetPlaylistContext } from '@/atoms/contextMenu'
@@ -12,7 +12,7 @@ type Props = {
 }
 // TODO: refactor isLoadingあたり
 export function Playlists({ userId }: Props) {
-  const { playlists, isLoading, error } = useUserPlaylists(userId)
+  const { playlists, isLoading, error } = usePlaylists(userId)
 
   if (error) {
     return <div>{JSON.stringify(error)}</div>

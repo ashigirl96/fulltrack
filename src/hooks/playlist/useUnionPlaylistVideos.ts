@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { PlaylistStore } from '@/types'
-import { userPlaylistDocRef } from '@/lib/firestore/playlist'
+import { playlistDocRef } from '@/lib/firestore/playlist'
 import { FieldValue, updateDoc } from '@firebase/firestore'
 import { useGetCurrentUserId } from '@/hooks/firebaseAuth'
 import { videoDocRef } from '@/lib/firestore/video'
@@ -13,7 +13,7 @@ export function useUnionPlaylistVideos({ videoId, playlist }: Args) {
   const userId = useGetCurrentUserId()
   return useCallback(async () => {
     if (userId) {
-      const playlistRef = userPlaylistDocRef(userId, playlist.id)
+      const playlistRef = playlistDocRef(userId, playlist.id)
       // TODO: refactor
       const videoIds = [
         ...playlist.videoIds.map((v) => videoDocRef(v)),

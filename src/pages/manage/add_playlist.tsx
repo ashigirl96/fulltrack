@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react'
 import { addDoc, collection, doc } from '@firebase/firestore'
 import { db } from '@/config/firebase'
 
-const AddUserPlaylist: NextPage = () => {
+const AddPlaylist: NextPage = () => {
   const [userId, setUserId] = useState('')
   const [title, setTitle] = useState('')
   const [videoIds, setVideoIds] = useState<string[]>([])
@@ -56,4 +56,4 @@ const AddUserPlaylist: NextPage = () => {
   )
 }
 
-export default AddUserPlaylist
+export default AddPlaylist

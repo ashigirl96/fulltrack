@@ -36,27 +36,23 @@ const playlistConverter: FirestoreDataConverter<PlaylistStore> = {
   },
 }
 
-export function userPlaylistCollectionRef(userId: UserId) {
+export function playlistCollectionRef(userId: UserId) {
   return collection(db, 'users', userId, 'playlists').withConverter(
     playlistConverter,
   )
 }
 
-export function userPlaylistCollectionOrderByCreatedAtRef(userId: UserId) {
-  return query(userPlaylistCollectionRef(userId), orderBy('createdAt', 'desc'))
+export function playlistCollectionOrderByCreatedAtRef(userId: UserId) {
+  return query(playlistCollectionRef(userId), orderBy('createdAt', 'desc'))
 }
 
-export const userPlaylistDocRef = function (
+export const playlistDocRef = function (
   userId: UserId,
   playlistId: PlaylistStoreId,
 ) {
   return doc(db, 'users', userId, 'playlists', playlistId).withConverter(
     playlistConverter,
   )
-}
-
-export const playlistDocRef = function (playlistId: PlaylistStoreId) {
-  return doc(db, 'playlists', playlistId).withConverter(playlistConverter)
 }
 
 export function firestoreNow() {
