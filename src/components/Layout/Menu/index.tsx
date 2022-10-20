@@ -24,7 +24,7 @@ export function Menu({ width }: Props) {
           )}
         </li>
         <div className="border border-2 border-gray-700 w-full my-4" />
-        <ul className="overflow-y-scroll flex-1">
+        <ul className="overflow-y-scroll flex-1 hidden-scrollbar">
           {currentUserId && <Playlists userId={currentUserId} />}
         </ul>
       </ul>

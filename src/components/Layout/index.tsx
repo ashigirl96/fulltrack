@@ -43,7 +43,9 @@ export function Layout({
             handleReadyEvent={handleReadyEvent}
           />
 
-          <div className="flex-1 overflow-y-scroll">{children}</div>
+          <div className="flex-1 overflow-y-scroll hidden-scrollbar">
+            {children}
+          </div>
         </main>
       </div>
       <Footer
