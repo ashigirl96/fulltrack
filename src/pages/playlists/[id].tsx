@@ -2,33 +2,47 @@ import { Layout } from '@/components/Layout'
 import { NextRouter } from 'next/router'
 import { ReturnTypeSetReadyEvent } from '@/hooks/youtube_player/useSetReadyEvent'
 import React, { useEffect, useMemo } from 'react'
-import { PlaylistStore, VideoFirestore } from '@/types'
+import { PlaylistStore, UserId, VideoFirestore } from '@/types'
 import { PlaylistStoreId, usePlaylistValue } from '@/atoms/firestore/playlist'
 import { useMaybeFetchVideos } from '@/hooks/playlist/useMaybeFetchVideos'
 import { useSetVideoValues } from '@/atoms/firestore/video'
 import { TrackTable, TrackTitle } from '@/components/shared/TrackTable'
 import { usePlaylistDoc } from '@/hooks/playlist/usePlaylistDoc'
+import { useGetCurrentUserId } from '@/hooks/firebaseAuth'
 
 type RoutingProps = ReturnTypeSetReadyEvent & { router: NextRouter }
 function RoutingComponent({ readyEvent, router }: RoutingProps) {
   const { isReady, query } = router
   const playlistId = useMemo(() => query.id, [query.id]) as string
   const playlist = usePlaylistValue(playlistId)
-  if (!isReady) {
+  const currentUserId = useGetCurrentUserId()
+  if (!isReady || !currentUserId) {
     return <div>isLoading...</div>
   }
   return playlist ? (
     <FetchingVideosComponent playlist={playlist} readyEvent={readyEvent} />
   ) : (
-    <FetchingComponent readyEvent={readyEvent} playlistId={playlistId} />
+    <FetchingComponent
+      readyEvent={readyEvent}
+      playlistId={playlistId}
+      currentUserId={currentUserId}
+    />
   )
 }
 
 type FetchProps = Pick<RoutingProps, 'readyEvent'> & {
   playlistId: PlaylistStoreId
+  currentUserId: UserId
 }
-function FetchingComponent({ readyEvent, playlistId }: FetchProps) {
-  const { playlist, isLoading, error } = usePlaylistDoc(playlistId)
+function FetchingComponent({
+  readyEvent,
+  playlistId,
+  currentUserId,
+}: FetchProps) {
+  const { playlist, isLoading, error } = usePlaylistDoc(
+    playlistId,
+    currentUserId,
+  )
   if (isLoading) return <div>loading fetch...</div>
   if (!playlist) return <div>no playlist...</div>
   if (error) return <div>error fetching...</div>
