@@ -3,16 +3,30 @@ import { PlaylistFirestoreId } from '@/types'
 import { useVideoValue, VideoFirestoreId } from '@/atoms/firestore/video'
 import { PlayerStateKey } from '@/constants/youtube'
 import { isEqualArray, shuffleWithFirst } from '@/lib/array'
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
+import { AlbumFireStoreId } from '@/atoms/firestore/album'
 
 // 現在再生してるプレイリストのID
-const currentPlaylistIdState = atom<PlaylistFirestoreId | null>({
-  key: 'currentPlaylistIdState',
+export type TrackType = 'playlist' | 'album' | 'artist'
+export type CurrentTrack = {
+  type: TrackType
+  id: PlaylistFirestoreId | AlbumFireStoreId
+}
+const currentTrackIdState = atom<CurrentTrack | null>({
+  key: 'currentTrackIdState',
   default: null,
 })
 
-export function useSetCurrentPlaylistId() {
-  return useSetRecoilState(currentPlaylistIdState)
+export function useCurrentTrackIdValue() {
+  return useRecoilValue(currentTrackIdState)
+}
+
+export function useSetCurrentTrackId(track: CurrentTrack) {
+  const setter = useSetRecoilState(currentTrackIdState)
+  return useCallback(() => {
+    console.log(`AAAAAAAAAAA`)
+    setter(track)
+  }, [setter, track])
 }
 
 // リピート

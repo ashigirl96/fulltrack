@@ -3,11 +3,12 @@ import { NextRouter } from 'next/router'
 import { ReturnTypeSetReadyEvent } from '@/hooks/youtube_player/useSetReadyEvent'
 import React, { useEffect, useMemo } from 'react'
 import { AlbumStore, VideoFirestore } from '@/types'
-import { useAlbumValue, AlbumId } from '@/atoms/firestore/album'
+import { useAlbumValue, AlbumFireStoreId } from '@/atoms/firestore/album'
 import { useMaybeFetchVideos } from '@/hooks/playlist/useMaybeFetchVideos'
 import { useSetVideoValues } from '@/atoms/firestore/video'
 import { TrackTable, TrackTitle } from '@/components/shared/TrackTable'
 import { useAlbumDoc } from '@/hooks/album/useAlbumDoc'
+import { useSetCurrentTrackId } from '@/atoms/youtubePlayer/states'
 
 type RoutingProps = ReturnTypeSetReadyEvent & { router: NextRouter }
 function RoutingComponent({ readyEvent, router }: RoutingProps) {
@@ -24,7 +25,9 @@ function RoutingComponent({ readyEvent, router }: RoutingProps) {
   )
 }
 
-type FetchProps = Pick<RoutingProps, 'readyEvent'> & { albumId: AlbumId }
+type FetchProps = Pick<RoutingProps, 'readyEvent'> & {
+  albumId: AlbumFireStoreId
+}
 function FetchingComponent({ readyEvent, albumId }: FetchProps) {
   const { album, isLoading, error } = useAlbumDoc(albumId)
   console.log(`album ${JSON.stringify(album)} isLoading ${isLoading}`)
@@ -54,6 +57,7 @@ type Props = Pick<FetchProps, 'readyEvent' | 'albumId'> & {
 }
 function Component({ readyEvent, videos, albumId }: Props) {
   const setVideoValues = useSetVideoValues(videos)
+  const setCurrentTrackId = useSetCurrentTrackId({ type: 'album', id: albumId })
   useEffect(() => {
     setVideoValues()
   }, [setVideoValues])
@@ -61,7 +65,11 @@ function Component({ readyEvent, videos, albumId }: Props) {
   return (
     <div className="max-w-full px-4">
       <TrackTitle.Album albumId={albumId} />
-      <TrackTable readyEvent={readyEvent} videos={videos} />
+      <TrackTable
+        readyEvent={readyEvent}
+        videos={videos}
+        setCurrentTrack={setCurrentTrackId}
+      />
     </div>
   )
 }

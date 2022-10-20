@@ -14,6 +14,7 @@ type Props = {
   video: VideoFirestore
   videoIds: VideoFirestoreId[]
   readyEvent: YouTubePlayerType | undefined
+  setCurrentTrack: () => void
 } & ReturnTypeUseIndexSelected
 export function TrackRow({
   index,
@@ -22,6 +23,7 @@ export function TrackRow({
   setIndexSelected,
   videoIds,
   readyEvent,
+  setCurrentTrack,
 }: Props) {
   const duration = useVideoDuration(video)
   const isPlayingVideo = useIsPlayingVideo(video.id)
@@ -29,7 +31,12 @@ export function TrackRow({
   const isSelected = useIsSelected(index, indexSelected)
   const setVideoContext = useSetVideoContext(video.id, index)
   // TODO: 親にもたせれないか考える
-  const handleDoubleClick = useSetCurrentVideo(video.id, videoIds, readyEvent)
+  const handleDoubleClick = useSetCurrentVideo(
+    video.id,
+    videoIds,
+    readyEvent,
+    setCurrentTrack,
+  )
 
   //TODO: でかくなりすぎだからリファクタする
   return (

@@ -13,7 +13,7 @@ import {
 import { AlbumStore } from '@/types/playlistStore'
 import { db } from '@/config/firebase'
 import { PlaylistStoreId } from '@/atoms/firestore/playlist'
-import { AlbumId } from '@/atoms/firestore/album'
+import { AlbumFireStoreId } from '@/atoms/firestore/album'
 
 const albumConverter: FirestoreDataConverter<AlbumStore> = {
   fromFirestore(
@@ -50,6 +50,6 @@ export function albumCollectionOrderByCreatedAtRef() {
   return query(albumCollectionRef, orderBy('createdAt', 'desc'))
 }
 
-export const albumDocRef = function (albumId: AlbumId) {
+export const albumDocRef = function (albumId: AlbumFireStoreId) {
   return doc(db, 'playlists', albumId).withConverter(albumConverter)
 }

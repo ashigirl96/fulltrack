@@ -5,7 +5,9 @@ import { useSetPlaylistContext } from '@/atoms/contextMenu'
 import { useIsEditPlaylistNameValue } from '@/atoms/contextMenu/states'
 import { InputPlaylistTitle } from './InputPlaylistTitle'
 import { useSetPlaylistValues } from '@/atoms/firestore/playlist'
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
+import { useCurrentTrackIdValue } from '@/atoms/youtubePlayer/states'
+import { MiniSpeakerIcon } from '@/components/icons'
 
 type Props = {
   userId: UserId
@@ -49,6 +51,11 @@ type PlaylistProps = {
 function Playlist({ playlist }: PlaylistProps) {
   const setSelectedPlaylist = useSetPlaylistContext(playlist.id)
   const isCurrentEdit = useIsEditPlaylistNameValue(playlist.id)
+  const currentTrack = useCurrentTrackIdValue()
+  const isPlaying = useMemo(
+    () => currentTrack?.id === playlist.id,
+    [currentTrack?.id, playlist.id],
+  )
 
   if (isCurrentEdit) {
     return (
@@ -61,8 +68,11 @@ function Playlist({ playlist }: PlaylistProps) {
   return (
     <li key={`playlist-${playlist.id}`} onContextMenu={setSelectedPlaylist}>
       <Link href={`/playlists/${encodeURIComponent(playlist.id)}`}>
-        <a>
-          <div className="ellipsis-one-line">{playlist.title}</div>
+        <a className="flex justify-between">
+          <div className="ellipsis-one-line">
+            <span>{playlist.title}</span>
+          </div>
+          {isPlaying && <MiniSpeakerIcon />}
         </a>
       </Link>
     </li>

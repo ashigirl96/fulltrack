@@ -1,7 +1,7 @@
 import { ArtistFirebaseId } from '@/types'
 import { useArtistValue } from '@/atoms/firestore/artist'
 import { PlaylistStoreId, usePlaylistValue } from '@/atoms/firestore/playlist'
-import { AlbumId, useAlbumValue } from '@/atoms/firestore/album'
+import { AlbumFireStoreId, useAlbumValue } from '@/atoms/firestore/album'
 
 type PlaylistProps = {
   playlistId: PlaylistStoreId
@@ -12,7 +12,7 @@ function Playlist({ playlistId }: PlaylistProps) {
 }
 
 type AlbumProps = {
-  albumId: AlbumId
+  albumId: AlbumFireStoreId
 }
 function Album({ albumId }: AlbumProps) {
   const album = useAlbumValue(albumId)

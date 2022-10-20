@@ -88,3 +88,7 @@ export function SpeakerIcon({
 export function PlusCircle() {
   return <AiOutlinePlusCircle width={100} />
 }
+
+export function MiniSpeakerIcon() {
+  return <SpeakerWaveIcon width={16} className="text-greedy" />
+}

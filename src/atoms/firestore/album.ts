@@ -1,14 +1,14 @@
 import { atomFamily, useRecoilCallback, useRecoilValue } from 'recoil'
 import { AlbumState, AlbumStore } from '@/types'
 
-export type AlbumId = string
+export type AlbumFireStoreId = string
 
-export const albumState = atomFamily<AlbumState | null, AlbumId>({
+export const albumState = atomFamily<AlbumState | null, AlbumFireStoreId>({
   key: 'albumState',
   default: null,
 })
 
-export function useAlbumValue(playlistId: AlbumId) {
+export function useAlbumValue(playlistId: AlbumFireStoreId) {
   return useRecoilValue(albumState(playlistId))
 }
 

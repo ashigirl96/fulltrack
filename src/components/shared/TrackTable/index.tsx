@@ -9,8 +9,9 @@ export { TrackTitle } from './TrackTitle'
 type Props = {
   readyEvent: YouTubePlayerType | undefined
   videos: VideoFirestore[]
+  setCurrentTrack: () => void
 }
-export function TrackTable({ readyEvent, videos }: Props) {
+export function TrackTable({ readyEvent, videos, setCurrentTrack }: Props) {
   const { indexSelected, setIndexSelected } = useIndexSelected()
   const videoIds = useMemo(() => videos.map((video) => video.id), [videos])
 
@@ -27,6 +28,7 @@ export function TrackTable({ readyEvent, videos }: Props) {
               video={video}
               indexSelected={indexSelected}
               setIndexSelected={setIndexSelected}
+              setCurrentTrack={setCurrentTrack}
               index={index}
             />
           ))}

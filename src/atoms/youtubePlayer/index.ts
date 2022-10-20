@@ -5,7 +5,6 @@ export {
   useCurrentVolumeValue,
   useCurrentVideoIdsValue,
   useCurrentVideoIndexValue,
-  useSetCurrentPlaylistId,
   useSetCurrentVideoIndex,
   useSetCurrentVideoIds,
   useSetIsShuffle,

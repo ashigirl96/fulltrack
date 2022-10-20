@@ -15,6 +15,7 @@ export function useSetCurrentVideo(
   videoId: VideoFirestoreId,
   videoIds: VideoFirestoreId[],
   readyEvent: YouTubePlayerType | undefined,
+  setCurrentTrack: () => void,
 ) {
   const currentVideo = useCurrentVideoValue()
   const currentVideoIndex = videoIds.indexOf(videoId)
@@ -46,12 +47,14 @@ export function useSetCurrentVideo(
     // set default playlist
     setCurrentVideoIds(videoIds)
     setCurrentVideoIndex(currentVideoIndex)
+    setCurrentTrack()
   }, [
     currentVideo,
     currentVideoIndex,
     isSameVideo,
     isShuffle,
     readyEvent,
+    setCurrentTrack,
     setCurrentTrackVideoIds,
     setCurrentVideoIds,
     setCurrentVideoIndex,

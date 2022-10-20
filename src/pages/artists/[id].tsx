@@ -6,6 +6,7 @@ import { ArtistFirebaseId, VideoFirestore } from '@/types'
 import { TrackTable, TrackTitle } from '@/components/shared/TrackTable'
 import { useSetVideoValues } from '@/atoms/firestore/video'
 import { useVideosByArtistId } from '@/hooks/video/useVideosByArtistId'
+import { useSetCurrentTrackId } from '@/atoms/youtubePlayer/states'
 
 type RoutingProps = ReturnTypeSetReadyEvent & { router: NextRouter }
 function RoutingComponent({ readyEvent, router }: RoutingProps) {
@@ -37,6 +38,10 @@ type Props = Pick<FetchProps, 'readyEvent'> & {
 }
 function Component({ readyEvent, videos, artistId }: Props) {
   const setVideoValues = useSetVideoValues(videos)
+  const setCurrentTrackId = useSetCurrentTrackId({
+    type: 'artist',
+    id: artistId,
+  })
   useEffect(() => {
     setVideoValues()
   }, [setVideoValues])
@@ -44,7 +49,11 @@ function Component({ readyEvent, videos, artistId }: Props) {
   return (
     <div className="max-w-full px-4">
       <TrackTitle.Artist artistId={artistId} />
-      <TrackTable readyEvent={readyEvent} videos={videos} />
+      <TrackTable
+        readyEvent={readyEvent}
+        videos={videos}
+        setCurrentTrack={setCurrentTrackId}
+      />
     </div>
   )
 }
