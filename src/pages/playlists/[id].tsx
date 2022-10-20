@@ -29,7 +29,6 @@ type FetchProps = Pick<RoutingProps, 'readyEvent'> & {
 }
 function FetchingComponent({ readyEvent, playlistId }: FetchProps) {
   const { playlist, isLoading, error } = usePlaylistDoc(playlistId)
-  console.log(`playlist ${JSON.stringify(playlist)} isLoading ${isLoading}`)
   if (isLoading) return <div>loading fetch...</div>
   if (!playlist) return <div>no playlist...</div>
   if (error) return <div>error fetching...</div>

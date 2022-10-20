@@ -46,7 +46,11 @@ export function TrackRow({
       <div className="flex justify-self-start items-center">
         <div className="ellipsis-one-line">
           <div className="flex gap-2">
-            <img src={video.thumbnailUrl} className="object-cover h-12 w-12" />
+            <img
+              src={video.thumbnailUrl}
+              className="object-cover h-12 w-12"
+              alt="thumbnail"
+            />
             <div className="flex flex-col gap-1">
               <div className="group-hover:text-white cursor-default">
                 <span
