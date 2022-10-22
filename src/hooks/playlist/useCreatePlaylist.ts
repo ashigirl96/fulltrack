@@ -1,24 +1,31 @@
 import { useCallback, useMemo } from 'react'
-import { addDoc, documentId } from '@firebase/firestore'
+import { addDoc, documentId, WithFieldValue } from '@firebase/firestore'
 import { firestoreNow, playlistCollectionRef } from '@/lib/firestore/playlist'
 import { usePlaylistCollection } from '@/hooks/playlist'
 import { UserId } from '@/types'
 
-type Args = { userId: UserId }
-export function useCreatePlaylist({ userId }: Args) {
+type Args = {
+  userId: UserId
+  videoIds?: WithFieldValue<string[]>
+  title?: string
+}
+export function useCreatePlaylist({ userId, videoIds = [], title = '' }: Args) {
   const { playlistsSnapshot } = usePlaylistCollection(userId)
-  const title = useMemo(
-    () => `My Playlist #${playlistsSnapshot ? playlistsSnapshot.size + 1 : 0}`,
-    [playlistsSnapshot],
+  const _title = useMemo(
+    () =>
+      title
+        ? title
+        : `My Playlist #${playlistsSnapshot ? playlistsSnapshot.size + 1 : 0}`,
+    [playlistsSnapshot, title],
   )
   return useCallback(async () => {
     const playlists = playlistCollectionRef(userId)
     await addDoc(playlists, {
-      title,
+      title: _title,
       id: documentId(),
-      videoIds: [],
+      videoIds: videoIds,
       thumbnailUrl: '',
       createdAt: firestoreNow(),
     })
-  }, [title, userId])
+  }, [_title, userId, videoIds])
 }
