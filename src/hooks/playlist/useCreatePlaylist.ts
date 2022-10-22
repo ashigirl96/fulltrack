@@ -1,12 +1,13 @@
 import { useCallback, useMemo } from 'react'
-import { addDoc, documentId, WithFieldValue } from '@firebase/firestore'
+import { addDoc, documentId } from '@firebase/firestore'
 import { firestoreNow, playlistCollectionRef } from '@/lib/firestore/playlist'
 import { usePlaylistCollection } from '@/hooks/playlist'
 import { UserId } from '@/types'
+import { VideoDocRef } from '@/lib/firestore/video'
 
 type Args = {
   userId: UserId
-  videoIds?: WithFieldValue<string[]>
+  videoIds?: VideoDocRef[]
   title?: string
 }
 export function useCreatePlaylist({ userId, videoIds = [], title = '' }: Args) {
@@ -23,6 +24,8 @@ export function useCreatePlaylist({ userId, videoIds = [], title = '' }: Args) {
     await addDoc(playlists, {
       title: _title,
       id: documentId(),
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
       videoIds: videoIds,
       thumbnailUrl: '',
       createdAt: firestoreNow(),

@@ -29,7 +29,7 @@ export function TrackRow({
   const isPlayingVideo = useIsPlayingVideo(video.id)
   const setIndex = useSetIndex(index, setIndexSelected)
   const isSelected = useIsSelected(index, indexSelected)
-  const setVideoContext = useSetVideoContext(video.id, index)
+  const setVideoContext = useSetVideoContext(video.id, index, video.title)
   // TODO: 親にもたせれないか考える
   const handleDoubleClick = useSetCurrentVideo(
     video.id,

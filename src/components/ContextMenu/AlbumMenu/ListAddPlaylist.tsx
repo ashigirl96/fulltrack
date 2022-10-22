@@ -2,10 +2,16 @@ import { AlbumState, PlaylistState, UserId } from '@/types'
 import { AlbumFireStoreId, useAlbumValue } from '@/atoms/firestore/album'
 import { usePlaylistCollection } from '@/hooks/playlist'
 import { useUnionPlaylistVideo } from '@/hooks/playlist/useUnionPlaylistVideos'
-import { useCreatePlaylist } from '@/hooks/playlist/useCreatePlaylist'
-import { videoDocRef } from '@/lib/firestore/video'
+import { DropdownContent } from '@/components/ContextMenu/component/DropdownContent'
 import { useMemo } from 'react'
-import { WithFieldValue } from '@firebase/firestore'
+import { VideoDocRef, videoDocRef } from '@/lib/firestore/video'
+
+function useVideoDocsRef(videoIds: string[]) {
+  return useMemo(
+    () => videoIds.map((videoId) => videoDocRef(videoId)),
+    [videoIds],
+  )
+}
 
 type Props = {
   userId: UserId
@@ -43,46 +49,26 @@ function UnorderedPlaylists({
   album,
   userId,
 }: ListsProps) {
-  // TODO: refactor
-  const videoIds = useMemo(
-    () =>
-      album?.videoIds
-        ? album?.videoIds.map((videoId) => videoDocRef(videoId))
-        : [],
-    [album?.videoIds],
-  ) as unknown as WithFieldValue<string[]>
-  const handleClick = useCreatePlaylist({
-    userId,
-    videoIds,
-    title: album?.title,
-  })
+  const videoIds = useVideoDocsRef(album?.videoIds || [])
   if (isLoading || error || playlists === undefined || album === null) {
     return null
   }
   return (
-    <ul
-      tabIndex={0}
-      className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 divide-y ring-1 ring-opacity-5 min-w-fit"
-    >
-      <li>
-        <button onClick={handleClick}>プレイリストを作成する</button>
-      </li>
-      <div>
-        {playlists.map((playlist) => (
-          <ListPlaylist
-            key={`unordered-playlist-${playlist.id}`}
-            videoIds={videoIds}
-            playlist={playlist}
-            userId={userId}
-          />
-        ))}
-      </div>
-    </ul>
+    <DropdownContent userId={userId} videoIds={videoIds} title={album.title}>
+      {playlists.map((playlist) => (
+        <ListPlaylist
+          key={`unordered-playlist-${playlist.id}`}
+          videoIds={videoIds}
+          playlist={playlist}
+          userId={userId}
+        />
+      ))}
+    </DropdownContent>
   )
 }
 
 type ListProps = {
-  videoIds: WithFieldValue<string[]>
+  videoIds: VideoDocRef[]
   playlist: PlaylistState
   userId: UserId
 }

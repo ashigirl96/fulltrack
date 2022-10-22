@@ -15,6 +15,7 @@ type ContextType =
   | {
       type: 'video'
       videoId: VideoFirestoreId
+      videoTitle: string
       videoIndex: number
     }
   | {
@@ -47,12 +48,13 @@ export function useInitializeContext() {
 export function useSetVideoContext(
   videoId: VideoFirestoreId,
   videoIndex: number,
+  videoTitle: string,
 ) {
   const setter = useSetSelectedContext()
   return useCallback(
     (e: React.MouseEvent) => {
       e.preventDefault()
-      setter({ type: 'video', videoId, videoIndex })
+      setter({ type: 'video', videoId, videoIndex, videoTitle })
     },
     [setter, videoId, videoIndex],
   )

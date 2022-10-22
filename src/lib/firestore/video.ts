@@ -48,3 +48,5 @@ export const videoCollectionRef = collection(db, 'videos').withConverter(
 export function videoDocRef(videoId: VideoFirestoreId) {
   return doc(db, 'videos', videoId).withConverter(videoConverter)
 }
+
+export type VideoDocRef = ReturnType<typeof videoDocRef>

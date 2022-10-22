@@ -1,12 +1,12 @@
 import { useCallback } from 'react'
 import { PlaylistStore, UserId } from '@/types'
 import { playlistDocRef } from '@/lib/firestore/playlist'
-import { FieldValue, updateDoc, WithFieldValue } from '@firebase/firestore'
-import { videoDocRef } from '@/lib/firestore/video'
+import { updateDoc } from '@firebase/firestore'
+import { VideoDocRef, videoDocRef } from '@/lib/firestore/video'
 
 type Args = {
   userId: UserId
-  videoIds: WithFieldValue<string[]>
+  videoIds: VideoDocRef[]
   playlist: PlaylistStore
 }
 export function useUnionPlaylistVideo({ userId, videoIds, playlist }: Args) {
@@ -16,7 +16,9 @@ export function useUnionPlaylistVideo({ userId, videoIds, playlist }: Args) {
     const _videoIds = [
       ...playlist.videoIds.map((v) => videoDocRef(v)),
       ...videoIds,
-    ] as unknown as FieldValue[]
+    ]
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
     await updateDoc(playlistRef, { videoIds: _videoIds })
   }, [playlist.id, playlist.videoIds, userId, videoIds])
 }

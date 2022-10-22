@@ -39,7 +39,11 @@ export function ContextMenu() {
     >
       {ctx.type === 'playlist' && <PlaylistMenu playlistId={ctx.playlistId} />}
       {ctx.type === 'video' && (
-        <VideoMenu videoId={ctx.videoId} videoIndex={ctx.videoIndex} />
+        <VideoMenu
+          videoId={ctx.videoId}
+          videoIndex={ctx.videoIndex}
+          videoTitle={ctx.videoTitle}
+        />
       )}
       {ctx.type === 'album' && <AlbumMenu albumId={ctx.albumId} />}
       {ctx.type === 'playlist-margin' && (
