@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import type { PageCoord } from '@/types'
 import { PlaylistMenu } from './PlaylistMenu'
 import { VideoMenu } from './VideoMenu'
+import { AlbumMenu } from '@/components/ContextMenu/AlbumMenu'
 
 export function ContextMenu() {
   const [pageCoord, setPageCoord] = useState<PageCoord>({ x: 0, y: 0 })
@@ -39,6 +40,7 @@ export function ContextMenu() {
       {ctx.type === 'video' && (
         <VideoMenu videoId={ctx.videoId} videoIndex={ctx.videoIndex} />
       )}
+      {ctx.type === 'album' && <AlbumMenu albumId={ctx.albumId} />}
     </ul>
   )
 }

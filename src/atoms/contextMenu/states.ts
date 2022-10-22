@@ -2,6 +2,7 @@ import { atom, useRecoilValue, useSetRecoilState } from 'recoil'
 import { PlaylistFirestoreId } from '@/types'
 import { VideoFirestoreId } from '@/atoms/firestore/video'
 import React, { useCallback, useMemo } from 'react'
+import { AlbumFireStoreId } from '@/atoms/firestore/album'
 
 type ContextType =
   | {
@@ -15,6 +16,10 @@ type ContextType =
       type: 'video'
       videoId: VideoFirestoreId
       videoIndex: number
+    }
+  | {
+      type: 'album'
+      albumId: AlbumFireStoreId
     }
 
 const selectedContext = atom<ContextType>({
@@ -57,6 +62,17 @@ export function useSetPlaylistContext(playlistId: PlaylistFirestoreId) {
       setter({ type: 'playlist', playlistId })
     },
     [playlistId, setter],
+  )
+}
+
+export function useSetAlbumContext(albumId: AlbumFireStoreId) {
+  const setter = useSetSelectedContext()
+  return useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault()
+      setter({ type: 'album', albumId })
+    },
+    [albumId, setter],
   )
 }
 

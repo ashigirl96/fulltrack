@@ -1,22 +1,25 @@
-import { PlaylistStore, UserId } from '@/types'
+import { AlbumState, AlbumStore, PlaylistState, UserId } from '@/types'
+import { AlbumFireStoreId, useAlbumValue } from '@/atoms/firestore/album'
 import { usePlaylistCollection } from '@/hooks/playlist'
-import { VideoFirestoreId } from '@/atoms/firestore/video'
-import { useUnionPlaylistVideo } from '@/hooks/playlist/useUnionPlaylistVideo'
+import { useUnionPlaylistVideo } from '@/hooks/playlist/useUnionPlaylistVideos'
 
 type Props = {
   userId: UserId
-  videoId: VideoFirestoreId
+  albumId: AlbumFireStoreId
 }
-export function ListAddPlaylist({ userId, videoId }: Props) {
+
+export function ListAddPlaylist({ userId, albumId }: Props) {
   const { isLoading, error, playlists } = usePlaylistCollection(userId)
+  const album = useAlbumValue(albumId)
   return (
     <li className="dropdown dropdown-right dropdown-end dropdown-open">
       <label tabIndex={0}>プレイリストに追加</label>
       <UnorderedPlaylists
-        videoId={videoId}
+        album={album}
         playlists={playlists}
         error={error}
         isLoading={isLoading}
+        userId={userId}
       />
     </li>
   )
@@ -26,15 +29,17 @@ type ListsProps = Pick<
   ReturnType<typeof usePlaylistCollection>,
   'isLoading' | 'playlists' | 'error'
 > & {
-  videoId: VideoFirestoreId
+  album: AlbumState | null
+  userId: UserId
 }
 function UnorderedPlaylists({
   isLoading,
   playlists,
   error,
-  videoId,
+  album,
+  userId,
 }: ListsProps) {
-  if (isLoading || error || playlists === undefined) {
+  if (isLoading || error || playlists === undefined || album === null) {
     return null
   }
   return (
@@ -45,19 +50,22 @@ function UnorderedPlaylists({
       {playlists.map((playlist) => (
         <ListPlaylist
           key={`unordered-playlist-${playlist.id}`}
+          album={album}
           playlist={playlist}
-          videoId={videoId}
+          userId={userId}
         />
       ))}
     </ul>
   )
 }
 
-type ListProps = { playlist: PlaylistStore; videoId: VideoFirestoreId }
-function ListPlaylist({ playlist, videoId }: ListProps) {
+type ListProps = { album: AlbumStore; playlist: PlaylistState; userId: UserId }
+function ListPlaylist({ album, playlist, userId }: ListProps) {
+  // albumの中身をplaylistに追加する
   const handleClick = useUnionPlaylistVideo({
-    videoId,
+    userId,
     playlist,
+    videoIds: album.videoIds,
   })
   return (
     <li>

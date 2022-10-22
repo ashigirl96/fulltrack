@@ -3,14 +3,19 @@ import { Artists } from '@/components/shared/Artists'
 import { AlbumStore } from '@/types'
 import { VideoFirestoreId } from '@/atoms/firestore/video'
 import { useVideoById } from '@/hooks/video/useVideoById'
+import { useSetAlbumContext } from '@/atoms/contextMenu/states'
 
 type Props = {
   track: AlbumStore
 }
 export function TrackView({ track }: Props) {
+  const setAlbumContext = useSetAlbumContext(track.id)
   return (
     <Link href={`/albums/${track.id}`} passHref>
-      <div className="flex flex-col justify-start items-start gap-y-1 bg-gray-900 p-4 pb-8 rounded-lg w-48">
+      <div
+        className="flex flex-col justify-start items-start gap-y-1 bg-gray-900 p-4 pb-8 rounded-lg w-48"
+        onContextMenu={setAlbumContext}
+      >
         <img
           src={track.thumbnailUrl}
           className="object-cover aspect-square"
