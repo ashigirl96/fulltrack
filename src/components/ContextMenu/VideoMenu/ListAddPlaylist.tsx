@@ -40,7 +40,7 @@ function UnorderedPlaylists({
   return (
     <ul
       tabIndex={0}
-      className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52"
+      className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 min-w-fit"
     >
       {playlists.map((playlist) => (
         <ListPlaylist
