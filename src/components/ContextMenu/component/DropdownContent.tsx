@@ -4,12 +4,28 @@ import { UserId } from '@/types'
 import { VideoDocRef } from '@/lib/firestore/video'
 
 type Props = {
+  position: 'top-right' | 'top-left' | 'end-left' | 'end-right'
+  children: React.ReactNode
+}
+export function Dropdown({ position, children }: Props) {
+  const [x, y] = position.split('-').map((x) => `dropdown-${x}`)
+  return (
+    <li className={`dropdown dropdown-open ${x} ${y}`}>
+      <label tabIndex={0}>プレイリストに追加</label>
+      {children}
+    </li>
+  )
+}
+
+Dropdown.Content = DropdownContent
+
+type ContentProps = {
   children: React.ReactNode
   userId: UserId
   videoIds: VideoDocRef[]
   title: string
 }
-export function DropdownContent({ children, videoIds, title, userId }: Props) {
+function DropdownContent({ children, videoIds, title, userId }: ContentProps) {
   const handleClick = useCreatePlaylist({
     userId,
     videoIds,
