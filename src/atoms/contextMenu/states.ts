@@ -1,5 +1,5 @@
 import { atom, useRecoilValue, useSetRecoilState } from 'recoil'
-import { PlaylistFirestoreId } from '@/types'
+import { PlaylistFirestoreId, UserId } from '@/types'
 import { VideoFirestoreId } from '@/atoms/firestore/video'
 import React, { useCallback, useMemo } from 'react'
 import { AlbumFireStoreId } from '@/atoms/firestore/album'
@@ -20,6 +20,10 @@ type ContextType =
   | {
       type: 'album'
       albumId: AlbumFireStoreId
+    }
+  | {
+      type: 'playlist-margin'
+      userId: UserId
     }
 
 const selectedContext = atom<ContextType>({
@@ -73,6 +77,17 @@ export function useSetAlbumContext(albumId: AlbumFireStoreId) {
       setter({ type: 'album', albumId })
     },
     [albumId, setter],
+  )
+}
+
+export function useSetPlaylistMarginContext(userId: UserId) {
+  const setter = useSetSelectedContext()
+  return useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault()
+      setter({ type: 'playlist-margin', userId })
+    },
+    [userId, setter],
   )
 }
 

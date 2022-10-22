@@ -39,7 +39,7 @@ export function PlaylistMenu({ playlistId }: Props) {
 }
 
 type CreateProps = { currentUserId: UserId }
-function CreatePlaylist({ currentUserId }: CreateProps) {
+export function CreatePlaylist({ currentUserId }: CreateProps) {
   const handleClick = useCreatePlaylist({ userId: currentUserId })
   return (
     <li>

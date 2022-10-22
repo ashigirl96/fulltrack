@@ -4,6 +4,7 @@ import type { PageCoord } from '@/types'
 import { PlaylistMenu } from './PlaylistMenu'
 import { VideoMenu } from './VideoMenu'
 import { AlbumMenu } from '@/components/ContextMenu/AlbumMenu'
+import { PlaylistMarginMenu } from '@/components/ContextMenu/PlaylistMarginMenu'
 
 export function ContextMenu() {
   const [pageCoord, setPageCoord] = useState<PageCoord>({ x: 0, y: 0 })
@@ -41,6 +42,9 @@ export function ContextMenu() {
         <VideoMenu videoId={ctx.videoId} videoIndex={ctx.videoIndex} />
       )}
       {ctx.type === 'album' && <AlbumMenu albumId={ctx.albumId} />}
+      {ctx.type === 'playlist-margin' && (
+        <PlaylistMarginMenu userId={ctx.userId} />
+      )}
     </ul>
   )
 }
