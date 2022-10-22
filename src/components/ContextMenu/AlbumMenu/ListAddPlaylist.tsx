@@ -26,18 +26,24 @@ export function ListAddPlaylist({ userId, albumId }: Props) {
     return null
   }
   return (
-    <Dropdown position={'end-right'}>
-      <Dropdown.Content userId={userId} videoIds={videoIds} title={album.title}>
-        {playlists.map((playlist) => (
-          <ListPlaylist
-            key={`unordered-playlist-${playlist.id}`}
-            videoIds={videoIds}
-            playlist={playlist}
-            userId={userId}
-          />
-        ))}
-      </Dropdown.Content>
-    </Dropdown>
+    <div>
+      <Dropdown position="left">
+        <Dropdown.Content
+          userId={userId}
+          videoIds={videoIds}
+          title={album.title}
+        >
+          {playlists.map((playlist) => (
+            <ListPlaylist
+              key={`unordered-playlist-${playlist.id}`}
+              videoIds={videoIds}
+              playlist={playlist}
+              userId={userId}
+            />
+          ))}
+        </Dropdown.Content>
+      </Dropdown>
+    </div>
   )
 }
 

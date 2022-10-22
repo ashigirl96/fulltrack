@@ -10,7 +10,7 @@ export function ListDeleteVideo({ videoIndex }: Props) {
   const router = useRouter()
   const { isReady, query } = router
   if (!isReady) {
-    return <div />
+    return null
   }
   const playlistId = query.id as string
 

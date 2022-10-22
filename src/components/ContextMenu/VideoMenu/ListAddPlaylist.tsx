@@ -16,21 +16,23 @@ export function ListAddPlaylist({ userId, videoId, videoTitle }: Props) {
     return null
   }
   return (
-    <Dropdown position={'end-right'}>
-      <Dropdown.Content
-        userId={userId}
-        videoIds={[videoDocRef(videoId)]}
-        title={videoTitle}
-      >
-        {playlists.map((playlist) => (
-          <ListPlaylist
-            key={`unordered-playlist-${playlist.id}`}
-            playlist={playlist}
-            videoId={videoId}
-          />
-        ))}
-      </Dropdown.Content>
-    </Dropdown>
+    <li>
+      <Dropdown position="left" end>
+        <Dropdown.Content
+          userId={userId}
+          videoIds={[videoDocRef(videoId)]}
+          title={videoTitle}
+        >
+          {playlists.map((playlist) => (
+            <ListPlaylist
+              key={`unordered-playlist-${playlist.id}`}
+              playlist={playlist}
+              videoId={videoId}
+            />
+          ))}
+        </Dropdown.Content>
+      </Dropdown>
+    </li>
   )
 }
 
