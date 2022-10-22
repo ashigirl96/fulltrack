@@ -1,22 +1,22 @@
 import { useInitializeContext, useSelectedContext } from '@/atoms/contextMenu'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import type { PageCoord } from '@/types'
+import React, { useCallback, useEffect } from 'react'
 import { PlaylistMenu } from './PlaylistMenu'
 import { VideoMenu } from './VideoMenu'
 import { AlbumMenu } from '@/components/ContextMenu/AlbumMenu'
 import { PlaylistMarginMenu } from '@/components/ContextMenu/PlaylistMarginMenu'
+import { usePosition } from '@/components/ContextMenu/usePosition'
 
 export function ContextMenu() {
-  const [pageCoord, setPageCoord] = useState<PageCoord>({ x: 0, y: 0 })
-  const top = useMemo(() => `${pageCoord.y}px`, [pageCoord.y])
-  const left = useMemo(() => `${pageCoord.x}px`, [pageCoord.x])
-
+  const { setPageCoord, top, left, position } = usePosition()
   const ctx = useSelectedContext()
 
-  const handleContextMenu = useCallback((e: MouseEvent) => {
-    e.preventDefault()
-    setPageCoord({ x: e.pageX, y: e.pageY })
-  }, [])
+  const handleContextMenu = useCallback(
+    (e: MouseEvent) => {
+      e.preventDefault()
+      setPageCoord({ x: e.pageX, y: e.pageY })
+    },
+    [setPageCoord],
+  )
   const handleClick = useInitializeContext()
 
   useEffect(() => {
@@ -43,9 +43,12 @@ export function ContextMenu() {
           videoId={ctx.videoId}
           videoIndex={ctx.videoIndex}
           videoTitle={ctx.videoTitle}
+          position={position}
         />
       )}
-      {ctx.type === 'album' && <AlbumMenu albumId={ctx.albumId} />}
+      {ctx.type === 'album' && (
+        <AlbumMenu albumId={ctx.albumId} position={position} />
+      )}
       {ctx.type === 'playlist-margin' && (
         <PlaylistMarginMenu userId={ctx.userId} />
       )}

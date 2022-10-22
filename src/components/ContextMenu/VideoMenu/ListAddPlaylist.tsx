@@ -4,20 +4,26 @@ import { VideoFirestoreId } from '@/atoms/firestore/video'
 import { useUnionPlaylistVideo } from '@/hooks/playlist/useUnionPlaylistVideo'
 import { Dropdown } from '@/components/ContextMenu/component/DropdownContent'
 import { videoDocRef } from '@/lib/firestore/video'
+import { ReturnTypePosition } from '@/components/ContextMenu/usePosition'
 
 type Props = {
   userId: UserId
   videoId: VideoFirestoreId
   videoTitle: string
-}
-export function ListAddPlaylist({ userId, videoId, videoTitle }: Props) {
+} & Pick<ReturnTypePosition, 'position'>
+export function ListAddPlaylist({
+  userId,
+  videoId,
+  videoTitle,
+  position,
+}: Props) {
   const { isLoading, error, playlists } = usePlaylistCollection(userId)
   if (isLoading || error || playlists === undefined) {
     return null
   }
   return (
     <li>
-      <Dropdown position="left" end>
+      <Dropdown left={position.left} end={position.end}>
         <Dropdown.Content
           userId={userId}
           videoIds={[videoDocRef(videoId)]}

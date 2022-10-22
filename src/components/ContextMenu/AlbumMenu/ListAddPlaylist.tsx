@@ -5,6 +5,7 @@ import { useUnionPlaylistVideo } from '@/hooks/playlist/useUnionPlaylistVideos'
 import { Dropdown } from '@/components/ContextMenu/component/DropdownContent'
 import { useMemo } from 'react'
 import { VideoDocRef, videoDocRef } from '@/lib/firestore/video'
+import { ReturnTypePosition } from '@/components/ContextMenu/usePosition'
 
 function useVideoDocsRef(videoIds: string[]) {
   return useMemo(
@@ -16,9 +17,8 @@ function useVideoDocsRef(videoIds: string[]) {
 type Props = {
   userId: UserId
   albumId: AlbumFireStoreId
-}
-
-export function ListAddPlaylist({ userId, albumId }: Props) {
+} & Pick<ReturnTypePosition, 'position'>
+export function ListAddPlaylist({ userId, albumId, position }: Props) {
   const { isLoading, error, playlists } = usePlaylistCollection(userId)
   const album = useAlbumValue(albumId)
   const videoIds = useVideoDocsRef(album?.videoIds || [])
@@ -27,7 +27,7 @@ export function ListAddPlaylist({ userId, albumId }: Props) {
   }
   return (
     <div>
-      <Dropdown position="left">
+      <Dropdown left={position.left} end={position.end}>
         <Dropdown.Content
           userId={userId}
           videoIds={videoIds}

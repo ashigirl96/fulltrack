@@ -4,16 +4,18 @@ import { UserId } from '@/types'
 import { VideoDocRef } from '@/lib/firestore/video'
 
 type Props = {
-  position: 'left' | 'right'
-  end?: boolean
+  left: boolean
+  end: boolean
   children: React.ReactNode
 }
-export function Dropdown({ position, end = false, children }: Props) {
+export function Dropdown({ left, end, children }: Props) {
+  const dropLeft = useMemo(
+    () => (left ? 'dropdown-right' : 'dropdown-left'),
+    [left],
+  )
   const dropEnd = useMemo(() => (end ? 'dropdown-end' : ''), [end])
   return (
-    <div
-      className={`dropdown dropdown-${position} ${dropEnd} hover:dropdown-open`}
-    >
+    <div className={`dropdown ${dropLeft} ${dropEnd} hover:dropdown-open`}>
       <label tabIndex={0}>プレイリストに追加</label>
       {children}
     </div>
