@@ -26,7 +26,7 @@ export function ListAddPlaylist({ userId, albumId, position }: Props) {
     return null
   }
   return (
-    <div>
+    <li>
       <Dropdown left={position.left} end={position.end}>
         <Dropdown.Content
           userId={userId}
@@ -43,7 +43,7 @@ export function ListAddPlaylist({ userId, albumId, position }: Props) {
           ))}
         </Dropdown.Content>
       </Dropdown>
-    </div>
+    </li>
   )
 }
 

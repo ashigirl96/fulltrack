@@ -7,7 +7,7 @@ import { ReturnTypePosition } from '@/components/ContextMenu/usePosition'
 type Props = {
   albumId: AlbumFireStoreId
 } & Pick<ReturnTypePosition, 'position'>
-export function AlbumMenu({ albumId }: Props) {
+export function AlbumMenu({ albumId, position }: Props) {
   const currentUserId = useGetCurrentUserId()
   if (!currentUserId) {
     return (
@@ -16,5 +16,11 @@ export function AlbumMenu({ albumId }: Props) {
       </li>
     )
   }
-  return <ListAddPlaylist albumId={albumId} userId={currentUserId} />
+  return (
+    <ListAddPlaylist
+      albumId={albumId}
+      userId={currentUserId}
+      position={position}
+    />
+  )
 }

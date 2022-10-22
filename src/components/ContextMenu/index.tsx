@@ -1,5 +1,5 @@
 import { useInitializeContext, useSelectedContext } from '@/atoms/contextMenu'
-import React, { useCallback, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { PlaylistMenu } from './PlaylistMenu'
 import { VideoMenu } from './VideoMenu'
 import { AlbumMenu } from '@/components/ContextMenu/AlbumMenu'
@@ -7,16 +7,8 @@ import { PlaylistMarginMenu } from '@/components/ContextMenu/PlaylistMarginMenu'
 import { usePosition } from '@/components/ContextMenu/usePosition'
 
 export function ContextMenu() {
-  const { setPageCoord, top, left, position } = usePosition()
+  const { top, left, position, handleContextMenu } = usePosition()
   const ctx = useSelectedContext()
-
-  const handleContextMenu = useCallback(
-    (e: MouseEvent) => {
-      e.preventDefault()
-      setPageCoord({ x: e.pageX, y: e.pageY })
-    },
-    [setPageCoord],
-  )
   const handleClick = useInitializeContext()
 
   useEffect(() => {
@@ -34,7 +26,7 @@ export function ContextMenu() {
 
   return (
     <ul
-      className="absolute menu bg-base-100 w-56 p-2 rounded-box divider-y divide-blue-300"
+      className="absolute menu bg-base-100 w-56 p-2 rounded-box divider-y divide-blue-300 ring-1"
       style={{ top, left }}
     >
       {ctx.type === 'playlist' && <PlaylistMenu playlistId={ctx.playlistId} />}
