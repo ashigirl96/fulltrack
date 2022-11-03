@@ -1,8 +1,8 @@
 import { PlaylistStore } from '@/types'
 import { useSetIsEditPlaylistName } from '@/atoms/contextMenu/states'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useUpdatePlaylistTitle } from '@/hooks/playlist/useUpdatePlaylistTitle'
-import { useEnterKey, useOnChange, useOnFocus } from '@/lib/keyboard'
+import { useEnterKey, useOnFocus } from '@/lib/keyboard'
 
 type PlaylistProps = {
   playlist: PlaylistStore
@@ -10,15 +10,12 @@ type PlaylistProps = {
 
 type Args = PlaylistProps
 function useInputPlaylistTitle({ playlist }: Args) {
-  const [title, setTitle] = useState(playlist.title)
   const blur = useSetIsEditPlaylistName(null)
   const handleBlur = useUpdatePlaylistTitle({
     playlistId: playlist.id,
     callback: blur,
-    title,
   })
   const handleKeyDown = useEnterKey(handleBlur)
-  const handleChange = useOnChange(setTitle)
   const handleFocus = useOnFocus()
 
   const ref = useRef<HTMLInputElement>(null)
@@ -28,8 +25,7 @@ function useInputPlaylistTitle({ playlist }: Args) {
 
   return {
     ref,
-    title,
-    handleChange,
+    title: playlist.title,
     handleBlur,
     handleKeyDown,
     handleFocus,
@@ -37,16 +33,15 @@ function useInputPlaylistTitle({ playlist }: Args) {
 }
 
 export function InputPlaylistTitle({ playlist }: PlaylistProps) {
-  const { ref, title, handleChange, handleBlur, handleKeyDown, handleFocus } =
+  const { ref, title, handleBlur, handleKeyDown, handleFocus } =
     useInputPlaylistTitle({ playlist })
   return (
     <input
-      ref={ref}
       defaultValue={title}
+      ref={ref}
       onFocus={handleFocus}
-      onBlur={handleBlur}
+      onBlur={(e) => handleBlur(e.currentTarget.value)}
       onKeyDown={handleKeyDown}
-      onChange={handleChange}
     />
   )
 }

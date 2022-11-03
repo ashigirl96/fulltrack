@@ -4,6 +4,7 @@ import { useYouTubePlayer } from './useYouTubePlayer'
 import { useHandlePlayerController } from './useHandlePlayerController'
 import { useHandleVolume } from './useHandleVolume'
 import { ReturnTypeSetReadyEvent } from '@/hooks/youtube_player/useSetReadyEvent'
+import { useEffect } from 'react'
 
 type Props = Pick<ReturnTypeOfUseYouTubePlayerComponent, 'handleReadyEvent'>
 export function YouTubePlayer({ handleReadyEvent }: Props) {

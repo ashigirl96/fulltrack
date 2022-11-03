@@ -1,20 +1,12 @@
 import React, { useCallback } from 'react'
 
-export function useEnterKey(callback: () => void) {
+export function useEnterKey(callback: (x: string) => Promise<void>) {
   return useCallback(
     async (e: React.KeyboardEvent<HTMLInputElement>) => {
+      e.stopPropagation()
       if (e.key === 'Enter') {
-        await callback()
+        await callback(e.currentTarget.value)
       }
-    },
-    [callback],
-  )
-}
-
-export function useOnChange(callback: (x: string) => void) {
-  return useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      callback(e.currentTarget.value)
     },
     [callback],
   )

@@ -6,16 +6,18 @@ import { useGetCurrentUserId } from '@/hooks/firebaseAuth'
 
 type Args = {
   playlistId: PlaylistFirestoreId
-  title: string
   callback?: () => void
 }
-export function useUpdatePlaylistTitle({ playlistId, callback, title }: Args) {
+export function useUpdatePlaylistTitle({ playlistId, callback }: Args) {
   const userId = useGetCurrentUserId()
-  return useCallback(async () => {
-    if (userId) {
-      const playlistRef = playlistDocRef(userId, playlistId)
-      await updateDoc(playlistRef, { title })
-    }
-    callback && callback()
-  }, [callback, playlistId, title, userId])
+  return useCallback(
+    async (title: string) => {
+      if (userId) {
+        const playlistRef = playlistDocRef(userId, playlistId)
+        await updateDoc(playlistRef, { title })
+      }
+      callback && callback()
+    },
+    [callback, playlistId, userId],
+  )
 }
