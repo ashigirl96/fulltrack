@@ -75,7 +75,6 @@ export function useAddVideo() {
   const addVideo = useCallback(async () => {
     const q = query(artistCollectionRef, where('name', 'in', artists))
     const _artists = (await getDocs(q)).docs.map((x) => artistDocRef(x.id))
-    console.log(JSON.stringify(_artists))
     await addDoc(videoCollectionRef, {
       id: documentId(),
       videoId,

@@ -30,7 +30,6 @@ type FetchProps = Pick<RoutingProps, 'readyEvent'> & {
 }
 function FetchingComponent({ readyEvent, albumId }: FetchProps) {
   const { album, isLoading, error } = useAlbumDoc(albumId)
-  console.log(`album ${JSON.stringify(album)} isLoading ${isLoading}`)
   if (isLoading) return <div>loading fetch...</div>
   if (!album) return <div>no album...</div>
   if (error) return <div>error fetching...</div>

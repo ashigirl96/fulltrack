@@ -24,7 +24,6 @@ export function useCurrentTrackIdValue() {
 export function useSetCurrentTrackId(track: CurrentTrack) {
   const setter = useSetRecoilState(currentTrackIdState)
   return useCallback(() => {
-    console.log(`AAAAAAAAAAA`)
     setter(track)
   }, [setter, track])
 }

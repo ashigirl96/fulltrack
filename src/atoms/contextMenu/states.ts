@@ -56,7 +56,7 @@ export function useSetVideoContext(
       e.preventDefault()
       setter({ type: 'video', videoId, videoIndex, videoTitle })
     },
-    [setter, videoId, videoIndex],
+    [setter, videoId, videoIndex, videoTitle],
   )
 }
 

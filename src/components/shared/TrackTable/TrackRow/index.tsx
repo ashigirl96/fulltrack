@@ -44,7 +44,7 @@ export function TrackRow({
       role="row"
       className={`group hover:bg-accent h-14 grid-playlist ${
         isSelected && 'bg-secondary'
-      }`}
+      } cursor-default`}
       onClick={setIndex}
       onDoubleClick={handleDoubleClick}
       onContextMenu={setVideoContext}
@@ -85,7 +85,9 @@ export function TrackRow({
           </a>
         </div>
       </div>
-      <div className="flex justify-self-end items-center">{duration}</div>
+      <div className="flex justify-self-end items-center cursor-default">
+        {duration}
+      </div>
     </div>
   )
 }
