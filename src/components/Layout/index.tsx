@@ -25,11 +25,6 @@ export function Layout({
     handleVolume,
   } = useYouTubePlayerComponent({ setReadyEvent, readyEvent })
 
-  const hoge = (e: KeyboardEvent) => {
-    if (e.code === 'Space') {
-      console.log(`Space`)
-    }
-  }
   const handleKeyDown = useCallback(
     async (e: KeyboardEvent) => {
       if (readyEvent && e.code) {
