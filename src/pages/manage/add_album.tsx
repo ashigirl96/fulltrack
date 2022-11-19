@@ -1,12 +1,12 @@
-import type { NextPage } from 'next'
-import { useCallback, useState } from 'react'
 import { addDoc, doc, documentId, getDoc } from '@firebase/firestore'
-import { firestoreNow } from '@/lib/firestore/playlist'
-import { albumCollectionRef } from '@/lib/firestore/album'
-
+import { useCallback, useState } from 'react'
+import type { NextPage } from 'next'
 import { db } from '@/config/firebase'
-import { videoCollectionRef, videoDocRef } from '@/lib/firestore/video'
+import { albumCollectionRef } from '@/lib/firestore/album'
 import { getDocsByIds } from '@/lib/firestore/getDocsByIds'
+import { firestoreNow } from '@/lib/firestore/playlist'
+
+import { videoCollectionRef, videoDocRef } from '@/lib/firestore/video'
 
 const AlbumPlaylist: NextPage = () => {
   const [title, setTitle] = useState('')

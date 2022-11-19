@@ -1,14 +1,14 @@
-import { Layout } from '@/components/Layout'
 import { NextRouter } from 'next/router'
-import { ReturnTypeSetReadyEvent } from '@/hooks/youtube_player/useSetReadyEvent'
 import React, { useEffect, useMemo } from 'react'
-import { AlbumStore, VideoFirestore } from '@/types'
 import { useAlbumValue, AlbumFireStoreId } from '@/atoms/firestore/album'
-import { useMaybeFetchVideos } from '@/hooks/playlist/useMaybeFetchVideos'
 import { useSetVideoValues } from '@/atoms/firestore/video'
+import { useSetCurrentTrackId } from '@/atoms/youtubePlayer/states'
+import { Layout } from '@/components/Layout'
 import { TrackTable, TrackTitle } from '@/components/shared/TrackTable'
 import { useAlbumDoc } from '@/hooks/album/useAlbumDoc'
-import { useSetCurrentTrackId } from '@/atoms/youtubePlayer/states'
+import { useMaybeFetchVideos } from '@/hooks/playlist/useMaybeFetchVideos'
+import { ReturnTypeSetReadyEvent } from '@/hooks/youtube_player/useSetReadyEvent'
+import { AlbumStore, VideoFirestore } from '@/types'
 
 type RoutingProps = ReturnTypeSetReadyEvent & { router: NextRouter }
 function RoutingComponent({ readyEvent, router }: RoutingProps) {
