@@ -44,3 +44,5 @@ out
 gen
 
 src.old/
+
+.env
