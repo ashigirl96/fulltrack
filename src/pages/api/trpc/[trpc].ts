@@ -4,7 +4,7 @@ import { appRouter } from '@/server/routes/_app'
 
 export default trpcNext.createNextApiHandler({
   router: appRouter,
-  createContext,
+  createContext: () => {},
   onError:
     process.env.NODE_ENV === 'development'
       ? ({ path, error }) => {

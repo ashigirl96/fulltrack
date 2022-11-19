@@ -3,7 +3,6 @@ import { NextPage } from 'next'
 import { ReactElement, ReactNode } from 'react'
 import { RecoilRoot } from 'recoil'
 import type { AppProps } from 'next/app'
-import { Auth } from '@/components/Auth'
 import { trpc } from '@/lib/trpc'
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -20,7 +19,6 @@ function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
 
   return (
     <RecoilRoot>
-      <Auth />
       {getLayout(<Component {...pageProps} router={router} />)}
     </RecoilRoot>
   )
