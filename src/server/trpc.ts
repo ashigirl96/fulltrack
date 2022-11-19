@@ -1,4 +1,4 @@
-import { initTRPC, TRPCError } from '@trpc/server'
+import { initTRPC } from '@trpc/server'
 import superjson from 'superjson'
 import type { Context } from './context'
 
@@ -8,21 +8,16 @@ const t = initTRPC.context<Context>().create({
 
 export const middleware = t.middleware
 
-const isAuthed = middleware(({ next, ctx }) => {
-  console.log(`ctx ${JSON.stringify(ctx)}`)
-
-  if (!ctx?.session?.user) {
-    throw new TRPCError({
-      code: 'UNAUTHORIZED',
-    })
-  }
-  return next({
-    ctx: {
-      // Infers the `session` as non-nullable
-      session: ctx.session,
-    },
-  })
-})
+// const isAuthed = middleware(({ next, ctx }) => {
+//   console.log(`ctx ${JSON.stringify(ctx)}`)
+//
+//   return next({
+//     ctx: {
+//       // Infers the `session` as non-nullable
+//       session: 'hoge',
+//     },
+//   })
+// })
 
 export const router = t.router
 
@@ -34,4 +29,4 @@ export const publicProcedure = t.procedure
 /**
  * Protected procedure
  **/
-export const protectedProcedure = t.procedure.use(isAuthed)
+// export const protectedProcedure = t.procedure.use(isAuthed)

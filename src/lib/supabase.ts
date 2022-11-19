@@ -11,6 +11,10 @@ export async function getGoogleUser() {
   return await supabase.auth.getUser()
 }
 
+export async function getSession() {
+  return await supabase.auth.getSession()
+}
+
 export function useSignInWithGoogle() {
   return useCallback(async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
