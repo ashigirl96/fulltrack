@@ -200,12 +200,6 @@ venv.bak/
 
 ### Example user template
 
-# IntelliJ project files
-.idea
-*.iml
-out
-gen
-
 src/generated/graphql.tsx
 graphql.schema.json.graphql
 src/api/graphqls/*.graphql

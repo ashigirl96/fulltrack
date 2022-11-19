@@ -1,11 +1,12 @@
 module.exports = {
   root: true,
   plugins: [
+    'unused-imports',
     'react',
     'react-hooks',
     '@typescript-eslint',
     'import',
-    // 'unused-imports',
+    'unused-imports',
   ],
   env: {
     es2020: true,
