@@ -11,7 +11,7 @@ export const middleware = t.middleware
 const isAuthed = middleware(({ next, ctx }) => {
   console.log(`ctx ${JSON.stringify(ctx)}`)
 
-  if (!ctx?.session?.user?.email) {
+  if (!ctx?.session?.user) {
     throw new TRPCError({
       code: 'UNAUTHORIZED',
     })

@@ -1,8 +1,11 @@
 import '../styles/globals.css'
+import {
+  createBrowserSupabaseClient,
+  Session,
+} from '@supabase/auth-helpers-nextjs'
+import { SessionContextProvider } from '@supabase/auth-helpers-react'
 import { NextPage } from 'next'
-import { Session } from 'next-auth'
-import { SessionProvider } from 'next-auth/react'
-import { ReactElement, ReactNode } from 'react'
+import { ReactElement, ReactNode, useState } from 'react'
 import { RecoilRoot } from 'recoil'
 import type { AppProps } from 'next/app'
 import { trpc } from '@/lib/trpc'
@@ -12,21 +15,38 @@ export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode
 }
 
-type AppPropsWithLayout = AppProps<{ session: Session }> & {
+type AppPropsWithLayout = AppProps<{ initialSession: Session }> & {
   Component: NextPageWithLayout
 }
 
 function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
   const getLayout = Component.getLayout || ((page) => page)
 
-  console.log(`session ${JSON.stringify(pageProps.session)}`)
+  const [supabaseClient] = useState(() => createBrowserSupabaseClient())
 
   return (
-    <SessionProvider session={pageProps.session}>
+    <SessionContextProvider
+      supabaseClient={supabaseClient}
+      initialSession={pageProps.initialSession}
+    >
+      <button
+        onClick={async () => {
+          await supabaseClient.auth.signOut()
+          await router.push('/')
+        }}
+      >
+        Logout
+      </button>
       <RecoilRoot>
-        {getLayout(<Component {...pageProps} router={router} />)}
+        {getLayout(
+          <Component
+            {...pageProps}
+            router={router}
+            supabaseClient={supabaseClient}
+          />,
+        )}
       </RecoilRoot>
-    </SessionProvider>
+    </SessionContextProvider>
   )
 }
 
