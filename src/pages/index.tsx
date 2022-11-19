@@ -1,26 +1,27 @@
+import { signIn } from 'next-auth/react'
 import React from 'react'
-
-import { useSignInWithGoogle } from '@/lib/supabase'
-import { trpc } from '@/lib/trpc'
-import { useUserState } from '@/store/supabase/user'
+// import { trpc } from '@/lib/trpc'
 
 function Index() {
-  const hello = trpc.hello.useQuery({ text: 'Client' })
+  // const hello = trpc.hello.useQuery({ text: 'Client' })
   // const helloYou = trpc.helloYou.useQuery({ text: 'World' })
-  const signInWithGoogle = useSignInWithGoogle()
-  const { user } = useUserState()
-  if (!hello.data) {
-    return <div>Loading...</div>
-  }
+  // if (!hello.data) {
+  //   return <div>Loading...</div>
+  // }
   // if (!helloYou.data) {
   //   return <div>Loading You...</div>
   // }
   return (
     <div>
-      <div>{hello.data.greeting}</div>
+      {/*<div>{hello.data.greeting}</div>*/}
       {/*<div>{helloYou.data.greeting}</div>*/}
-      <div>{JSON.stringify(user)}</div>
-      <button onClick={signInWithGoogle}>button</button>
+      <button
+        onClick={() =>
+          signIn('google', { callbackUrl: 'http://localhost:3000' })
+        }
+      >
+        button
+      </button>
     </div>
   )
 }
