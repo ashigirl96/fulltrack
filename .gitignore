@@ -42,3 +42,5 @@ next-env.d.ts
 *.iml
 out
 gen
+
+src.old/
