@@ -1,13 +1,13 @@
 {
-  "name": "ponpoco",
-  "version": "0.1.0",
+  "name": "fulltrack",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "migrate:dev": "DATABASE_URL=$MIGRATE_DB_URL npx prisma migrate dev"
+    "migrate:dev": "dotenv -- bash -c 'DATABASE_URL=$MIGRATE_DB_URL npx prisma migrate dev'"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.2.0",
@@ -23,7 +23,6 @@
     "@trpc/next": "10.0.0-rc.8",
     "@trpc/react": "^9.27.4",
     "@trpc/server": "10.0.0-rc.8",
-    "@types/youtube-player": "^5.5.6",
     "classnames": "^2.3.2",
     "next": "12.2.5",
     "next-useragent": "^2.8.0",
@@ -45,10 +44,12 @@
     "@types/react": "18.0.17",
     "@types/react-dom": "18.0.6",
     "@types/recoilize": "^0.8.0",
+    "@types/youtube-player": "^5.5.6",
     "@typescript-eslint/eslint-plugin": "^5.34.0",
     "@typescript-eslint/parser": "^5.34.0",
     "autoprefixer": "^10.4.8",
     "daisyui": "^2.24.0",
+    "dotenv-cli": "^6.0.0",
     "eslint": "^8.22.0",
     "eslint-config-next": "12.2.5",
     "eslint-config-prettier": "^8.5.0",

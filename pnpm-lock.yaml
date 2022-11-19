@@ -24,6 +24,7 @@ specifiers:
   autoprefixer: ^10.4.8
   classnames: ^2.3.2
   daisyui: ^2.24.0
+  dotenv-cli: ^6.0.0
   eslint: ^8.22.0
   eslint-config-next: 12.2.5
   eslint-config-prettier: ^8.5.0
@@ -68,7 +69,6 @@ dependencies:
   '@trpc/next': 10.0.0-rc.8_mmb37ledmo6zjwp77pgzvtuux4
   '@trpc/react': 9.27.4_73z5o6f6igw3zlfrgeb5upll3u
   '@trpc/server': 10.0.0-rc.8
-  '@types/youtube-player': 5.5.6
   classnames: 2.3.2
   next: 12.2.5_biqbaboplfbrettd7655fr4n2y
   next-useragent: 2.8.0_next@12.2.5
@@ -90,10 +90,12 @@ devDependencies:
   '@types/react': 18.0.17
   '@types/react-dom': 18.0.6
   '@types/recoilize': 0.8.0
+  '@types/youtube-player': 5.5.6
   '@typescript-eslint/eslint-plugin': 5.43.0_qsgylxrteg3kafyiommnwlhq5e
   '@typescript-eslint/parser': 5.43.0_tqvwk7sh3taph5wf7sr5z34mke
   autoprefixer: 10.4.13_postcss@8.4.19
   daisyui: 2.41.0_2lwn2upnx27dqeg6hqdu7sq75m
+  dotenv-cli: 6.0.0
   eslint: 8.28.0
   eslint-config-next: 12.2.5_tqvwk7sh3taph5wf7sr5z34mke
   eslint-config-prettier: 8.5.0_eslint@8.28.0
@@ -566,7 +568,7 @@ packages:
 
   /@types/youtube-player/5.5.6:
     resolution: {integrity: sha512-RcWWUEuAZZX24dG55Xk558/HHCZxYf798/xPnV6wTwDlUF8HZNAmqyXyi+4QgN2l9juP9GRjCwILxXLSPKQBBw==}
-    dev: false
+    dev: true
 
   /@typescript-eslint/eslint-plugin/5.43.0_qsgylxrteg3kafyiommnwlhq5e:
     resolution: {integrity: sha512-wNPzG+eDR6+hhW4yobEmpR36jrqqQv1vxBq5LJO3fBAktjkvekfr4BRl+3Fn1CM/A+s8/EiGUbOMDoYqWdbtXA==}
@@ -1187,6 +1189,26 @@ packages:
     dependencies:
       define-properties: 1.1.4
     dev: false
+
+  /dotenv-cli/6.0.0:
+    resolution: {integrity: sha512-qXlCOi3UMDhCWFKe0yq5sg3X+pJAz+RQDiFN38AMSbUrnY3uZshSfDJUAge951OS7J9gwLZGfsBlWRSOYz/TRg==}
+    hasBin: true
+    dependencies:
+      cross-spawn: 7.0.3
+      dotenv: 16.0.3
+      dotenv-expand: 8.0.3
+      minimist: 1.2.7
+    dev: true
+
+  /dotenv-expand/8.0.3:
+    resolution: {integrity: sha512-SErOMvge0ZUyWd5B0NXMQlDkN+8r+HhVUsxgOO7IoPDOdDRD2JjExpN6y3KnFR66jsJMwSn1pqIivhU5rcJiNg==}
+    engines: {node: '>=12'}
+    dev: true
+
+  /dotenv/16.0.3:
+    resolution: {integrity: sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==}
+    engines: {node: '>=12'}
+    dev: true
 
   /electron-to-chromium/1.4.284:
     resolution: {integrity: sha512-M8WEXFuKXMYMVr45fo8mq0wUrrJHheiKZf6BArTKk9ZBYCKJEOU5H8cdWgDT+qCVZf7Na4lVUaZsA+h6uA9+PA==}
