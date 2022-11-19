@@ -6,14 +6,19 @@ import { useUserState } from '@/store/supabase/user'
 
 function Index() {
   const hello = trpc.hello.useQuery({ text: 'Client' })
+  // const helloYou = trpc.helloYou.useQuery({ text: 'World' })
   const signInWithGoogle = useSignInWithGoogle()
   const { user } = useUserState()
   if (!hello.data) {
     return <div>Loading...</div>
   }
+  // if (!helloYou.data) {
+  //   return <div>Loading You...</div>
+  // }
   return (
-    <div className="bg-red-100">
+    <div>
       <div>{hello.data.greeting}</div>
+      {/*<div>{helloYou.data.greeting}</div>*/}
       <div>{JSON.stringify(user)}</div>
       <button onClick={signInWithGoogle}>button</button>
     </div>
