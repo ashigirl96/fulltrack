@@ -1,6 +1,6 @@
 import { router } from '../trpc'
-import { helloRouter } from '@/server/routes/helloRouter'
-import { helloYouRouter } from '@/server/routes/helloYouRouter'
+import { helloRouter } from '@/server/trpc/routes/helloRouter'
+import { helloYouRouter } from '@/server/trpc/routes/helloYouRouter'
 
 export const appRouter = router({
   hello: helloRouter,

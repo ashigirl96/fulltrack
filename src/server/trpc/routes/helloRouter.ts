@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { publicProcedure } from '@/server/trpc'
+import { publicProcedure } from '@/server/trpc/trpc'
 
 export const helloRouter = publicProcedure
   .input(

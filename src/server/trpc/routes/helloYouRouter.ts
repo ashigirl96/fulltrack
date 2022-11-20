@@ -1,6 +1,6 @@
 import superjson from 'superjson'
 import { z } from 'zod'
-import { protectedProcedure } from '@/server/trpc'
+import { protectedProcedure } from '@/server/trpc/trpc'
 
 export const helloYouRouter = protectedProcedure
   .input(
@@ -10,8 +10,6 @@ export const helloYouRouter = protectedProcedure
   )
   .query(({ input, ctx }) => {
     return {
-      greeting: `hello ${input.text}, Mr. ${superjson.stringify(
-        ctx.session,
-      )} req ${ctx.req.query.text}`,
+      greeting: `Hello ${input.text} ${ctx.user.id}`,
     }
   })

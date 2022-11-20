@@ -1,19 +1,24 @@
+import {
+  createMiddlewareSupabaseClient,
+  createServerSupabaseClient,
+} from '@supabase/auth-helpers-nextjs'
 import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
+
 import { Auth, ThemeSupa } from '@supabase/auth-ui-react'
+import { GetServerSideProps } from 'next'
+import { getSession } from 'next-auth/react'
+import { NextRequest, NextResponse } from 'next/server'
 import { trpc } from '@/lib/trpc'
 
 function Index() {
   const session = useSession()
   const supabase = useSupabaseClient()
+
   // const hello = trpc.hello.useQuery({ text: 'Client' })
   const hello = trpc.helloYou.useQuery({ text: 'Client' })
-  // const hello2 = trpc.helloYou.useQuery({ text: 'Client' })
   if (!hello.data) {
     return <div>Loading...</div>
   }
-  // if (!hello2.data) {
-  //   return <div>Loading2...</div>
-  // }
 
   return (
     <div>
