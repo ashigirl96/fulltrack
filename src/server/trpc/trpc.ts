@@ -9,6 +9,7 @@ const t = initTRPC.context<Context>().create({
 export const middleware = t.middleware
 
 const isAuthed = middleware(({ next, ctx }) => {
+  console.error('middleware')
   if (!ctx.user) {
     throw new TRPCError({ code: 'UNAUTHORIZED' })
   }

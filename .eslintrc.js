@@ -72,7 +72,17 @@ module.exports = {
     'import/default': 'off',
     'import/no-named-as-default-member': 'off',
     'import/no-named-as-default': 'off',
-    // 'unused-imports/no-unused-imports-ts': 'error',
+    'unused-imports/no-unused-imports': 'error',
+    'unused-imports/no-unused-vars': [
+      'warn',
+      {
+        vars: 'all',
+        varsIgnorePattern: '^_',
+        args: 'after-used',
+        argsIgnorePattern: '^_',
+      },
+    ],
+
     'import/prefer-default-export': 'off',
   },
   parser: '@typescript-eslint/parser',

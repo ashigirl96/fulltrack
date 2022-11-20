@@ -17,7 +17,10 @@ export function createContextInner(opts: CreateContextOptions) {
 }
 export async function createContext(ctx: trpcNext.CreateNextContextOptions) {
   const supabase2 = createServerSupabaseClient(ctx)
-  const { data, error } = await supabase2.auth.getSession()
+  const {
+    data,
+    // error  TODO: エラーハンドルする
+  } = await supabase2.auth.getSession()
   console.log(`session ${JSON.stringify(data.session)}`)
   const user = data.session?.user
 

@@ -7,11 +7,9 @@ const ProtectedRoute: NextApiHandler = async (req, res) => {
   // Create authenticated Supabase Client
   const supabase = createServerSupabaseClient({ req, res })
   // Check if we have a session
-  console.log(`Start`)
   const {
     data: { session },
   } = await supabase.auth.getSession()
-  console.log(`End`)
   if (!session)
     return res.status(401).json({
       error: 'not_authenticated',
