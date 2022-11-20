@@ -29,14 +29,6 @@ function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
       supabaseClient={supabaseClient}
       initialSession={pageProps.initialSession}
     >
-      <button
-        onClick={async () => {
-          await supabaseClient.auth.signOut()
-          await router.push('/')
-        }}
-      >
-        Logout
-      </button>
       <RecoilRoot>
         {getLayout(
           <Component

@@ -7,7 +7,8 @@ export const helloYouRouter = protectedProcedure
       text: z.string(),
     }),
   )
-  .query(({ input, ctx }) => {
+  .query(async ({ input, ctx }) => {
+    // const user = await ctx.prisma.user.findFirst({ where: { id: ctx.user.id } })
     return {
       greeting: `Hello ${input.text} ${ctx.user.id}`,
     }

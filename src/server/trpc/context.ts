@@ -16,11 +16,11 @@ export function createContextInner(opts: CreateContextOptions) {
   return { prisma, supabase, user: opts.user }
 }
 export async function createContext(ctx: trpcNext.CreateNextContextOptions) {
-  const supabase2 = createServerSupabaseClient(ctx)
+  const supabase_ = createServerSupabaseClient(ctx)
   const {
     data,
     // error  TODO: エラーハンドルする
-  } = await supabase2.auth.getSession()
+  } = await supabase_.auth.getSession()
   console.log(`session ${JSON.stringify(data.session)}`)
   const user = data.session?.user
 
