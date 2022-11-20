@@ -1,5 +1,7 @@
 import { inferAsyncReturnType } from '@trpc/server'
 import * as trpcNext from '@trpc/server/adapters/next'
+import superjson from 'superjson'
+import { getSession } from '@/lib/supabase'
 // import { useSession } from '@supabase/auth-helpers-react'
 // import * as trpcNext from '@trpc/server/adapters/next'
 // import { Session } from 'next-auth'
@@ -18,28 +20,11 @@ export async function createContext({
   req,
   res,
 }: trpcNext.CreateNextContextOptions) {
-  // const session = await getSession()
-  // console.error(`session ${JSON.stringify(session)}`)
-  // // const session = useSession()
-  //
-  // // const session_: Session = {
-  // //   user: {
-  // //     name: 'hoge',
-  // //     email: 'fuga',
-  // //     image: 'https://example.com',
-  // //   },
-  // //   expires: '100',
-  // // }
-  // //
-  // // return {
-  // //   session: session_,
-  // // }
-  // console.log(`req ${JSON.stringify(req)}`)
-  // console.log(`res ${JSON.stringify(res)}`)
-
+  const session = await getSession()
   return {
     req,
     res,
+    session,
     // prisma
   }
 }

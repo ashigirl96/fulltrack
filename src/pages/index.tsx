@@ -5,7 +5,8 @@ import { trpc } from '@/lib/trpc'
 function Index() {
   const session = useSession()
   const supabase = useSupabaseClient()
-  const hello = trpc.hello.useQuery({ text: 'Client' })
+  // const hello = trpc.hello.useQuery({ text: 'Client' })
+  const hello = trpc.helloYou.useQuery({ text: 'Client' })
   // const hello2 = trpc.helloYou.useQuery({ text: 'Client' })
   if (!hello.data) {
     return <div>Loading...</div>

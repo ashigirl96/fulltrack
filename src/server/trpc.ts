@@ -8,16 +8,14 @@ const t = initTRPC.context<Context>().create({
 
 export const middleware = t.middleware
 
-// const isAuthed = middleware(({ next, ctx }) => {
-//   console.log(`ctx ${JSON.stringify(ctx)}`)
-//
-//   return next({
-//     ctx: {
-//       // Infers the `session` as non-nullable
-//       session: 'hoge',
-//     },
-//   })
-// })
+const isAuthed = middleware(({ next, ctx }) => {
+  return next({
+    ctx: {
+      // Infers the `session` as non-nullable
+      session: ctx.session,
+    },
+  })
+})
 
 export const router = t.router
 
@@ -29,4 +27,4 @@ export const publicProcedure = t.procedure
 /**
  * Protected procedure
  **/
-// export const protectedProcedure = t.procedure.use(isAuthed)
+export const protectedProcedure = t.procedure.use(isAuthed)
