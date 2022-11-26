@@ -11,6 +11,34 @@ const DATASETS: IArtist[] = [
     name: 'ぽんぽこ',
     channelId: '@pokopea',
   },
+  {
+    name: 'チャンチョ',
+    channelId: '@Peanutskun',
+  },
+  {
+    name: 'もちひよこ',
+    channelId: '',
+  },
+  {
+    name: 'おめがシスターズ',
+    channelId: '',
+  },
+  {
+    name: '名取さな',
+    channelId: '',
+  },
+  {
+    name: 'デニムくん',
+    channelId: '@Peanutskun',
+  },
+  {
+    name: 'やながみゆき',
+    channelId: '',
+  },
+  {
+    name: '',
+    channelId: '',
+  },
 ]
 
 export async function createArtists(client: PrismaClient) {

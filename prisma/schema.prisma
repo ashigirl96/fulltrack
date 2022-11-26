@@ -67,6 +67,7 @@ model Video {
   artists  Artist[]
   playlits Playlist[]
   albums   Album[]
+  publishedAt DateTime?
 
   createdAt DateTime @default(now())
 
