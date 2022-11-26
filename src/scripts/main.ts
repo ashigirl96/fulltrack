@@ -1,13 +1,11 @@
 import { PrismaClient } from '@prisma/client'
+import { createArtists } from './seed/artists'
 
 const prisma = new PrismaClient()
 
 async function main() {
   // ... you will write your Prisma Client queries here
-  const user = await prisma.user.create({
-    data: {},
-  })
-  console.log(`user ${JSON.stringify(user)}`)
+  await createArtists(prisma)
 }
 
 main()

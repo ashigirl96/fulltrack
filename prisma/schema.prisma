@@ -46,13 +46,13 @@ model Album {
 model Artist {
   id         String @id @default(cuid())
   name       String
-  channelUrl String
+  channelId String
 
   videos Video[]
 
   createdAt DateTime @default(now())
 
-  @@unique([name, channelUrl])
+  @@unique([name, channelId])
 }
 
 model Video {
