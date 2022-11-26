@@ -34,8 +34,9 @@ model Album {
   id           String    @id @default(cuid())
   title        String
   thumnnailUrl String
-  videos       Video[]
   type         AlbumType @default(SINGLE)
+
+  videos Video[]
 
   createdAt DateTime @default(now())
 
@@ -63,13 +64,11 @@ model Video {
   title          String
   thumnnailUrl   String
 
-  artists Artist[]
+  artists  Artist[]
+  playlits Playlist[]
+  albums   Album[]
 
-  Playlist   Playlist? @relation(fields: [playlistId], references: [id])
-  playlistId String?
-  Album      Album?    @relation(fields: [albumId], references: [id])
-  albumId    String?
-  createdAt  DateTime  @default(now())
+  createdAt DateTime @default(now())
 
   @@unique([youtubeVideoId, start, end])
 }

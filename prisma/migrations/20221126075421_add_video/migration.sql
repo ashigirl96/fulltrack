@@ -34,8 +34,6 @@ CREATE TABLE "Video" (
     "originalTitle" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "thumnnailUrl" TEXT NOT NULL,
-    "playlistId" TEXT,
-    "albumId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Video_pkey" PRIMARY KEY ("id")
@@ -61,12 +59,6 @@ CREATE UNIQUE INDEX "_ArtistToVideo_AB_unique" ON "_ArtistToVideo"("A", "B");
 
 -- CreateIndex
 CREATE INDEX "_ArtistToVideo_B_index" ON "_ArtistToVideo"("B");
-
--- AddForeignKey
-ALTER TABLE "Video" ADD CONSTRAINT "Video_playlistId_fkey" FOREIGN KEY ("playlistId") REFERENCES "Playlist"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Video" ADD CONSTRAINT "Video_albumId_fkey" FOREIGN KEY ("albumId") REFERENCES "Album"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_ArtistToVideo" ADD CONSTRAINT "_ArtistToVideo_A_fkey" FOREIGN KEY ("A") REFERENCES "Artist"("id") ON DELETE CASCADE ON UPDATE CASCADE;
