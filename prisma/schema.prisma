@@ -11,6 +11,75 @@ generator client {
 }
 
 model User {
-  id        String   @id @default(cuid())
+  id        String     @id @default(cuid())
+  role      Role       @default(USER)
+  createdAt DateTime   @default(now())
+  Playlist  Playlist[]
+}
+
+model Playlist {
+  id           String  @id @default(cuid())
+  title        String
+  thumnnailUrl String
+  userId       String
+  user         User    @relation(fields: [userId], references: [id])
+  videos       Video[]
+
   createdAt DateTime @default(now())
+
+  @@unique([title, userId])
+}
+
+model Album {
+  id           String    @id @default(cuid())
+  title        String
+  thumnnailUrl String
+  videos       Video[]
+  type         AlbumType @default(SINGLE)
+
+  createdAt DateTime @default(now())
+
+  @@unique([title])
+}
+
+model Artist {
+  id         String @id @default(cuid())
+  name       String
+  channelUrl String
+
+  videos Video[]
+
+  createdAt DateTime @default(now())
+
+  @@unique([name, channelUrl])
+}
+
+model Video {
+  id             String @id @default(cuid())
+  youtubeVideoId String
+  start          Int
+  end            Int
+  originalTitle  String
+  title          String
+  thumnnailUrl   String
+
+  artists Artist[]
+
+  Playlist   Playlist? @relation(fields: [playlistId], references: [id])
+  playlistId String?
+  Album      Album?    @relation(fields: [albumId], references: [id])
+  albumId    String?
+  createdAt  DateTime  @default(now())
+
+  @@unique([youtubeVideoId, start, end])
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum AlbumType {
+  SINGLE
+  LIVE
 }
