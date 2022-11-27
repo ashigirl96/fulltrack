@@ -5,6 +5,7 @@ import {
 } from '@supabase/auth-helpers-nextjs'
 import { SessionContextProvider } from '@supabase/auth-helpers-react'
 import { NextPage } from 'next'
+import Head from 'next/head'
 import { ReactElement, ReactNode, useState } from 'react'
 import { RecoilRoot } from 'recoil'
 import type { AppProps } from 'next/app'
@@ -30,6 +31,12 @@ function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
       initialSession={pageProps.initialSession}
     >
       <RecoilRoot>
+        <Head>
+          <title>フルトラック</title>
+          <link rel="manifest" href="/manifest.json" />
+          <link rel="apple-touch-icon" href="/icon.png"></link>
+          <meta name="theme-color" content="#fff" />
+        </Head>
         {getLayout(
           <Component
             {...pageProps}
