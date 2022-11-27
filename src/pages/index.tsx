@@ -27,6 +27,9 @@ function Index() {
       <Link href={`/hello`}>
         <a>Hello</a>
       </Link>
+      <Link href={`/Ios`}>
+        <a>ios</a>
+      </Link>
     </div>
   )
 }
