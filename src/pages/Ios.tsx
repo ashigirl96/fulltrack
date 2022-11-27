@@ -1,47 +1,97 @@
 import { useCallback, useState } from 'react'
-import YouTube, { YouTubeEvent, YouTubeProps } from 'react-youtube'
-import PlayerStates from 'youtube-player/dist/constants/PlayerStates'
+import { useToggle } from 'react-use'
+import YouTube, { YouTubeEvent } from 'react-youtube'
+import { getPlayerStateKey } from '@/lib/youtube/getPlayerStateKey'
+
+const VIDEOS = [
+  {
+    videoId: '-kezdg0ggyQ',
+    startSeconds: 5,
+    endSeconds: 10,
+  },
+  {
+    videoId: '9VhrJCbr58A',
+    startSeconds: 10,
+    endSeconds: 13,
+  },
+  {
+    videoId: 'kroV2qD0xNo',
+    startSeconds: 20,
+    endSeconds: 24,
+  },
+]
 
 function Ios() {
-  const videoIds = ['-kezdg0ggyQ', '9VhrJCbr58A']
+  const [status, setStatus] = useState('')
+  const [readyEvent, setReadyEvent] = useState<YouTubeEvent | null>(null)
   const [index, setIndex] = useState(0)
-  const onPlayerReady = useCallback(async (event: YouTubeEvent) => {
-    const states = await event.target.getPlayerState()
-    switch (states) {
-      case PlayerStates.BUFFERING:
-        break
-      case PlayerStates.ENDED:
-        setIndex((i) => i + 1)
-        break
-      case PlayerStates.PAUSED:
-        break
-      case PlayerStates.PLAYING:
-        break
-      case PlayerStates.UNSTARTED:
-        break
-      case PlayerStates.VIDEO_CUED:
-        break
-    }
-  }, [])
-  const opts: YouTubeProps['opts'] = {
-    height: '390',
-    width: '640',
-    playerVars: {
-      start: 1,
-      end: 5,
-      autoplay: 1,
+  const [toggle, setToggle] = useToggle(false)
+
+  const handleStateChange = useCallback(
+    async (e: YouTubeEvent) => {
+      if (e) {
+        const state = getPlayerStateKey(await e.target.getPlayerState())
+        setStatus(state)
+        switch (state) {
+          case 'BUFFERING':
+            break
+          case 'PAUSED':
+            break
+          case 'VIDEO_CUED':
+            break
+          case 'UN_STARTED':
+            break
+          case 'ENDED': {
+            console.log(toggle)
+            if (!toggle) {
+              console.log(`END`)
+              const video = VIDEOS[index]
+              await e.target.loadVideoById({ ...video })
+              await e.target.playVideo()
+              setIndex(() => (index + 1) % VIDEOS.length)
+              setToggle()
+            } else {
+              console.log(`END 2nd`)
+              setToggle()
+            }
+            break
+          }
+          case 'PLAYING':
+            break
+        }
+      }
     },
-  }
-  console.log(`index ${JSON.stringify(index)}`)
-  console.log(`videoIds[index] ${JSON.stringify(videoIds[index])}`)
+    [index, setToggle, toggle],
+  )
 
   return (
-    <YouTube
-      videoId={videoIds[index]}
-      opts={opts}
-      onReady={onPlayerReady}
-      onEnd={() => setIndex((i) => i + 1)}
-    />
+    <div>
+      <p>{status}</p>
+      <YouTube
+        opts={{
+          playerVars: {
+            autoplay: 1,
+          },
+        }}
+        onReady={(e) => {
+          console.log(`ready!`)
+          setReadyEvent(e)
+        }}
+        onStateChange={handleStateChange}
+      />
+      <button
+        onClick={async () => {
+          const video = VIDEOS[index]
+          if (readyEvent) {
+            await readyEvent.target.loadVideoById({ ...video })
+            await readyEvent.target.playVideo()
+            setIndex(() => (index + 1) % VIDEOS.length)
+          }
+        }}
+      >
+        Play
+      </button>
+    </div>
   )
 }
 
