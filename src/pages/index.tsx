@@ -1,7 +1,15 @@
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
+
+const Desktop = dynamic(() => import('@/components/shared/DesktopExample'), {
+  ssr: false,
+})
+const Mobile = dynamic(() => import('@/components/shared/MobileExample'), {
+  ssr: false,
+})
 
 function Index() {
   const [supabaseClient] = useState(() => createBrowserSupabaseClient())
@@ -30,6 +38,9 @@ function Index() {
       <Link href={`/Ios`}>
         <a>ios</a>
       </Link>
+
+      <Desktop />
+      <Mobile />
     </div>
   )
 }
