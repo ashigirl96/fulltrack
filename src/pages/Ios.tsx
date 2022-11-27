@@ -1,5 +1,4 @@
-import { useCallback, useState } from 'react'
-import { useToggle } from 'react-use'
+import { useCallback, useRef, useState } from 'react'
 import YouTube, { YouTubeEvent } from 'react-youtube'
 import { getPlayerStateKey } from '@/lib/youtube/getPlayerStateKey'
 
@@ -22,51 +21,55 @@ const VIDEOS = [
 ]
 
 function Ios() {
-  const [status, setStatus] = useState('')
   const [readyEvent, setReadyEvent] = useState<YouTubeEvent | null>(null)
   const [index, setIndex] = useState(0)
-  const [toggle, setToggle] = useToggle(false)
+  const played = useRef(false)
 
+  /*
+  曲が終わると
+  - ENDED
+  - UN_STARTED
+  - ENDED
+  - UN_STARTED
+  - BUFFERING
+  - UN_STARTED
+  - PLAYING
+   */
+
+  // iPhoneで止まるのは、エラー担ってるわけじゃなさそう。単純にENDEDになってる
+  // iPhoneだと１回しかendedが呼ばれてないケースがある
   const handleStateChange = useCallback(
     async (e: YouTubeEvent) => {
-      if (e) {
-        const state = getPlayerStateKey(await e.target.getPlayerState())
-        setStatus(state)
-        switch (state) {
-          case 'BUFFERING':
-            break
-          case 'PAUSED':
-            break
-          case 'VIDEO_CUED':
-            break
-          case 'UN_STARTED':
-            break
-          case 'ENDED': {
-            console.log(toggle)
-            if (!toggle) {
-              console.log(`END`)
-              const video = VIDEOS[index]
-              await e.target.loadVideoById({ ...video })
-              await e.target.playVideo()
-              setIndex(() => (index + 1) % VIDEOS.length)
-              setToggle()
-            } else {
-              console.log(`END 2nd`)
-              setToggle()
-            }
-            break
+      const state = getPlayerStateKey(await e.target.getPlayerState())
+      switch (state) {
+        case 'BUFFERING':
+          break
+        case 'PAUSED':
+          break
+        case 'VIDEO_CUED':
+          break
+        case 'UN_STARTED':
+          break
+        case 'ENDED': {
+          if (played.current) {
+            const video = VIDEOS[index]
+            await e.target.loadVideoById({ ...video })
+            await e.target.playVideo()
+            setIndex(() => (index + 1) % VIDEOS.length)
+            played.current = false
           }
-          case 'PLAYING':
-            break
+          break
         }
+        case 'PLAYING':
+          played.current = true
+          break
       }
     },
-    [index, setToggle, toggle],
+    [index, played],
   )
 
   return (
     <div>
-      <p>{status}</p>
       <YouTube
         opts={{
           playerVars: {
@@ -74,7 +77,6 @@ function Ios() {
           },
         }}
         onReady={(e) => {
-          console.log(`ready!`)
           setReadyEvent(e)
         }}
         onStateChange={handleStateChange}
