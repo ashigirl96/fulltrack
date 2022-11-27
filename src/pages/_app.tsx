@@ -26,26 +26,28 @@ function MyApp({ Component, pageProps, router }: AppPropsWithLayout) {
   const [supabaseClient] = useState(() => createBrowserSupabaseClient())
 
   return (
-    <SessionContextProvider
-      supabaseClient={supabaseClient}
-      initialSession={pageProps.initialSession}
-    >
-      <RecoilRoot>
-        <Head>
-          <title>フルトラック</title>
-          <link rel="manifest" href="/manifest.json" />
-          <link rel="apple-touch-icon" href="/icon.png"></link>
-          <meta name="theme-color" content="#fff" />
-        </Head>
-        {getLayout(
-          <Component
-            {...pageProps}
-            router={router}
-            supabaseClient={supabaseClient}
-          />,
-        )}
-      </RecoilRoot>
-    </SessionContextProvider>
+    <>
+      <Head>
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="apple-touch-icon" href="/icon.png"></link>
+        <meta name="theme-color" content="#fff" />
+        <title>フルトラック</title>
+      </Head>
+      <SessionContextProvider
+        supabaseClient={supabaseClient}
+        initialSession={pageProps.initialSession}
+      >
+        <RecoilRoot>
+          {getLayout(
+            <Component
+              {...pageProps}
+              router={router}
+              supabaseClient={supabaseClient}
+            />,
+          )}
+        </RecoilRoot>
+      </SessionContextProvider>
+    </>
   )
 }
 
