@@ -18,12 +18,12 @@ model User {
 }
 
 model Playlist {
-  id           String  @id @default(cuid())
+  id           String            @id @default(cuid())
   title        String
-  thumnnailUrl String
+  thumbnailUrl String
   userId       String
-  user         User    @relation(fields: [userId], references: [id])
-  videos       Video[]
+  user         User              @relation(fields: [userId], references: [id])
+  videos       PlaylistOnVideo[]
 
   createdAt DateTime @default(now())
 
@@ -31,12 +31,11 @@ model Playlist {
 }
 
 model Album {
-  id           String    @id @default(cuid())
+  id           String       @id @default(cuid())
   title        String
-  thumnnailUrl String
-  type         AlbumType @default(SINGLE)
-
-  videos Video[]
+  thumbnailUrl String
+  type         AlbumType    @default(SINGLE)
+  videos       AlbumVideo[]
 
   createdAt DateTime @default(now())
 
@@ -44,13 +43,12 @@ model Album {
 }
 
 model Artist {
-  id         String @id @default(cuid())
-  name       String
+  id        String @id @default(cuid())
+  name      String
   channelId String
 
-  videos Video[]
-
-  createdAt DateTime @default(now())
+  createdAt DateTime        @default(now())
+  videos    ArtistOnVideo[]
 
   @@unique([name, channelId])
 }
@@ -62,16 +60,49 @@ model Video {
   end            Int
   originalTitle  String
   title          String
-  thumnnailUrl   String
+  thumbnailUrl   String
 
-  artists  Artist[]
-  playlits Playlist[]
-  albums   Album[]
   publishedAt DateTime?
 
-  createdAt DateTime @default(now())
+  createdAt DateTime          @default(now())
+  albums    AlbumVideo[]
+  artists   ArtistOnVideo[]
+  playlists PlaylistOnVideo[]
 
   @@unique([youtubeVideoId, start, end])
+}
+
+model AlbumVideo {
+  albumId    String
+  album      Album    @relation(fields: [albumId], references: [id])
+  videoId    String
+  video      Video    @relation(fields: [videoId], references: [id])
+  assignedAt DateTime @default(now())
+
+  @@id([albumId, videoId])
+  @@map("albums_videos")
+}
+
+model ArtistOnVideo {
+  artistId   String
+  artist     Artist   @relation(fields: [artistId], references: [id])
+  videoId    String
+  video      Video    @relation(fields: [videoId], references: [id])
+  assignedAt DateTime @default(now())
+
+  @@id([artistId, videoId])
+  @@map("artists_videos")
+}
+
+model PlaylistOnVideo {
+  playlistId String
+  playlist   Playlist @relation(fields: [playlistId], references: [id])
+  videoId    String
+  video      Video    @relation(fields: [videoId], references: [id])
+  assignedAt DateTime @default(now())
+
+  @@id([playlistId, videoId])
+  @@map("playlists_videos")
 }
 
 enum Role {

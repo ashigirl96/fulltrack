@@ -203,3 +203,5 @@ venv.bak/
 src/generated/graphql.tsx
 graphql.schema.json.graphql
 src/api/graphqls/*.graphql
+
+prisma/

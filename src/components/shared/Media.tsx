@@ -11,7 +11,7 @@ function Desktop({ children }: Props) {
 
 function Mobile({ children }: Props) {
   const isMobile = useMediaQuery({ maxWidth: 768 })
-  return isMobile ? children : null
+  return isMobile ? <div className="my-40 mx-8">{children}</div> : null
 }
 
 export const Media = {

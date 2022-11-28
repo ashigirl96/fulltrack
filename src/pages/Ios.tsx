@@ -16,8 +16,8 @@ function Ios() {
           if (player) {
             await player.loadVideoById({
               videoId: 'kroV2qD0xNo',
-              startSeconds: 20,
-              endSeconds: 24,
+              // startSeconds: 20,
+              // endSeconds: 24,
             })
           }
         }}

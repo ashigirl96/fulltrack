@@ -19,8 +19,8 @@ import { getPlayerStateKey } from '@/lib/youtube/getPlayerStateKey'
 const VIDEOS = [
   {
     videoId: '-kezdg0ggyQ',
-    startSeconds: 5,
-    endSeconds: 10,
+    // startSeconds: 5,
+    // endSeconds: 10,
   },
   {
     videoId: '9VhrJCbr58A',

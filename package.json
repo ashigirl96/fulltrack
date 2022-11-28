@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "migrate:dev": "dotenv -- bash -c 'DATABASE_URL=$MIGRATE_DB_URL npx prisma migrate dev'",
-    "seed": "ts-node --project tsconfig.local.json prisma/scripts/main.ts"
+    "seed": "ts-node --project tsconfig.local.json prisma/seed.ts"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.2.0",
